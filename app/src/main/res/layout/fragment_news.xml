@@ -15,9 +15,19 @@
         android:layout_below="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="동아뉴스"
+        android:text="동아일보"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:backgroundTint="#FF0000"/>
+    <Button
+        android:id="@+id/jtbc_btn"
+        android:layout_below="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JTBC"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@+id/donga_btn"
+        android:textStyle="bold"
+        android:backgroundTint="#0000ff"/>
 
 </RelativeLayout>

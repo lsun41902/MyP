@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DongA.DongaWebViewActivity"></activity>
+        <activity android:name=".JTBC.JTBCActivity"></activity>
+        <activity android:name=".DongA.DongaWebViewActivity" />
         <activity android:name=".DongA.DongaActivity" />
         <activity android:name=".WriteActivity" />
         <activity

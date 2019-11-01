@@ -12,20 +12,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.lsun.myp.DongA.DongaActivity;
+import com.lsun.myp.JTBC.JTBCActivity;
 
 public class Fragment_News extends Fragment {
-    Button btn;
+    Button dongaBtn,jtbcBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_news,container,false);
-        btn=view.findViewById(R.id.donga_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        dongaBtn=view.findViewById(R.id.donga_btn);
+        dongaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), DongaActivity.class));
             }
         });
+        jtbcBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), JTBCActivity.class));
+            }
+        });
+
         return view;
     }
 }
