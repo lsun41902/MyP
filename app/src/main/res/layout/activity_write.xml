@@ -4,12 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WriteActivity">
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".WriteActivity"
+    android:weightSum="10"
+    >
+    <EditText
+        android:layout_weight="1"
+        android:id="@+id/wirte_et_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:maxLength="20"
+        android:textSize="18sp"
+        android:inputType="text"
+        android:hint="Title"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/wirte_iv_1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_add_black_24dp"/>
+        <ImageView
+            android:id="@+id/wirte_iv_2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_add_black_24dp"/>
+        <ImageView
+            android:id="@+id/wirte_iv_3"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_add_black_24dp"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/wirte_et_text"
+        android:layout_weight="7"
+        android:layout_width="match_parent"
+        android:hint="Max 500"
+        android:maxLength="500"
+        android:autoSizeMaxTextSize="500dp"
+        android:gravity="top"
+        android:layout_height="0dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="취소"
+            android:onClick="clickBtn2"/>
     <Button
+        android:layout_weight="1"
         android:id="@+id/btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="button"
+        android:layout_height="match_parent"
+        android:text="올리기"
         android:onClick="clickBtn"/>
+    </LinearLayout>
+
 
 </LinearLayout>

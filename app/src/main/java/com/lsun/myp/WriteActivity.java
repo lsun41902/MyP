@@ -21,4 +21,7 @@ public class WriteActivity extends AppCompatActivity {
         setResult(RESULT_OK,intent);
         finish();
     }
+
+    public void clickBtn2(View view) {
+    }
 }

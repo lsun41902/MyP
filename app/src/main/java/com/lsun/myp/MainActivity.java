@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+import com.mxn.soul.flowingdrawer_core.FlowingMenuLayout;
 
 public class MainActivity extends AppCompatActivity {
     NavigationView navi;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager pager;
     MyAdapter adapter;
+    FlowingMenuLayout menuLayout;
     public static Toolbar toolbar;
     public static final int REQ_WIRTE=10;
 
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout=findViewById(R.id.layout_drawer);
         drawerToggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name,R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
+       drawerToggle.syncState();
 
 
         tabLayout=findViewById(R.id.layout_tab);
