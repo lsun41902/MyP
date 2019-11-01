@@ -27,6 +27,7 @@ public class Fragment_News extends Fragment {
                 startActivity(new Intent(getActivity(), DongaActivity.class));
             }
         });
+        jtbcBtn=view.findViewById(R.id.jtbc_btn);
         jtbcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
