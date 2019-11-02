@@ -25,7 +25,7 @@ public class Fragment_Map extends Fragment {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://map.kakao.com/link/search/카카오"));
+                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://map.kakao.com/link/search/"));
                 startActivity(intent);
             }
         });
