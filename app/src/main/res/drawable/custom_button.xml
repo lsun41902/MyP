@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/gradient_top"
+        android:state_pressed="false"/>
+
+    <item android:state_enabled="false"
+        android:drawable="@drawable/gradient_middle"/>
+
+    <item android:drawable="@drawable/gradient_under"/>
+
+</selector>
