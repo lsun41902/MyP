@@ -32,6 +32,8 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_margin="4dp"
+            android:clickable="true"
+            android:background="@drawable/background"
             android:src="@drawable/ic_add_black_24dp"/>
         <ImageView
             android:id="@+id/wirte_iv_2"
@@ -39,6 +41,8 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_margin="4dp"
+            android:clickable="true"
+            android:background="@drawable/background"
             android:src="@drawable/ic_add_black_24dp"/>
         <ImageView
             android:id="@+id/wirte_iv_3"
@@ -46,6 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_margin="4dp"
+            android:clickable="true"
+            android:background="@drawable/background"
             android:src="@drawable/ic_add_black_24dp"/>
     </LinearLayout>
 
@@ -69,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="취소"
+            android:shadowColor="#000000"
             android:onClick="clickBtn2"/>
     <Button
         android:layout_weight="1"
@@ -76,6 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="올리기"
+        android:shadowColor="#ffffff"
         android:onClick="clickBtn"/>
     </LinearLayout>
 
