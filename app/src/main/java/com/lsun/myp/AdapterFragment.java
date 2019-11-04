@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class MyAdapter extends FragmentPagerAdapter {
+public class AdapterFragment extends FragmentPagerAdapter {
     Fragment[] fragments=new Fragment[3];
     String[] pageTitle=new String[]{"게시판","뉴스","지도"};
-    public MyAdapter(@NonNull FragmentManager fm) {
+    public AdapterFragment(@NonNull FragmentManager fm) {
         super(fm);
         fragments[0]=new Fragment_Recyclerview();
         fragments[1]=new Fragment_News();

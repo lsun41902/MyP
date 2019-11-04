@@ -5,14 +5,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,8 +26,11 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle drawerToggle;
     TabLayout tabLayout;
     ViewPager pager;
-    MyAdapter adapter;
+    AdapterFragment adapter;
     public static Toolbar toolbar;
+    ArrayList<MyMember> members=new ArrayList<>();
+    AdapterMember adapterMember;
+    RecyclerView recyclerView;
     public static final int REQ_WIRTE=10;
 
     @Override
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout=findViewById(R.id.layout_tab);
         pager=findViewById(R.id.pager);
-        adapter=new MyAdapter(getSupportFragmentManager());
+        adapter=new AdapterFragment(getSupportFragmentManager());
         pager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(pager);
@@ -55,8 +63,15 @@ public class MainActivity extends AppCompatActivity {
             case REQ_WIRTE:
                 if (resultCode==RESULT_OK){
                     Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show();
+//                    View view=View.inflate(this,R.layout.fragment_recyclerview_item,null);
+//                    RecyclerView recyclerView=view.findViewById(R.id.recyclerview_item);
+//                    String title=data.getStringExtra("Title");
+//                    adapterMember=new AdapterMember(this, members);
+//                    recyclerView.setAdapter(adapterMember);
+
                 }
                 break;
         }
     }
+
 }
