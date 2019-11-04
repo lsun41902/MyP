@@ -1,5 +1,6 @@
 package com.lsun.myp;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,5 +38,11 @@ public class Fragment_Map extends Fragment {
 
         wv.loadUrl("https://map.kakao.com/link/search/");
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 }
