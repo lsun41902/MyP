@@ -36,10 +36,14 @@ public class MainActivity extends AppCompatActivity {
         pager=findViewById(R.id.pager);
         adapter=new AdapterFragment(getSupportFragmentManager());
         pager.setAdapter(adapter);
-
         tabLayout.setupWithViewPager(pager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_description_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_language_black_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_map_black_24dp);
+
 
     }
+
 
 
 }

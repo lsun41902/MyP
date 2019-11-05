@@ -65,7 +65,7 @@ public class Fragment_Recyclerview extends Fragment {
             case REQ_WIRTE:
                 if(resultCode== MainActivity.RESULT_OK){
                     String title=data.getStringExtra("Title");
-                    members.add(0,new MyMember(null,null,null));
+                    members.add(0,new MyMember(title,null,null));
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }
