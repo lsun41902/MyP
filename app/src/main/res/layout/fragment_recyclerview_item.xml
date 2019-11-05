@@ -18,6 +18,7 @@
         android:layout_toRightOf="@+id/item_iv"
         android:layout_height="wrap_content"
         android:maxLines="1"
+        android:textColor="@color/white"
         android:text="지금 샷두루빠라"
         android:textSize="18sp"/>
 
