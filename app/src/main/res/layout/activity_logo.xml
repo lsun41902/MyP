@@ -5,15 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_directions_run_black_24dp"
     tools:context=".LogoActivity">
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/SpinKitView.Large.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/SpinKitView.DoubleBounce"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
         app:SpinKit_Color="@color/colorAccent" />
 
 

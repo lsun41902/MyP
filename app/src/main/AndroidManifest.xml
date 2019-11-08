@@ -12,15 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".JTBC.JTBCActivity"></activity>
-        <activity android:name=".DongA.DongaWebViewActivity"/>
-        <activity android:name=".DongA.DongaActivity"/>
-        <activity android:name=".WriteActivity"/>
+        <activity android:name=".SelectLoginActivity"></activity>
+        <activity android:name=".JTBC.JTBCActivity" />
+        <activity android:name=".DongA.DongaWebViewActivity" />
+        <activity android:name=".DongA.DongaActivity" />
+        <activity android:name=".WriteActivity" />
         <activity
             android:name=".LogoActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

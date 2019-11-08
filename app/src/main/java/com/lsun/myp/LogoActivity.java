@@ -22,7 +22,7 @@ public class LogoActivity extends AppCompatActivity {
         mRunnable = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(LogoActivity.this, MainActivity.class);
+                Intent intent = new Intent(LogoActivity.this, SelectLoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -39,9 +39,9 @@ public class LogoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.spin_kit);
-        Sprite doubleBounce = new DoubleBounce();
-        progressBar.setIndeterminateDrawable(doubleBounce);
+//        ProgressBar progressBar = (ProgressBar)findViewById(R.id.spin_kit);
+//        Sprite doubleBounce = new DoubleBounce();
+//        progressBar.setIndeterminateDrawable(doubleBounce);
     }
     @Override
     protected void onDestroy() {
