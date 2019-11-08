@@ -28,7 +28,6 @@ public class GoogleLogout {
         mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
-
                 FirebaseAuth.getInstance().signOut();
                 if(mGoogleApiClient.isConnected()) {
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
