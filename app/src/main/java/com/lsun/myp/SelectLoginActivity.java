@@ -35,6 +35,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 100;
     SignInButton signInButton;
+    private static String strEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 //                Log.d("TAG", "이름 =" + account.getDisplayName());
-//                Log.d("TAG", "이메일=" + account.getEmail());
+                  strEmail= account.getEmail();
 //                Log.d("TAG", "getId()=" + account.getId());
 //                Log.d("TAG", "getAccount()=" + account.getAccount());
 //                Log.d("TAG", "getIdToken()=" + account.getIdToken());

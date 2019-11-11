@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@color/colorPrimary">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_header"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/f001" />
+
+    <TextView
+        android:id="@+id/tv_name_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="android"
+        android:textColor="@color/white"
+        android:layout_marginLeft="8dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_below="@+id/iv_header"/>
+    <TextView
+        android:id="@+id/tv_email_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="android@gmail.com"
+        android:textColor="@color/white"
+        android:layout_marginLeft="8dp"
+        android:layout_below="@id/tv_name_header"/>
+    <LinearLayout
+        android:id="@+id/header_view_settinglayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true">
+    <TextView
+        android:id="@+id/tv_set_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 편집"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        />
+    <ImageView
+        android:id="@+id/set_header"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/setting"
+        android:layout_marginLeft="4dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
