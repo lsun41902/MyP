@@ -36,7 +36,7 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onRefresh() {
                 Toast.makeText(getActivity(), "게시판 새로고침", Toast.LENGTH_SHORT).show();
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeChanged(0,10);
                 recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
 
@@ -55,8 +55,11 @@ public class Fragment_Recyclerview extends Fragment {
 
     }//onCreateView
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -79,7 +82,6 @@ public class Fragment_Recyclerview extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //members.add(0, new MyMember(null, null, null));
-
     }
 
 

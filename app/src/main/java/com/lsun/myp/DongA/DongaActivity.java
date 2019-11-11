@@ -32,7 +32,7 @@ public class DongaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donga);
-
+        getSupportActionBar().setTitle("동아일보 - 사회");
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
         adapter=new DongAAdapter(dongAItemMembers,this);
         recyclerViewDongA.setAdapter(adapter);

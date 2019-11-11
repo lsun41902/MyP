@@ -35,7 +35,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 100;
     SignInButton signInButton;
-    private static String strEmail;
+    public static String startEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SelectLoginActivity.this, "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SelectLoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(SelectLoginActivity.this, StartProfileActivity.class));
                             finish();
                         } else {
                             Toast.makeText(SelectLoginActivity.this, "에러가 발생 했습니다.", Toast.LENGTH_SHORT).show();
@@ -101,7 +101,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 //                Log.d("TAG", "이름 =" + account.getDisplayName());
-                  strEmail= account.getEmail();
+                startEmail= account.getEmail();
 //                Log.d("TAG", "getId()=" + account.getId());
 //                Log.d("TAG", "getAccount()=" + account.getAccount());
 //                Log.d("TAG", "getIdToken()=" + account.getIdToken());

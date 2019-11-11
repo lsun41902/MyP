@@ -31,7 +31,7 @@ public class JTBCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donga);
-
+        getSupportActionBar().setTitle("JTBC - 사회");
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
         adapter=new JTBCAdapter(jtbcItemMembers,this);
         recyclerViewDongA.setAdapter(adapter);

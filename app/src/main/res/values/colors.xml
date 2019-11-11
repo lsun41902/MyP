@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#95E0C8</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
@@ -26,4 +26,6 @@
     <color name="fbutton_color_silver">#bdc3c7</color>
     <color name="fbutton_color_concrete">#95a5a6</color>
     <color name="fbutton_color_asbestos">#7f8c8d</color>
+    <color name="MyBackground">#EAEAEA</color>
+    <color name="MyText">#474544</color>
 </resources>

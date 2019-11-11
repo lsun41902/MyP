@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="16dp"
     android:layout_height="match_parent"
-    android:background="#ffff00">
+    android:background="@color/MyBackground">
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -18,9 +19,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final int REQ_PICIMAGE=1001;
+    public static final int REQ_PICIMAGE=1002;
     CircleImageView profileiv;
     public static Uri profileciv;
+    TextView userEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQ_PICIMAGE);
             }
         });
+        userEmail=findViewById(R.id.profile_tv_useremail);
+        userEmail.setText(SelectLoginActivity.startEmail);
     }
 
 
@@ -66,11 +70,12 @@ public class ProfileActivity extends AppCompatActivity {
         }).create().show();
     }
 
+
     public void clickCommitCancel(View view) {
         new AlertDialog.Builder(this).setTitle("수정 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                profileciv=null;
+                profileciv = null;
                 finish();
             }
         }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
