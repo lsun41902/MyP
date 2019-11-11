@@ -8,7 +8,7 @@
         android:id="@+id/iv_header"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/f001" />
+        android:src="@drawable/personmen" />
 
     <TextView
         android:id="@+id/tv_name_header"
