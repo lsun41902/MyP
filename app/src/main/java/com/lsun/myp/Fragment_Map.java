@@ -40,9 +40,4 @@ public class Fragment_Map extends Fragment {
         return view;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
 }
