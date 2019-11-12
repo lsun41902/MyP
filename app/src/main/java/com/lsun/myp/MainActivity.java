@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         heaerview=navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview=heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView=heaerview.findViewById(R.id.iv_header);
+        Glide.with(this).load(StartProfileActivity.startProfileImage).into(circleImageView);
         userName=heaerview.findViewById(R.id.tv_name_header);
         userEmail=heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
