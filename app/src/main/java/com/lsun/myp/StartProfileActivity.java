@@ -60,13 +60,15 @@ public class StartProfileActivity extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("작성 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(userNickname!=null) {
+                if(userNickname.length()>=2) {
+
                     Intent intent = getIntent();
                     intent.putExtra("circleUri", startProfileImage);
                     setResult(RESULT_OK, intent);
+                    startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
                     finish();
                 }else {
-                    Toast.makeText(StartProfileActivity.this, "닉네임을 입력해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StartProfileActivity.this, "닉네임을 2자 이상 작성해 주세요.", Toast.LENGTH_SHORT).show();
                     dialogInterface.dismiss();
                 }
             }
