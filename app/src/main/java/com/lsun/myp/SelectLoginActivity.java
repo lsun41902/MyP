@@ -41,6 +41,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selcet_login);
+        mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.signinbutton);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,13 +128,13 @@ public void  updateUI(FirebaseUser account){
         Toast.makeText(SelectLoginActivity.this, "구글 인증 실패", Toast.LENGTH_SHORT).show();
 
     }
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
 
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
