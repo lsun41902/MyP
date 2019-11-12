@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@drawable/background">
+    android:background="@color/MyBackground">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_iv"
         android:layout_width="64dp"
@@ -18,17 +18,17 @@
         android:layout_toRightOf="@+id/item_iv"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:text="지금 샷두루빠라"
         android:textSize="18sp"/>
 
 
     <ImageView
         android:id="@+id/item_iv_fav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_toRightOf="@id/item_iv"
-        android:src="@drawable/ic_hearing_black_24dp"
+        android:src="@drawable/medal"
         android:layout_alignBottom="@id/item_iv"
         android:layout_marginLeft="8dp"/>
     <TextView

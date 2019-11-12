@@ -33,7 +33,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 100;
-    
+
     SignInButton signInButton;
     public static String startEmail;
 
@@ -54,16 +54,6 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         });
 
     }
-    public void  updateUI(FirebaseUser account){
-        if(account != null){
-            Toast.makeText(this,"login",Toast.LENGTH_LONG).show();
-            startEmail= account.getEmail();
-            startActivity(new Intent(this,StartProfileActivity.class));
-            finish();
-        }else {
-            Toast.makeText(this,"login login",Toast.LENGTH_LONG).show();
-        }
-    }
 
     void Googlelogin() {
         // 파이어베이스 인증 객체 선언
@@ -80,16 +70,16 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
         mAuth = FirebaseAuth.getInstance();
     }
-public void  updateUI(FirebaseUser account){
-    if(account != null){
-        Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
-        startEmail= account.getEmail();
-        startActivity(new Intent(this,StartProfileActivity.class));
-        finish();
-    }else {
-        Toast.makeText(this,"로그인을 선택해주세요",Toast.LENGTH_LONG).show();
+    public void  updateUI(FirebaseUser account){
+        if(account != null){
+            Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
+            startEmail= account.getEmail();
+            startActivity(new Intent(this,StartProfileActivity.class));
+            finish();
+        }else {
+            Toast.makeText(this,"로그인을 선택해주세요",Toast.LENGTH_LONG).show();
+        }
     }
-}
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("TAG", "firebaseAuthWithGoogle:" + acct.getId());
@@ -146,7 +136,7 @@ public void  updateUI(FirebaseUser account){
         updateUI(currentUser);
     }
 
-//    @Override
+    //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == RC_SIGN_IN) {
