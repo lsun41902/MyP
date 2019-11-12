@@ -102,5 +102,14 @@ public class StartProfileActivity extends AppCompatActivity {
         }).create().show();
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        String checkUserName=sp.getString("userNickname",null);
+        if(checkUserName!=null){
+            startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
+            finish();
+        }
+    }
 }
