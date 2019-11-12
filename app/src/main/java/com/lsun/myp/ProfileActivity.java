@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -19,15 +20,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    public static final int REQ_PICIMAGE=1002;
+    public static final int REQ_PICIMAGE=1003;
     CircleImageView profileiv;
     public static Uri profileciv;
-    TextView userEmail;
+    TextView userEmail,userNickname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         profileiv=findViewById(R.id.profile_iv);
+        Glide.with(this).load(StartProfileActivity.startProfileImage).into(profileiv);
         profileiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +37,10 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQ_PICIMAGE);
             }
         });
+        userNickname=findViewById(R.id.profile_tv_userenickname);
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        String username=sp.getString("userNickname",null);
+        userNickname.setText(username);
         userEmail=findViewById(R.id.profile_tv_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
     }

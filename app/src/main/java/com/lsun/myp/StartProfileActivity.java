@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ public class StartProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_profile);
+
         startProfileCircleImage = findViewById(R.id.start_profile_iv);
         startProfileCircleImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,7 @@ public class StartProfileActivity extends AppCompatActivity {
             }
         });
         userNickname=findViewById(R.id.profile_et_userenickname);
+
         userEmail=findViewById(R.id.profile_et_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
     }
@@ -61,7 +64,11 @@ public class StartProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(userNickname.length()>=2) {
-
+                    SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+                    SharedPreferences.Editor editor=sp.edit();
+                    String userName=userNickname.getText().toString();
+                    editor.putString("userNickname",userName);
+                    editor.commit();
                     Intent intent = getIntent();
                     intent.putExtra("circleUri", startProfileImage);
                     setResult(RESULT_OK, intent);
@@ -95,5 +102,14 @@ public class StartProfileActivity extends AppCompatActivity {
         }).create().show();
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        String checkUserName=sp.getString("userNickname",null);
+        if(checkUserName!=null){
+            startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
+            finish();
+        }
+    }
 }
