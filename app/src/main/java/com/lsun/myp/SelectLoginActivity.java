@@ -53,6 +53,16 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         });
 
     }
+    public void  updateUI(FirebaseUser account){
+        if(account != null){
+            Toast.makeText(this,"login",Toast.LENGTH_LONG).show();
+            startEmail= account.getEmail();
+            startActivity(new Intent(this,StartProfileActivity.class));
+            finish();
+        }else {
+            Toast.makeText(this,"login login",Toast.LENGTH_LONG).show();
+        }
+    }
 
     void Googlelogin() {
         // 파이어베이스 인증 객체 선언
