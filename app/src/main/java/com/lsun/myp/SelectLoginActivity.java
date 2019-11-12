@@ -126,7 +126,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
 //    }
 
     public void Signout() {
-        mAuth.signOut();
+        mAuth.getInstance().signOut();
 
     }
 
