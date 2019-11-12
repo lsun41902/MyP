@@ -12,15 +12,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -28,12 +27,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.annotations.Nullable;
 
 public class SelectLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 100;
+    
     SignInButton signInButton;
     public static String startEmail;
 
@@ -58,6 +58,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         // 파이어베이스 인증 객체 선언
         mAuth = FirebaseAuth.getInstance();
 
+        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -68,47 +69,104 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
         mAuth = FirebaseAuth.getInstance();
     }
+public void  updateUI(FirebaseUser account){
+    if(account != null){
+        Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
+        startEmail= account.getEmail();
+        startActivity(new Intent(this,StartProfileActivity.class));
+    }else {
+        Toast.makeText(this,"로그인을 선택해주세요",Toast.LENGTH_LONG).show();
+    }
+}
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("TAG", "firebaseAuthWithGoogle:" + acct.getId());
+
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SelectLoginActivity.this, "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SelectLoginActivity.this, StartProfileActivity.class));
-                            finish();
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
                         } else {
-                            Toast.makeText(SelectLoginActivity.this, "에러가 발생 했습니다.", Toast.LENGTH_SHORT).show();
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(SelectLoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
+
+                        // ...
                     }
                 });
     }
 
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(SelectLoginActivity.this, "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(SelectLoginActivity.this, StartProfileActivity.class));
+//                            finish();
+//                        } else {
+//                            Toast.makeText(SelectLoginActivity.this, "에러가 발생 했습니다", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(SelectLoginActivity.this, "인증 실패", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SelectLoginActivity.this, "구글 인증 실패", Toast.LENGTH_SHORT).show();
 
     }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        updateUI(currentUser);
+//    }
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == RC_SIGN_IN) {
+//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//            if (result.isSuccess()) {
+//                GoogleSignInAccount account = result.getSignInAccount();
+//                firebaseAuthWithGoogle(account);
+////                Log.d("TAG", "이름 =" + account.getDisplayName());
+//                startEmail= account.getEmail();
+////                Log.d("TAG", "getId()=" + account.getId());
+////                Log.d("TAG", "getAccount()=" + account.getAccount());
+////                Log.d("TAG", "getIdToken()=" + account.getIdToken());
+//            } else {
+//                Toast.makeText(SelectLoginActivity.this, "인증 실패", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-//                Log.d("TAG", "이름 =" + account.getDisplayName());
-                startEmail= account.getEmail();
-//                Log.d("TAG", "getId()=" + account.getId());
-//                Log.d("TAG", "getAccount()=" + account.getAccount());
-//                Log.d("TAG", "getIdToken()=" + account.getIdToken());
-
-            } else {
-                Toast.makeText(SelectLoginActivity.this, "인증 실패", Toast.LENGTH_SHORT).show();
-
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("TAG", "Google sign in failed", e);
+                // ...
             }
         }
     }
@@ -126,7 +184,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
 //    }
 
     public void Signout() {
-        mAuth.signOut();
+        mAuth.getInstance().signOut();
 
     }
 
@@ -138,7 +196,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                     public void onClick(DialogInterface dialog, int id) {
                         // 네 클릭
                         // 로그아웃 함수 call
-                       Signout();
+                        Signout();
                         Toast.makeText(SelectLoginActivity.this, "로그아웃", Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
