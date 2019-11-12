@@ -74,6 +74,7 @@ public void  updateUI(FirebaseUser account){
         Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
         startEmail= account.getEmail();
         startActivity(new Intent(this,StartProfileActivity.class));
+        finish();
     }else {
         Toast.makeText(this,"로그인을 선택해주세요",Toast.LENGTH_LONG).show();
     }

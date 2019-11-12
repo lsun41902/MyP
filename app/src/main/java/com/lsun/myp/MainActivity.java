@@ -8,17 +8,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.media.Image;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.google.android.material.internal.NavigationMenu;
-import com.google.android.material.internal.NavigationMenuItemView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static Toolbar toolbar;
     CircleImageView circleImageView;
     public static final int REQ_PICCIRCLE=1002;
+    TextView userName,userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         heaerview=navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview=heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView=heaerview.findViewById(R.id.iv_header);
+        userName=heaerview.findViewById(R.id.tv_name_header);
+        userEmail=heaerview.findViewById(R.id.tv_email_header);
+        userEmail.setText(SelectLoginActivity.startEmail);
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        String userNickname=sp.getString("userNickname","아무개");
+        userName.setText(userNickname);
+
 
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
