@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,11 +18,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -40,11 +37,15 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     public static final int REQ_PICCIRCLE=1002;
     TextView userName,userEmail;
+    public static Uri userImage=StartProfileActivity.startProfileImage;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         navi=findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar=findViewById(R.id.toolbar);
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         pager=findViewById(R.id.pager);
         adapter=new AdapterFragment(getSupportFragmentManager());
         pager.setAdapter(adapter);
+
         tabLayout.setupWithViewPager(pager);
         tabLayout.getTabAt(0).setIcon(R.drawable.description);
         tabLayout.getTabAt(1).setIcon(R.drawable.news2);
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         heaerview=navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview=heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView=heaerview.findViewById(R.id.iv_header);
-        Glide.with(this).load(StartProfileActivity.startProfileImage).into(circleImageView);
+        Glide.with(this).load(userImage).into(circleImageView);
         userName=heaerview.findViewById(R.id.tv_name_header);
         userEmail=heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
@@ -118,10 +120,31 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case REQ_PICCIRCLE:
                 if (resultCode==RESULT_OK){
-                    Uri iimmgg=data.getParcelableExtra("circleUri");
-                    Glide.with(this).load(iimmgg).into(circleImageView);
+                    userImage=data.getParcelableExtra("circleUri");
+                    Glide.with(this).load(userImage).into(circleImageView);
                 }
                 break;
         }
     }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
+
+
+
+

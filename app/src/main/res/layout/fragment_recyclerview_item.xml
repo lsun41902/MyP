@@ -2,31 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:background="@color/MyBackground">
+    android:layout_height="match_parent"
+    android:background="@drawable/textview_background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_layout"
+        android:padding="4dp">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_iv"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@mipmap/ic_launcher"/>
     <TextView
-        android:padding="4dp"
-        android:layout_margin="4dp"
+        android:layout_marginLeft="4dp"
         android:id="@+id/item_tv_title"
         android:layout_width="match_parent"
         android:layout_toRightOf="@+id/item_iv"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/Black"
         android:text="지금 샷두루빠라"
         android:textSize="18sp"/>
-
-
+        <TextView
+            android:layout_marginTop="4dp"
+            android:id="@+id/item_tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="글쓴이: "
+            android:textSize="12sp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/item_iv"
+            android:layout_below="@id/item_tv_title"/>
+        <TextView
+            android:id="@+id/item_tv_nickname"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/item_tv_username"
+            android:layout_below="@id/item_tv_title"
+            android:layout_alignBaseline="@id/item_tv_username"
+            android:text="샷두루빠라"/>
     <ImageView
         android:id="@+id/item_iv_fav"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_toRightOf="@id/item_iv"
         android:src="@drawable/medal"
         android:layout_alignBottom="@id/item_iv"
@@ -36,14 +56,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="24224"
+        android:textSize="12sp"
         android:layout_toRightOf="@id/item_iv_fav"
         android:layout_alignBottom="@id/item_iv"/>
         <TextView
             android:id="@+id/item_tv_date"
             android:layout_alignBottom="@id/item_iv"
             android:text="2010/10/10 00:00"
+            android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/item_image_pager"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@id/item_layout"
+        android:background="@drawable/textview_background2">
+    </androidx.viewpager.widget.ViewPager>
+    <TextView
+        android:id="@+id/item_tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/item_image_pager"
+        android:maxLines="5"
+        android:padding="4dp"
+        android:hint="text" />
 
 </RelativeLayout>

@@ -1,7 +1,9 @@
 package com.lsun.myp;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ public class Fragment_Recyclerview extends Fragment {
     public static final int REQ_WIRTE = 10;
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
+    String username;
 
     @Nullable
     @Override
@@ -39,7 +42,6 @@ public class Fragment_Recyclerview extends Fragment {
                 adapter.notifyItemRangeChanged(0,10);
                 recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
-
             }
         });
 
@@ -51,8 +53,8 @@ public class Fragment_Recyclerview extends Fragment {
                 startActivityForResult(intent, REQ_WIRTE);
             }
         });
+        Toast.makeText(getActivity(), "새로고침6", Toast.LENGTH_SHORT).show();
         return view;
-
     }//onCreateView
 
     @Override
@@ -68,7 +70,8 @@ public class Fragment_Recyclerview extends Fragment {
             case REQ_WIRTE:
                 if(resultCode== MainActivity.RESULT_OK){
                     String title=data.getStringExtra("Title");
-                    members.add(0,new MyMember(title,null,null));
+                    String text=data.getStringExtra("Text");
+                    members.add(0,new MyMember(title,text,null));
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }
@@ -76,17 +79,22 @@ public class Fragment_Recyclerview extends Fragment {
         }
     }
 
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //members.add(0, new MyMember(null, null, null));
+        Toast.makeText(getActivity(), "새로고침1", Toast.LENGTH_SHORT).show();
+
     }
 
 
-
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(members.size()!=0) {
+            adapter.notifyItemRangeChanged(0,10);
+            recyclerView.setAdapter(adapter);
+            Toast.makeText(getActivity(), "새로고침", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

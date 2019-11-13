@@ -29,7 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         profileiv=findViewById(R.id.profile_iv);
-        Glide.with(this).load(StartProfileActivity.startProfileImage).into(profileiv);
+        Glide.with(this).load(MainActivity.userImage).into(profileiv);
         profileiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
             case REQ_PICIMAGE:
                 if (resultCode==RESULT_OK){
                     profileciv=data.getData();
+                    MainActivity.userImage=data.getData();
                     Glide.with(this).load(profileciv).into(profileiv);
                 }
                 break;

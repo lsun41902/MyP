@@ -10,14 +10,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class WriteActivity extends AppCompatActivity {
 
     EditText etTitle, etText;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
 
     @Override
@@ -26,6 +30,11 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         etTitle = findViewById(R.id.wirte_et_title);
         etText = findViewById(R.id.wirte_et_text);
+        getSupportActionBar().setTitle("글쓰기");
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+
+
+
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             int checkedPrmission= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
@@ -36,6 +45,17 @@ public class WriteActivity extends AppCompatActivity {
         }
 
     }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+//                finish();
+//                return true;
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
 
     //requestPermissions()메소드로 인해 보여지는 다이얼로그에서 [허가/거부]선택 후 결과콜백 메소드
     @Override
@@ -68,11 +88,13 @@ public class WriteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String title = etTitle.getText().toString();
+                    String text= etText.getText().toString();
                     Intent intent = getIntent();
                     if (title.equals("")) {
                         title = "제목없음";
                     }
                     intent.putExtra("Title", title);
+                    intent.putExtra("Text",text);
                     setResult(RESULT_OK, intent);
                     dialogInterface.dismiss();
                     finish();
@@ -105,21 +127,19 @@ public class WriteActivity extends AppCompatActivity {
         }).create().show();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        new AlertDialog.Builder(this).setTitle("작성 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//                finish();
-//            }
-//        }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                dialogInterface.dismiss();
-//            }
-//        }).create().show();
-//
-//    }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "작성을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

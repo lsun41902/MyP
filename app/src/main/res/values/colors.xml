@@ -28,4 +28,5 @@
     <color name="fbutton_color_asbestos">#7f8c8d</color>
     <color name="MyBackground">#EAEAEA</color>
     <color name="MyText">#474544</color>
+    <color name="Black">#000000</color>
 </resources>
