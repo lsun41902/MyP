@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -23,7 +24,9 @@ public class ProfileActivity extends AppCompatActivity {
     public static final int REQ_PICIMAGE=1003;
     CircleImageView profileiv;
     public static Uri profileciv;
-    TextView userEmail,userNickname;
+    private TextView userEmail,userNickname;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,6 @@ public class ProfileActivity extends AppCompatActivity {
             case REQ_PICIMAGE:
                 if (resultCode==RESULT_OK){
                     profileciv=data.getData();
-                    MainActivity.userImage=data.getData();
                     Glide.with(this).load(profileciv).into(profileiv);
                 }
                 break;
@@ -71,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent=getIntent();
                 intent.putExtra("circleUri",profileciv);
                 setResult(RESULT_OK,intent);
+                MainActivity.userImage=profileciv;
                 finish();
             }
         }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -96,4 +99,22 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }).create().show();
     }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "작성을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
 }

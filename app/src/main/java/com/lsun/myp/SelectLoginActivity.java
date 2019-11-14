@@ -33,6 +33,8 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 100;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     SignInButton signInButton;
     public static String startEmail;
@@ -207,6 +209,21 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 dialog.cancel();
             }
         }).create().show();
+    }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

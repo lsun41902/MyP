@@ -210,4 +210,5 @@ public class WriteActivity extends AppCompatActivity {
 
         }
     }
+
 }

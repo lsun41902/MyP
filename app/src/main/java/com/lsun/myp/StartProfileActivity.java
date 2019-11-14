@@ -21,10 +21,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class StartProfileActivity extends AppCompatActivity {
 
     CircleImageView startProfileCircleImage;
-    public static final int REQ_STARTPICIMAGE=1001;
+    public static final int REQ_STARTPICIMAGE = 1001;
     public static Uri startProfileImage;
-    public static EditText userNickname=null;
+    public static EditText userNickname = null;
     TextView userEmail;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +42,8 @@ public class StartProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQ_STARTPICIMAGE);
             }
         });
-        userNickname=findViewById(R.id.profile_et_userenickname);
-        userEmail=findViewById(R.id.profile_et_useremail);
+        userNickname = findViewById(R.id.profile_et_userenickname);
+        userEmail = findViewById(R.id.profile_et_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
     }
 
@@ -63,23 +66,23 @@ public class StartProfileActivity extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("작성 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                        if(userNickname.length()>=2) {
-                            SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
-                            SharedPreferences.Editor editor=sp.edit();
-                            String userName=userNickname.getText().toString();
-                            editor.putString("userNickname",userName);
-                            editor.commit();
-                            Intent intent = getIntent();
-                            intent.putExtra("circleUri", startProfileImage);
-                            setResult(RESULT_OK, intent);
-                            startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
-                            finish();
-                        }else {
-                            Toast.makeText(StartProfileActivity.this, "닉네임을 2자 이상 작성해 주세요.", Toast.LENGTH_SHORT).show();
-                            dialogInterface.dismiss();
-                        }
-
+                if (userNickname.length() >= 2) {
+                    SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    String userName = userNickname.getText().toString();
+                    editor.putString("userNickname", userName);
+                    editor.commit();
+                    Intent intent = getIntent();
+                    intent.putExtra("circleUri", startProfileImage);
+                    setResult(RESULT_OK, intent);
+                    startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(StartProfileActivity.this, "닉네임을 2자 이상 작성해 주세요.", Toast.LENGTH_SHORT).show();
+                    dialogInterface.dismiss();
                 }
+
+            }
 
         }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
@@ -94,7 +97,7 @@ public class StartProfileActivity extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("뒤로 가기").setPositiveButton("네", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(StartProfileActivity.this,SelectLoginActivity.class));
+                startActivity(new Intent(StartProfileActivity.this, SelectLoginActivity.class));
             }
         }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
@@ -104,14 +107,26 @@ public class StartProfileActivity extends AppCompatActivity {
         }).create().show();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
-//        String checkUserName=sp.getString("userNickname",null);
-//        if(checkUserName!=null){
-//            startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
-//            finish();
-//        }
-//    }
+        @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        String checkUserName=sp.getString("userNickname",null);
+        if(checkUserName!=null){
+            startActivity(new Intent(StartProfileActivity.this,MainActivity.class));
+            finish();
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
