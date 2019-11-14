@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/textview_background">
+    android:background="@drawable/textview_background"
+    android:layout_marginBottom="4dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/item_layout"
-        android:padding="4dp">
+        android:padding="8dp">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_iv"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher"
+        app:civ_border_width="1dp"/>
     <TextView
         android:layout_marginLeft="4dp"
         android:id="@+id/item_tv_title"
@@ -68,18 +71,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/item_image_pager"
+    <HorizontalScrollView
+        android:id="@+id/item_img_sv"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/item_layout"
-        android:background="@drawable/textview_background2">
-    </androidx.viewpager.widget.ViewPager>
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:background="@drawable/textview_background2"
+        android:scrollbars="horizontal">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:padding="2dp"
+                android:id="@+id/item_layout_img1"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:src="@drawable/f001"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/textview_background2"/>
+            <ImageView
+                android:padding="2dp"
+                android:id="@+id/item_layout_img2"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:src="@drawable/f001"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/textview_background2"
+                />
+            <ImageView
+                android:padding="2dp"
+                android:id="@+id/item_layout_img3"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:src="@drawable/f001"
+                android:background="@drawable/textview_background2"/>
+        </LinearLayout>
+    </HorizontalScrollView>
     <TextView
         android:id="@+id/item_tv_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/item_image_pager"
+        android:layout_below="@+id/item_img_sv"
         android:maxLines="5"
         android:padding="4dp"
         android:hint="text" />

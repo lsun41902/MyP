@@ -29,7 +29,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         profileiv=findViewById(R.id.profile_iv);
-        Glide.with(this).load(MainActivity.userImage).into(profileiv);
+        if(MainActivity.userImage==null){
+            Glide.with(this).load(R.drawable.personmen).into(profileiv);
+        }else {
+            Glide.with(this).load(MainActivity.userImage).into(profileiv);
+        }
         profileiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

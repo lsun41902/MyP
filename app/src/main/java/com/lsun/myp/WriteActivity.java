@@ -1,6 +1,7 @@
 package com.lsun.myp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -8,34 +9,40 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import com.bumptech.glide.Glide;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WriteActivity extends AppCompatActivity {
 
     EditText etTitle, etText;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-
+    Uri writeImage1,writeImage2,writeImage3;
+    ImageView iv1,iv2,iv3;
+    public static final int REQ_WRITEIMAGE1=1004;
+    public static final int REQ_WRITEIMAGE2=1005;
+    public static final int REQ_WRITEIMAGE3=1006;
+    Date date=new Date(System.currentTimeMillis());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
-        etTitle = findViewById(R.id.wirte_et_title);
-        etText = findViewById(R.id.wirte_et_text);
+        etTitle = findViewById(R.id.write_et_title);
+        etText = findViewById(R.id.write_et_text);
         getSupportActionBar().setTitle("글쓰기");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
-
-
-
-
+        //퍼미션
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             int checkedPrmission= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
             if(checkedPrmission== PackageManager.PERMISSION_DENIED){//퍼미션이 허가되어 있지 않다면
@@ -43,6 +50,34 @@ public class WriteActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
             }
         }
+
+        iv1=findViewById(R.id.write_iv_1);
+        iv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(Intent.ACTION_PICK).setType("image/*");
+                startActivityForResult(intent,REQ_WRITEIMAGE1);
+            }
+        });
+        iv2=findViewById(R.id.write_iv_2);
+        iv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(Intent.ACTION_PICK).setType("image/*");
+                startActivityForResult(intent,REQ_WRITEIMAGE2);
+            }
+        });
+        iv3=findViewById(R.id.write_iv_3);
+        iv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(Intent.ACTION_PICK).setType("image/*");
+                startActivityForResult(intent,REQ_WRITEIMAGE3);
+            }
+        });
+
+
+
 
     }
 //    @Override
@@ -95,6 +130,13 @@ public class WriteActivity extends AppCompatActivity {
                     }
                     intent.putExtra("Title", title);
                     intent.putExtra("Text",text);
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                    // nowDate 변수에 값을 저장한다.
+                    String formatDate = sdfNow.format(date);
+                    intent.putExtra("Date",formatDate);
+                    intent.putExtra("Image1",writeImage1);
+                    intent.putExtra("Image2",writeImage2);
+                    intent.putExtra("Image3",writeImage3);
                     setResult(RESULT_OK, intent);
                     dialogInterface.dismiss();
                     finish();
@@ -140,6 +182,32 @@ public class WriteActivity extends AppCompatActivity {
         {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "작성을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQ_WRITEIMAGE1:
+                if(resultCode==RESULT_OK){
+                    writeImage1=data.getData();
+                    Glide.with(WriteActivity.this).load(writeImage1).into(iv1);
+                }
+                break;
+            case REQ_WRITEIMAGE2:
+                if(resultCode==RESULT_OK){
+                    writeImage2=data.getData();
+                    Glide.with(WriteActivity.this).load(writeImage2).into(iv2);
+                }
+                break;
+            case REQ_WRITEIMAGE3:
+                if(resultCode==RESULT_OK){
+                    writeImage3=data.getData();
+                    Glide.with(WriteActivity.this).load(writeImage3).into(iv3);
+                }
+                break;
+
         }
     }
 }

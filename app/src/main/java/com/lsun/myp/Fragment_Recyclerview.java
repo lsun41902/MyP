@@ -4,6 +4,7 @@ package com.lsun.myp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ public class Fragment_Recyclerview extends Fragment {
     public static final int REQ_WIRTE = 10;
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
-    String username;
+    Uri Img1,img2,img3;
 
     @Nullable
     @Override
@@ -71,7 +72,11 @@ public class Fragment_Recyclerview extends Fragment {
                 if(resultCode== MainActivity.RESULT_OK){
                     String title=data.getStringExtra("Title");
                     String text=data.getStringExtra("Text");
-                    members.add(0,new MyMember(title,text,null));
+                    String date=data.getStringExtra("Date");
+                    Uri img1=data.getParcelableExtra("Image1");
+                    Uri img2=data.getParcelableExtra("Image2");
+                    Uri img3=data.getParcelableExtra("Image3");
+                    members.add(0,new MyMember(title,text,img1,img2,img3,date));
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }

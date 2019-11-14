@@ -30,7 +30,6 @@
         app:layout_anchor="@id/recyclerview_item"
         android:src="@drawable/keyborad"
         app:backgroundTint="#E18060"
-        app:layout_anchorGravity="bottom|center_horizontal"
-        />
+        app:layout_anchorGravity="bottom|center_horizontal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
