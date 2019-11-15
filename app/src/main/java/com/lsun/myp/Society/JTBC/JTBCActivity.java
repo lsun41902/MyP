@@ -26,7 +26,7 @@ public class JTBCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donga_society);
+        setContentView(R.layout.activity_jtbc_society);
         getSupportActionBar().setTitle("JTBC - 사회");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);

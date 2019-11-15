@@ -1,4 +1,4 @@
-package com.lsun.myp.Sports.JTBC;
+package com.lsun.myp.Entertainment.JTBC;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,8 +30,8 @@ public class JTBCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jtbc_sports);
-        getSupportActionBar().setTitle("JTBC - 스포츠");
+        setContentView(R.layout.activity_jtbc_entertainment);
+        getSupportActionBar().setTitle("JTBC - 정치");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
         adapter=new JTBCAdapter(jtbcItemMembers,this);
@@ -51,7 +51,7 @@ public class JTBCActivity extends AppCompatActivity {
     }
     void readRss(){
         try {
-            URL url=new URL("http://fs.jtbc.joins.com/RSS/sports.xml");//https:// 만 허용하는
+            URL url=new URL("http://fs.jtbc.joins.com/RSS/entertainment.xml");//https:// 만 허용하는
             //스트림연결하여 데이터 읽어오기 : 퍼미싱하기
             //network작업은 반드시 별도의 thread만 할수있음
             //별도의 thread객체생성

@@ -27,7 +27,10 @@
         <!--        Jtbc스포츠-->
         <activity android:name=".Sports.JTBC.JTBCActivity" />
         <activity android:name=".Sports.JTBC.JTBCWebViewActivity" />
-        <!--        Jtbc사회-->
+        <!--        Jtbc연예-->
+        <activity android:name=".Entertainment.JTBC.JTBCActivity" />
+        <activity android:name=".Entertainment.JTBC.JTBCWebViewActivity" />
+        <!--        동아 사회-->
         <activity android:name=".Society.DongA.DongaActivity" />
         <activity android:name=".Society.DongA.DongaWebViewActivity" />
 

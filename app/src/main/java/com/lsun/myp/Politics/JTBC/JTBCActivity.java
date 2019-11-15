@@ -30,7 +30,7 @@ public class JTBCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donga_society);
+        setContentView(R.layout.activity_jtbc_politics);
         getSupportActionBar().setTitle("JTBC - 정치");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);

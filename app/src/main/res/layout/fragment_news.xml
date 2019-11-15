@@ -91,4 +91,32 @@
         android:backgroundTint="#0000ff"/>
 
 
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:id="@+id/tv_entertainment_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/jtbc_sports_btn"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/tv_entertainment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="연예"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_below="@id/tv_entertainment_topbar"/>
+    <Button
+        android:id="@+id/jtbc_entertainment_btn"
+        android:layout_below="@+id/tv_entertainment"
+        android:layout_alignEnd="@id/jtbc_society_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JTBC"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="#0000ff"/>
+
+
 </RelativeLayout>
