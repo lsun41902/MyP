@@ -18,6 +18,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SelectLoginActivity" />
         <activity android:name=".Society.JTBC.JTBCActivity" />
+        <activity android:name=".Politics.JTBC.JTBCActivity" />
+        <activity android:name=".Politics.JTBC.JTBCWebViewActivity" />
         <activity android:name=".Society.JTBC.JTBCWebViewActivity" />
         <activity android:name=".Society.DongA.DongaActivity" />
         <activity android:name=".Society.DongA.DongaWebViewActivity" />

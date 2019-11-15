@@ -1,4 +1,4 @@
-package com.lsun.myp.Society.JTBC;
+package com.lsun.myp.Politics.JTBC;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.lsun.myp.R;
+
 import java.util.ArrayList;
 
 public class JTBCAdapter extends RecyclerView.Adapter {

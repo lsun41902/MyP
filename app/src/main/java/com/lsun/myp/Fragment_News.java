@@ -12,23 +12,30 @@ import com.lsun.myp.Society.DongA.DongaActivity;
 import com.lsun.myp.Society.JTBC.JTBCActivity;
 
 public class Fragment_News extends Fragment {
-    Button dongaBtn,jtbcBtn;
+    Button dongaSocietyBtn,jtbcSocietyBtn,jtbcPoliticsBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_news,container,false);
-        dongaBtn=view.findViewById(R.id.donga_btn);
-        dongaBtn.setOnClickListener(new View.OnClickListener() {
+        dongaSocietyBtn=view.findViewById(R.id.donga_society_btn);
+        dongaSocietyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), DongaActivity.class));
             }
         });
-        jtbcBtn=view.findViewById(R.id.jtbc_btn);
-        jtbcBtn.setOnClickListener(new View.OnClickListener() {
+        jtbcSocietyBtn=view.findViewById(R.id.jtbc_society_btn);
+        jtbcSocietyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), JTBCActivity.class));
+            }
+        });
+        jtbcPoliticsBtn=view.findViewById(R.id.jtbc_politics_btn);
+        jtbcPoliticsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), com.lsun.myp.Politics.JTBC.JTBCActivity.class));
             }
         });
 

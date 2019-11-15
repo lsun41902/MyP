@@ -1,4 +1,4 @@
-package com.lsun.myp.Society.JTBC;
+package com.lsun.myp.Politics.JTBC;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,9 @@ import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.lsun.myp.R;
 
 public class JTBCWebViewActivity extends AppCompatActivity {

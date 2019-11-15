@@ -5,15 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/MyBackground">
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tv_society_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/tv_society"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_society_topbar"
         android:text="사회"
         android:textSize="24sp"
         android:gravity="center"/>
     <Button
-        android:id="@+id/donga_btn"
-        android:layout_below="@+id/tv"
+        android:id="@+id/donga_society_btn"
+        android:layout_below="@+id/tv_society"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="동아일보"
@@ -21,13 +28,37 @@
         android:textStyle="bold"
         android:backgroundTint="#FF0000"/>
     <Button
-        android:id="@+id/jtbc_btn"
-        android:layout_below="@+id/tv"
+        android:id="@+id/jtbc_society_btn"
+        android:layout_below="@+id/tv_society"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="JTBC"
         android:textColor="@color/white"
-        android:layout_toRightOf="@+id/donga_btn"
+        android:layout_toRightOf="@+id/donga_society_btn"
+        android:textStyle="bold"
+        android:backgroundTint="#0000ff"/>
+    <TextView
+        android:id="@+id/tv_society_underbar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/donga_society_btn"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/tv_politics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="정치"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_below="@id/tv_society_underbar"/>
+    <Button
+        android:id="@+id/jtbc_politics_btn"
+        android:layout_below="@+id/tv_politics"
+        android:layout_alignEnd="@id/jtbc_society_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JTBC"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:backgroundTint="#0000ff"/>
 
