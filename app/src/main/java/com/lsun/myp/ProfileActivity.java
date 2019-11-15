@@ -24,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public static final int REQ_PICIMAGE=1003;
     CircleImageView profileiv;
-    public static Uri profileciv;
+    Uri profileciv;
     private TextView userEmail,userNickname;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -88,20 +88,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    public void clickCommitCancel(View view) {
-        new AlertDialog.Builder(this).setTitle("수정 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                profileciv = null;
-                finish();
-            }
-        }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).create().show();
-    }
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();
@@ -121,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
-                new android.app.AlertDialog.Builder(this).setTitle("작성 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                new android.app.AlertDialog.Builder(this).setTitle("수정 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();

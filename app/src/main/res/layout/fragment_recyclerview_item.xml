@@ -1,122 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/textview_background"
-    android:layout_marginBottom="4dp">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_layout"
-        android:padding="8dp">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/item_iv"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@mipmap/ic_launcher"
-        app:civ_border_width="1dp"/>
+    android:layout_marginBottom="4dp"
+    android:orientation="vertical">
+
     <TextView
-        android:layout_marginLeft="4dp"
-        android:id="@+id/item_tv_title"
+        android:id="@+id/item_layout_top"
         android:layout_width="match_parent"
-        android:layout_toRightOf="@+id/item_iv"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/Black" />
+
+    <RelativeLayout
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textColor="@color/Black"
-        android:text="지금 샷두루빠라"
-        android:textSize="18sp"/>
+        android:layout_below="@id/item_layout_top"
+        android:padding="8dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_iv"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_width="1dp" />
+
         <TextView
-            android:layout_marginTop="4dp"
+            android:id="@+id/item_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/item_iv"
+            android:maxLines="1"
+            android:text="지금 샷두루빠라"
+            android:textColor="@color/Black"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/item_tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="글쓴이: "
-            android:textSize="12sp"
+            android:layout_below="@id/item_tv_title"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/item_iv"
-            android:layout_below="@id/item_tv_title"/>
+            android:text="글쓴이: "
+            android:textSize="12sp" />
+
         <TextView
             android:id="@+id/item_tv_nickname"
-            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/item_tv_username"
             android:layout_below="@id/item_tv_title"
             android:layout_alignBaseline="@id/item_tv_username"
-            android:text="샷두루빠라"/>
-    <ImageView
-        android:id="@+id/item_iv_fav"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_toRightOf="@id/item_iv"
-        android:src="@drawable/medal"
-        android:layout_alignBottom="@id/item_iv"
-        android:layout_marginLeft="8dp"/>
-    <TextView
-        android:id="@+id/item_tv_fav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="24224"
-        android:textSize="12sp"
-        android:layout_toRightOf="@id/item_iv_fav"
-        android:layout_alignBottom="@id/item_iv"/>
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/item_tv_username"
+            android:text="샷두루빠라" />
+
+        <ImageView
+            android:id="@+id/item_iv_fav"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@id/item_iv"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/item_iv"
+            android:src="@drawable/medal" />
+
+        <TextView
+            android:id="@+id/item_tv_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_iv"
+            android:layout_toRightOf="@id/item_iv_fav"
+            android:text="24224"
+            android:textSize="12sp" />
+
         <TextView
             android:id="@+id/item_tv_date"
-            android:layout_alignBottom="@id/item_iv"
-            android:text="2010/10/10 00:00"
-            android:textSize="12sp"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_iv"
+            android:layout_alignParentRight="true"
+            android:text="2010/10/10 00:00"
+            android:textSize="12sp" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_layout_underbar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/item_layout"
+        android:layout_margin="2dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@color/Black" />
+
     <HorizontalScrollView
         android:id="@+id/item_img_sv"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@id/item_layout"
+        android:layout_height="300dp"
+        android:layout_below="@id/item_layout_underbar"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-        android:background="@drawable/textview_background2"
         android:scrollbars="horizontal">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingLeft="50dp"
+            android:orientation="horizontal">
+
             <ImageView
-                android:padding="2dp"
                 android:id="@+id/item_layout_img1"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:src="@drawable/f001"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/textview_background2"/>
-            <ImageView
                 android:padding="2dp"
+                android:src="@drawable/f001" />
+
+            <ImageView
                 android:id="@+id/item_layout_img2"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:src="@drawable/f001"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/textview_background2"
-                />
-            <ImageView
                 android:padding="2dp"
+                android:src="@drawable/f001" />
+
+            <ImageView
                 android:id="@+id/item_layout_img3"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:src="@drawable/f001"
-                android:background="@drawable/textview_background2"/>
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:padding="2dp"
+                android:src="@drawable/f001" />
         </LinearLayout>
     </HorizontalScrollView>
+
     <TextView
-        android:id="@+id/item_tv_text"
+        android:id="@+id/item_img_sv_under"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/item_img_sv"
+        android:layout_margin="2dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@color/Black" />
+
+    <ImageButton
+        android:id="@+id/item_fav"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/item_img_sv_under"
+        android:layout_margin="4dp"
+        android:src="@drawable/medal32px" />
+
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/item_img_sv_under"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_insert_comment_black_24dp" />
+
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/item_img_sv"
-        android:maxLines="5"
-        android:padding="4dp"
-        android:hint="text" />
+        android:layout_below="@id/item_fav">
+
+        <TextView
+            android:id="@+id/item_tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="text"
+            android:padding="4dp" />
+    </ScrollView>
 
 </RelativeLayout>

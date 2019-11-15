@@ -27,6 +27,7 @@ public class Fragment_Recyclerview extends Fragment {
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
     Uri Img1,img2,img3;
+    String userid;
 
     @Nullable
     @Override
@@ -76,6 +77,7 @@ public class Fragment_Recyclerview extends Fragment {
                     Uri img1=data.getParcelableExtra("Image1");
                     Uri img2=data.getParcelableExtra("Image2");
                     Uri img3=data.getParcelableExtra("Image3");
+                    userid=data.getStringExtra("userID");
                     members.add(0,new MyMember(title,text,img1,img2,img3,date));
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);

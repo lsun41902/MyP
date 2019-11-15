@@ -86,12 +86,7 @@
         android:text="수정"
         android:layout_alignParentRight="true"
         android:onClick="clickCommit"/>
-    <Button
-        android:id="@+id/btn_commitcancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="나가기"
-        android:onClick="clickCommitCancel"/>
+
 
 
 

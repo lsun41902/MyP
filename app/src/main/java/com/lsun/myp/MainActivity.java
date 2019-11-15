@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //new PicImage(MainActivity.this).PicSetting();
                 startActivityForResult(new Intent(MainActivity.this,ProfileActivity.class),REQ_PICCIRCLE);
+                drawerLayout.closeDrawer(navi);
             }
         });
 
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
+            drawerLayout.closeDrawer(navi);
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
         }

@@ -35,6 +35,7 @@ public class WriteActivity extends AppCompatActivity {
     public static final int REQ_WRITEIMAGE3=1006;
     Date date=new Date(System.currentTimeMillis());
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +130,8 @@ public class WriteActivity extends AppCompatActivity {
                     intent.putExtra("Image1",writeImage1);
                     intent.putExtra("Image2",writeImage2);
                     intent.putExtra("Image3",writeImage3);
+                    String userId=SelectLoginActivity.startEmail;
+                    intent.putExtra("userID",userId);
                     setResult(RESULT_OK, intent);
                     dialogInterface.dismiss();
                     finish();
