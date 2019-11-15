@@ -74,19 +74,7 @@
         android:autoSizeMaxTextSize="500dp"
         android:gravity="top"/>
 
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/btnCANCEL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="취소"
-            android:textColor="@color/MyText"
-            android:textStyle="bold"
-            android:background="@drawable/custom_button"
-            android:layout_below="@id/write_et_text"
-            android:onClick="clickCANCEL"/>
     <Button
-        android:layout_weight="1"
         android:id="@+id/btnOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -54,12 +54,11 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name,R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Main");
         tabLayout=findViewById(R.id.layout_tab);
         pager=findViewById(R.id.pager);
         adapter=new AdapterFragment(getSupportFragmentManager());
         pager.setAdapter(adapter);
-
         tabLayout.setupWithViewPager(pager);
         tabLayout.getTabAt(0).setIcon(R.drawable.description);
         tabLayout.getTabAt(1).setIcon(R.drawable.news2);

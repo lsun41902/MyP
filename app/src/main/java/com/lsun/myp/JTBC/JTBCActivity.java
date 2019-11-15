@@ -2,6 +2,7 @@ package com.lsun.myp.JTBC;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class JTBCActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donga);
         getSupportActionBar().setTitle("JTBC - 사회");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
         adapter=new JTBCAdapter(jtbcItemMembers,this);
         recyclerViewDongA.setAdapter(adapter);
@@ -169,4 +171,14 @@ public class JTBCActivity extends AppCompatActivity {
 
         }
     }//RssFeedTask
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

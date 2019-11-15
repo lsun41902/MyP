@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.lsun.myp.DongA.DongAItemMember;
@@ -33,6 +34,7 @@ public class DongaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donga);
         getSupportActionBar().setTitle("동아일보 - 사회");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
         adapter=new DongAAdapter(dongAItemMembers,this);
         recyclerViewDongA.setAdapter(adapter);
@@ -170,4 +172,14 @@ public class DongaActivity extends AppCompatActivity {
 
         }
     }//RssFeedTask
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
