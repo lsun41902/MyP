@@ -1,22 +1,24 @@
-package com.lsun.myp.DongA;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.lsun.myp.Society.JTBC;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.lsun.myp.R;
 
-public class DongaWebViewActivity extends AppCompatActivity {
-
+public class JTBCWebViewActivity extends AppCompatActivity {
     WebView wv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donga_web_view);
+        setContentView(R.layout.jtbc_web_view);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent=getIntent();
         String link=intent.getStringExtra("Link");
         //이 링크로 얻어온 링크주소를 웹뷰에 보여주기
@@ -32,5 +34,15 @@ public class DongaWebViewActivity extends AppCompatActivity {
 
         wv.loadUrl(link);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

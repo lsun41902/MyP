@@ -1,16 +1,16 @@
-package com.lsun.myp.JTBC;
+package com.lsun.myp.Society.JTBC;
 
-public class DongAItemMember {
+public class RssItemMember {
     String title;
     String link;
     String desc;
     String imgUrl;
     String date;
 
-    public DongAItemMember() {
+    public RssItemMember() {
     }
 
-    public DongAItemMember(String title, String link, String desc, String imgUrl, String date) {
+    public RssItemMember(String title, String link, String desc, String imgUrl, String date) {
         this.title = title;
         this.link = link;
         this.desc = desc;

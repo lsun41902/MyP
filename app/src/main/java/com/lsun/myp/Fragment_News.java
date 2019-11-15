@@ -1,18 +1,15 @@
 package com.lsun.myp;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.lsun.myp.DongA.DongaActivity;
-import com.lsun.myp.JTBC.JTBCActivity;
+import com.lsun.myp.Society.DongA.DongaActivity;
+import com.lsun.myp.Society.JTBC.JTBCActivity;
 
 public class Fragment_News extends Fragment {
     Button dongaBtn,jtbcBtn;

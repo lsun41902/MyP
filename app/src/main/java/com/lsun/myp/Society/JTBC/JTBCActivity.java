@@ -1,21 +1,16 @@
-package com.lsun.myp.JTBC;
+package com.lsun.myp.Society.JTBC;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.lsun.myp.R;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -24,7 +19,7 @@ import java.util.ArrayList;
 
 public class JTBCActivity extends AppCompatActivity {
     RecyclerView recyclerViewDongA;
-    ArrayList<DongAItemMember> jtbcItemMembers=new ArrayList<>();
+    ArrayList<RssItemMember> jtbcItemMembers=new ArrayList<>();
     JTBCAdapter adapter;
     SwipeRefreshLayout refreshLayout;
 
@@ -79,7 +74,7 @@ public class JTBCActivity extends AppCompatActivity {
                 //무지개로드에 있는것을 읽어와라
                 xpp.setInput(is,"utf-8");//utf-8 모든문자 가능한 인코딩 방식
                 int eventType=xpp.getEventType();
-                DongAItemMember item=null;
+                RssItemMember item=null;
                 String tagname=null;
 
                 while (eventType!=XmlPullParser.END_DOCUMENT){
@@ -89,7 +84,7 @@ public class JTBCActivity extends AppCompatActivity {
                         case XmlPullParser.START_TAG:
                             tagname=xpp.getName();
                             if(tagname.equals("item")){
-                                item=new DongAItemMember();
+                                item=new RssItemMember();
                             }else if(tagname.equals("title")){
                                 xpp.next();
                                 if(item!=null){

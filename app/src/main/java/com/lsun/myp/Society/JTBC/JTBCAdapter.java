@@ -1,4 +1,4 @@
-package com.lsun.myp.DongA;
+package com.lsun.myp.Society.JTBC;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,22 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.lsun.myp.DongA.DongAItemMember;
-import com.lsun.myp.DongA.DongaWebViewActivity;
 import com.lsun.myp.R;
-
 import java.util.ArrayList;
 
-public class DongAAdapter extends RecyclerView.Adapter {
-    ArrayList<DongAItemMember> items;
+public class JTBCAdapter extends RecyclerView.Adapter {
+    ArrayList<RssItemMember> items;
     Context context;
 
-    public DongAAdapter(ArrayList<DongAItemMember> items, Context context) {
+    public JTBCAdapter(ArrayList<RssItemMember> items, Context context) {
         this.items = items;
         this.context = context;
     }
@@ -40,8 +35,7 @@ public class DongAAdapter extends RecyclerView.Adapter {
         VH vh= (VH)holder;
 
         //현재번째(position) 아이템 얻어오기
-        DongAItemMember item= items.get(position);
-
+        RssItemMember item= items.get(position);
         vh.tvTitle.setText(item.getTitle());
         vh.tvDesc.setText(item.getDesc());
         vh.tvDate.setText(item.getDate());
@@ -82,7 +76,7 @@ public class DongAAdapter extends RecyclerView.Adapter {
                     String link= items.get(getLayoutPosition()).getLink();
 
                     //웹뷰를 가진 새로운 액티비티 실행
-                    Intent intent= new Intent(context, DongaWebViewActivity.class);
+                    Intent intent= new Intent(context, JTBCWebViewActivity.class);
                     intent.putExtra("Link", link);
 
                     context.startActivity(intent);
@@ -93,3 +87,4 @@ public class DongAAdapter extends RecyclerView.Adapter {
     }
 
 }
+

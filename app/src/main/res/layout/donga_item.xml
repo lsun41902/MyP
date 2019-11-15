@@ -37,7 +37,7 @@
                 android:id="@+id/donga_tv_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="text"
+                android:text=""
                 android:maxLines="3"
                 android:textSize="18sp"
                 android:padding="4dp"/>

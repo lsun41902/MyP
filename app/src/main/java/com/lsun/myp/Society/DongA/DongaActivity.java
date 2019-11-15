@@ -1,22 +1,16 @@
-package com.lsun.myp.DongA;
+package com.lsun.myp.Society.DongA;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.lsun.myp.DongA.DongAItemMember;
 import com.lsun.myp.R;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -25,7 +19,7 @@ import java.util.ArrayList;
 
 public class DongaActivity extends AppCompatActivity {
     RecyclerView recyclerViewDongA;
-    ArrayList<DongAItemMember> dongAItemMembers=new ArrayList<>();
+    ArrayList<RssItemMember> dongAItemMembers=new ArrayList<>();
     DongAAdapter adapter;
     SwipeRefreshLayout refreshLayout;
 
@@ -80,7 +74,7 @@ public class DongaActivity extends AppCompatActivity {
                 //무지개로드에 있는것을 읽어와라
                 xpp.setInput(is,"utf-8");//utf-8 모든문자 가능한 인코딩 방식
                 int eventType=xpp.getEventType();
-                DongAItemMember item=null;
+                RssItemMember item=null;
                 String tagname=null;
 
                 while (eventType!=XmlPullParser.END_DOCUMENT){
@@ -90,7 +84,7 @@ public class DongaActivity extends AppCompatActivity {
                         case XmlPullParser.START_TAG:
                             tagname=xpp.getName();
                             if(tagname.equals("item")){
-                                item=new DongAItemMember();
+                                item=new RssItemMember();
                             }else if(tagname.equals("title")){
                                 xpp.next();
                                 if(item!=null){
