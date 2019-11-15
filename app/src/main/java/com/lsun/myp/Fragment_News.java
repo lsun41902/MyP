@@ -12,7 +12,7 @@ import com.lsun.myp.Society.DongA.DongaActivity;
 import com.lsun.myp.Society.JTBC.JTBCActivity;
 
 public class Fragment_News extends Fragment {
-    Button dongaSocietyBtn,jtbcSocietyBtn,jtbcPoliticsBtn;
+    Button dongaSocietyBtn,jtbcSocietyBtn,jtbcPoliticsBtn,jtbcSportsBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,6 +36,13 @@ public class Fragment_News extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), com.lsun.myp.Politics.JTBC.JTBCActivity.class));
+            }
+        });
+        jtbcSportsBtn=view.findViewById(R.id.jtbc_sports_btn);
+        jtbcSportsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), com.lsun.myp.Sports.JTBC.JTBCActivity.class));
             }
         });
 

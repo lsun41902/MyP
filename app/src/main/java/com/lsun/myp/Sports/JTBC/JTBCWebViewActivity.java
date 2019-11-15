@@ -1,6 +1,4 @@
-package com.lsun.myp.Society.DongA;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.lsun.myp.Sports.JTBC;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,18 +6,21 @@ import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.lsun.myp.R;
 
-public class DongaWebViewActivity extends AppCompatActivity {
-
+public class JTBCWebViewActivity extends AppCompatActivity {
     WebView wv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.donga_web_society);
+        setContentView(R.layout.jtbc_web_sports);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Intent intent=getIntent();
         String link=intent.getStringExtra("Link");
         //이 링크로 얻어온 링크주소를 웹뷰에 보여주기

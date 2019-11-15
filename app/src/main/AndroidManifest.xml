@@ -17,13 +17,21 @@
         <activity android:name=".StartProfileActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SelectLoginActivity" />
+        <activity android:name=".WriteActivity" />
+        <!--        Jtbc사회-->
         <activity android:name=".Society.JTBC.JTBCActivity" />
+        <activity android:name=".Society.JTBC.JTBCWebViewActivity" />
+        <!--        Jtbc정치-->
         <activity android:name=".Politics.JTBC.JTBCActivity" />
         <activity android:name=".Politics.JTBC.JTBCWebViewActivity" />
-        <activity android:name=".Society.JTBC.JTBCWebViewActivity" />
+        <!--        Jtbc스포츠-->
+        <activity android:name=".Sports.JTBC.JTBCActivity" />
+        <activity android:name=".Sports.JTBC.JTBCWebViewActivity" />
+        <!--        Jtbc사회-->
         <activity android:name=".Society.DongA.DongaActivity" />
         <activity android:name=".Society.DongA.DongaWebViewActivity" />
-        <activity android:name=".WriteActivity" />
+
+
         <activity
             android:name=".LogoActivity"
             android:theme="@style/AppTheme.NoActionBar">

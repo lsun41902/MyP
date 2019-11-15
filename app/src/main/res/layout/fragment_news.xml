@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/MyBackground">
     <TextView
+        android:layout_marginTop="8dp"
         android:id="@+id/tv_society_topbar"
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -38,7 +39,8 @@
         android:textStyle="bold"
         android:backgroundTint="#0000ff"/>
     <TextView
-        android:id="@+id/tv_society_underbar"
+        android:layout_marginTop="8dp"
+        android:id="@+id/tv_politics_topbar"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/donga_society_btn"
@@ -50,7 +52,7 @@
         android:text="정치"
         android:textSize="24sp"
         android:gravity="center"
-        android:layout_below="@id/tv_society_underbar"/>
+        android:layout_below="@id/tv_politics_topbar"/>
     <Button
         android:id="@+id/jtbc_politics_btn"
         android:layout_below="@+id/tv_politics"
@@ -61,5 +63,32 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:backgroundTint="#0000ff"/>
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:id="@+id/tv_sports_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/jtbc_politics_btn"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/tv_sports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="스포츠"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_below="@id/tv_sports_topbar"/>
+    <Button
+        android:id="@+id/jtbc_sports_btn"
+        android:layout_below="@+id/tv_sports"
+        android:layout_alignEnd="@id/jtbc_society_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JTBC"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="#0000ff"/>
+
 
 </RelativeLayout>

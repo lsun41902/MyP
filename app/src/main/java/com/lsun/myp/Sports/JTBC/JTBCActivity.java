@@ -1,36 +1,40 @@
-package com.lsun.myp.Society.DongA;
+package com.lsun.myp.Sports.JTBC;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.lsun.myp.R;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DongaActivity extends AppCompatActivity {
+public class JTBCActivity extends AppCompatActivity {
     RecyclerView recyclerViewDongA;
-    ArrayList<RssItemMember> dongAItemMembers=new ArrayList<>();
-    DongAAdapter adapter;
+    ArrayList<RssItemMember> jtbcItemMembers=new ArrayList<>();
+    JTBCAdapter adapter;
     SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donga_society);
-        getSupportActionBar().setTitle("동아일보 - 사회");
+        getSupportActionBar().setTitle("JTBC - 스포츠");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewDongA=findViewById(R.id.recyclerview_donga);
-        adapter=new DongAAdapter(dongAItemMembers,this);
+        adapter=new JTBCAdapter(jtbcItemMembers,this);
         recyclerViewDongA.setAdapter(adapter);
         readRss();
         //스와이프 갱신하기
@@ -38,8 +42,8 @@ public class DongaActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(DongaActivity.this, "새로고침", Toast.LENGTH_SHORT).show();
-                dongAItemMembers.clear();
+                Toast.makeText(JTBCActivity.this, "새로고침", Toast.LENGTH_SHORT).show();
+                jtbcItemMembers.clear();
                 adapter.notifyDataSetChanged();
                 readRss();
             }
@@ -47,7 +51,7 @@ public class DongaActivity extends AppCompatActivity {
     }
     void readRss(){
         try {
-            URL url=new URL("https://rss.donga.com/national.xml");//https:// 만 허용하는
+            URL url=new URL("http://fs.jtbc.joins.com/RSS/sports.xml");//https:// 만 허용하는
             //스트림연결하여 데이터 읽어오기 : 퍼미싱하기
             //network작업은 반드시 별도의 thread만 할수있음
             //별도의 thread객체생성
@@ -118,7 +122,7 @@ public class DongaActivity extends AppCompatActivity {
                             tagname=xpp.getName();
                             if(tagname.equals("item")){
                                 //읽어온 기사 한덩어리를 대량의 데이터에 추가
-                                dongAItemMembers.add(item);
+                                jtbcItemMembers.add(item);
                                 item=null;
                                 //리사이클러의 아답터에게 데이터가 변경되었다고 통지하기
                                 //테스트로 toast로 보여주기
@@ -144,7 +148,7 @@ public class DongaActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-            adapter.notifyItemInserted(dongAItemMembers.size());//새로 생긴것만 새로고침하는것
+            adapter.notifyItemInserted(jtbcItemMembers.size());//새로 생긴것만 새로고침하는것
             //이곳에서도 UI변경작업이 가능함
 
         }
@@ -162,7 +166,7 @@ public class DongaActivity extends AppCompatActivity {
 
             //리사이클러에서 보여주는 데이터를 가진 아답터에게 데이터가 변경되었다고 공지
             //adapter.notifyDataSetChanged();
-            Toast.makeText(DongaActivity.this, s+":"+dongAItemMembers.size(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(JTBCActivity.this, s+":"+jtbcItemMembers.size(), Toast.LENGTH_SHORT).show();
 
         }
     }//RssFeedTask
