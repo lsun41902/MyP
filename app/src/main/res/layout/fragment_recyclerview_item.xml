@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="4dp"
     android:orientation="vertical">
+    <ImageButton
+        android:id="@+id/item_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_layout_top"
+        android:src="@drawable/setting12px"/>
 
     <TextView
         android:id="@+id/item_layout_top"

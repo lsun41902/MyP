@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class WriteActivity extends AppCompatActivity {
 
@@ -123,7 +124,7 @@ public class WriteActivity extends AppCompatActivity {
                     }
                     intent.putExtra("Title", title);
                     intent.putExtra("Text",text);
-                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
                     // nowDate 변수에 값을 저장한다.
                     String formatDate = sdfNow.format(date);
                     intent.putExtra("Date",formatDate);

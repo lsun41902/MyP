@@ -1,6 +1,7 @@
 package com.lsun.myp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,4 +42,22 @@ public class Fragment_Map extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        wv.setVisibility(View.VISIBLE);
+        if(wv!=null){
+            Toast.makeText(getActivity(), "onstart", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        wv.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), "ondestroyview", Toast.LENGTH_SHORT).show();
+    }
+
 }
+

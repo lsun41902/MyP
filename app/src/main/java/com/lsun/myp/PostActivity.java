@@ -3,7 +3,6 @@ package com.lsun.myp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,13 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class PostActivity extends AppCompatActivity {
     EditText etTitle, etText;
@@ -104,7 +101,7 @@ public class PostActivity extends AppCompatActivity {
                     }
                     intent.putExtra("Title", title);
                     intent.putExtra("Text",text);
-                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
                     // nowDate 변수에 값을 저장한다.
                     String formatDate = sdfNow.format(date);
                     intent.putExtra("Date",formatDate);
@@ -140,7 +137,7 @@ public class PostActivity extends AppCompatActivity {
         }
         else
         {
-            new AlertDialog.Builder(this).setTitle("작성 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this).setTitle("수정 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
@@ -153,7 +150,7 @@ public class PostActivity extends AppCompatActivity {
                 }
             }).create().show();
             backPressedTime = tempTime;
-            Toast.makeText(getApplicationContext(), "작성을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "수정을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 

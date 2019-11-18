@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterMember extends RecyclerView.Adapter {
     Context context;
     ArrayList<MyMember> members;
+    int medalCnt=0;
+    boolean medal=false;
 
 
 
@@ -66,6 +70,10 @@ public class AdapterMember extends RecyclerView.Adapter {
         }else {
             Glide.with(context).load(myMember.getImg3()).into(vh.img3);
         }
+        vh.fav.setText(medalCnt+"");
+        if(medal==true){
+            vh.favBtn.setImageResource(R.drawable.medalyellow);
+        }
 
     }
 
@@ -78,6 +86,8 @@ public class AdapterMember extends RecyclerView.Adapter {
         CircleImageView circleImageView;
         TextView dates,fav,text,tvTitle,nickname;
         ImageView img1,img2,img3;
+        ImageButton setting,favBtn;
+
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -90,9 +100,24 @@ public class AdapterMember extends RecyclerView.Adapter {
             img1=itemView.findViewById(R.id.item_layout_img1);
             img2=itemView.findViewById(R.id.item_layout_img2);
             img3=itemView.findViewById(R.id.item_layout_img3);
+            favBtn=itemView.findViewById(R.id.item_fav);
+            setting=itemView.findViewById(R.id.item_setting);
 
-
-
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (medal==false){
+                        medal=true;
+                        medalCnt+=1;
+                        favBtn.setImageResource(R.drawable.medalyellow);
+                    }else {
+                        medal=false;
+                        medalCnt-=1;
+                        favBtn.setImageResource(R.drawable.medal32px);
+                    }
+                }
+            });
         }
+
     }
 }

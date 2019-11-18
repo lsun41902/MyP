@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +57,8 @@ public class Fragment_Recyclerview extends Fragment {
                 startActivityForResult(intent, REQ_WIRTE);
             }
         });
-        Toast.makeText(getActivity(), "새로고침6", Toast.LENGTH_SHORT).show();
+
+
         return view;
     }//onCreateView
 
@@ -104,4 +107,5 @@ public class Fragment_Recyclerview extends Fragment {
             Toast.makeText(getActivity(), "새로고침", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
