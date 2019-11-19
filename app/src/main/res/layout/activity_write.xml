@@ -10,6 +10,12 @@
     android:weightSum="10"
     android:background="@color/MyBackground"
     >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <EditText
         android:padding="8dp"
         android:id="@+id/write_et_title"
@@ -73,18 +79,10 @@
         android:lines="15"
         android:autoSizeMaxTextSize="500dp"
         android:gravity="top"/>
+            
+        </RelativeLayout>
+    </ScrollView>
 
-    <Button
-        android:id="@+id/btnOK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="올리기"
-        android:textColor="@color/MyText"
-        android:textStyle="bold"
-        android:background="@drawable/custom_button"
-        android:layout_below="@id/write_et_text"
-        android:layout_alignParentRight="true"
-        android:onClick="clickOK"/>
 
 
 </RelativeLayout>

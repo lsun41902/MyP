@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -85,6 +86,12 @@ public class WriteActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.checkbtn,menu);
+        return true;
+    }
+
 
     //requestPermissions()메소드로 인해 보여지는 다이얼로그에서 [허가/거부]선택 후 결과콜백 메소드
     @Override
@@ -101,53 +108,6 @@ public class WriteActivity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-    public void clickOK(View view) {
-        if (etText.length()<=20){
-
-            new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).setTitle("최소 20자 이상").create().show();
-            return;
-        }else {
-            new AlertDialog.Builder(this).setTitle("작성 하기").setPositiveButton("네", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    String title = etTitle.getText().toString();
-                    String text= etText.getText().toString();
-                    Intent intent = getIntent();
-                    if (title.equals("")) {
-                        title = "제목없음";
-                    }
-                    intent.putExtra("Title", title);
-                    intent.putExtra("Text",text);
-                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
-                    // nowDate 변수에 값을 저장한다.
-                    String formatDate = sdfNow.format(date);
-                    intent.putExtra("Date",formatDate);
-                    intent.putExtra("Image1",writeImage1);
-                    intent.putExtra("Image2",writeImage2);
-                    intent.putExtra("Image3",writeImage3);
-                    String userId=SelectLoginActivity.startEmail;
-                    intent.putExtra("userID",userId);
-                    setResult(RESULT_OK, intent);
-                    dialogInterface.dismiss();
-                    finish();
-
-
-                }
-            }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).create().show();
-
-        }
-
     }
 
 
@@ -207,6 +167,51 @@ public class WriteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.check_write:
+                if (etText.length()<=20){
+
+                    new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setTitle("최소 20자 이상").create().show();
+                }else {
+                    new AlertDialog.Builder(this).setTitle("작성 하기").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String title = etTitle.getText().toString();
+                            String text= etText.getText().toString();
+                            Intent intent = getIntent();
+                            if (title.equals("")) {
+                                title = "제목없음";
+                            }
+                            intent.putExtra("Title", title);
+                            intent.putExtra("Text",text);
+                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
+                            // nowDate 변수에 값을 저장한다.
+                            String formatDate = sdfNow.format(date);
+                            intent.putExtra("Date",formatDate);
+                            intent.putExtra("Image1",writeImage1);
+                            intent.putExtra("Image2",writeImage2);
+                            intent.putExtra("Image3",writeImage3);
+                            String userId=SelectLoginActivity.startEmail;
+                            intent.putExtra("userID",userId);
+                            setResult(RESULT_OK, intent);
+                            dialogInterface.dismiss();
+                            finish();
+
+
+                        }
+                    }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+
+                }
+                break;
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 new AlertDialog.Builder(this).setTitle("작성 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
@@ -221,6 +226,8 @@ public class WriteActivity extends AppCompatActivity {
                     }
                 }).create().show();
                 return true;
+
+
             }
         }
         return super.onOptionsItemSelected(item);

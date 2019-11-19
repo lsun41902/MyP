@@ -2,6 +2,7 @@ package com.lsun.myp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
         }else {
             Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
+            Log.i("moya",MainActivity.userImage.toString());
         }
         vh.text.setText(myMember.text);
         SharedPreferences sp=context.getSharedPreferences("userName", Context.MODE_PRIVATE);

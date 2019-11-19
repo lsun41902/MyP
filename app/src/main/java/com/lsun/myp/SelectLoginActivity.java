@@ -43,6 +43,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selcet_login);
+        getSupportActionBar().setTitle("로그인");
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.signinbutton);
         signInButton.setOnClickListener(new View.OnClickListener() {

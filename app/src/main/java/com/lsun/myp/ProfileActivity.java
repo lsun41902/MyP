@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -69,23 +70,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void clickCommit(View view) {
-        new AlertDialog.Builder(this).setTitle("수정 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent=getIntent();
-                intent.putExtra("circleUri",profileciv);
-                setResult(RESULT_OK,intent);
-                MainActivity.userImage=profileciv;
-                finish();
-            }
-        }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).create().show();
-    }
 
 
     @Override
@@ -103,9 +87,33 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "작성을 취소하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.checkbtn,menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.check_write:
+                new AlertDialog.Builder(this).setTitle("수정 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent=getIntent();
+                        intent.putExtra("circleUri",profileciv);
+                        setResult(RESULT_OK,intent);
+                        MainActivity.userImage=profileciv;
+                        finish();
+                    }
+                }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create().show();
+                break;
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 new android.app.AlertDialog.Builder(this).setTitle("수정 취소").setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override

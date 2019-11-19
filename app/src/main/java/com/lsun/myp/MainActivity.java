@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         navi=findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar=findViewById(R.id.toolbar);

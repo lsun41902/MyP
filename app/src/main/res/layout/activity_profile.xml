@@ -4,91 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MyBackground"
     android:padding="16dp"
-    tools:context=".ProfileActivity"
-    android:background="@color/MyBackground">
+    tools:context=".ProfileActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_iv"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/personmen"
-        android:clickable="true"
-        app:civ_border_width="1dp">
-    </de.hdodenhof.circleimageview.CircleImageView>
-    <TextView
-        android:id="@+id/profile_tv_ivchange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/profile_iv"
-        android:layout_marginTop="8dp"
-        android:textSize="12sp"
-        android:text="변경을 원하시면 사진을 클릭해 주세요"/>
-
-    <RelativeLayout
-        android:padding="8dp"
-        android:id="@+id/profile_layout_nickname"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textview_background"
-        android:layout_below="@id/profile_tv_ivchange">
-        <TextView
-            android:id="@+id/profile_tv_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="닉네임: "
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-        <TextView
-            android:id="@+id/profile_tv_userenickname"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="얄라뽕따이"
-            android:textSize="18sp"
-            android:layout_toRightOf="@id/profile_tv_nickname"
-            android:layout_alignBaseline="@id/profile_tv_nickname"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:padding="8dp"
-        android:id="@+id/profile_layout_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textview_background"
-        android:layout_below="@id/profile_layout_nickname">
-        <TextView
-            android:id="@+id/profile_tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="E.Mail: "
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-        <TextView
-            android:id="@+id/profile_tv_useremail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="email@email.com"
-            android:textSize="18sp"
-            android:layout_toRightOf="@id/profile_tv_email"
-            android:layout_alignBaseline="@id/profile_tv_email"
-            />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_commit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="수정"
-        android:layout_alignParentRight="true"
-        android:onClick="clickCommit"/>
+            android:layout_height="match_parent">
 
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_iv"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:src="@drawable/personmen"
+                app:civ_border_width="1dp"></de.hdodenhof.circleimageview.CircleImageView>
 
+            <TextView
+                android:id="@+id/profile_tv_ivchange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="변경을 원하시면 사진을 클릭해 주세요"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/profile_layout_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_tv_ivchange"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textview_background"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/profile_tv_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="닉네임: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_tv_userenickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/profile_tv_nickname"
+                    android:layout_toRightOf="@id/profile_tv_nickname"
+                    android:text="얄라뽕따이"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_layout_nickname"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textview_background"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/profile_tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E.Mail: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_tv_useremail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/profile_tv_email"
+                    android:layout_toRightOf="@id/profile_tv_email"
+                    android:text="email@email.com"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+    </ScrollView>
 
 
 </RelativeLayout>
