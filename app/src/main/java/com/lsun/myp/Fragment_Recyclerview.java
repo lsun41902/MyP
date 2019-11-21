@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class Fragment_Recyclerview extends Fragment {
     FloatingActionButton fab;
     RecyclerView recyclerView;
     AdapterMember adapter;
-    public static final int REQ_WIRTE = 10;
+    public static final int REQ_WIRTE = 1010;
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
     Uri Img1,img2,img3;
@@ -82,6 +83,7 @@ public class Fragment_Recyclerview extends Fragment {
 
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -101,6 +103,10 @@ public class Fragment_Recyclerview extends Fragment {
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }
+                break;
+            case AdapterMember.REQ_POST:
+                Toast.makeText(getActivity(), "우와 설마 성공?", Toast.LENGTH_SHORT).show();
+                Log.i("moyang1","hohohohoho");
                 break;
         }
     }
@@ -138,12 +144,12 @@ public class Fragment_Recyclerview extends Fragment {
                         line=reader.readLine();
                     }
                     //읽어오는게 작업이 성공했는지 확인 작업
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new AlertDialog.Builder(getActivity()).setMessage(buffer.toString()).create().show();
-                        }
-                    });
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            new AlertDialog.Builder(getActivity()).setMessage(buffer.toString()).create().show();
+//                        }
+//                    });
 
                     //대량의 데이터 초기화
                     members.clear();

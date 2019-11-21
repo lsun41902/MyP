@@ -1,9 +1,10 @@
 package com.lsun.myp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +22,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterMember extends RecyclerView.Adapter {
     Context context;
     ArrayList<MyMember> members;
-    ArrayList<BoardItem> boardItems;
     int medalCnt=0;
     boolean medal=false;
+    public static Object numbuer;
+    public static final int REQ_POST=1011;
 
 
 
@@ -49,12 +51,12 @@ public class AdapterMember extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
         MyMember myMember=members.get(position);
+        numbuer=myMember.no;
         vh.tvTitle.setText(myMember.title);
         if(MainActivity.userImage==null){
             Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
         }else {
             Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
-            Log.i("moya",MainActivity.userImage.toString());
         }
         vh.text.setText(myMember.text);
 
@@ -141,6 +143,9 @@ public class AdapterMember extends RecyclerView.Adapter {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.rebuild:
+                                    Intent intent= new Intent(context,PostActivity.class);
+                                    ((Activity)context).startActivityForResult(intent,REQ_POST);
+                                    Log.i("moyang",numbuer+"");
                                     break;
                                 case R.id.delete:
                                     break;

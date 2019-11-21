@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -127,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
                     userImage=data.getParcelableExtra("circleUri");
                     Glide.with(this).load(userImage).into(circleImageView);
                 }
+                break;
+            case AdapterMember.REQ_POST:
+                Log.i("moyang2","moyang2");
                 break;
         }
     }
