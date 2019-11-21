@@ -3,7 +3,9 @@ package com.lsun.myp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -19,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterMember extends RecyclerView.Adapter {
     Context context;
     ArrayList<MyMember> members;
+    ArrayList<BoardItem> boardItems;
     int medalCnt=0;
     boolean medal=false;
 
@@ -54,29 +57,37 @@ public class AdapterMember extends RecyclerView.Adapter {
             Log.i("moya",MainActivity.userImage.toString());
         }
         vh.text.setText(myMember.text);
-        SharedPreferences sp=context.getSharedPreferences("userName", Context.MODE_PRIVATE);
-        vh.nickname.setText(sp.getString("userNickname",null));
+
+        vh.nickname.setText(myMember.getNickName());
+
+
         vh.dates.setText(myMember.date);
-        if(myMember.img1==null){
+        if(myMember.img11==null){
             vh.img1.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg1()).into(vh.img1);
+            Glide.with(context).load(myMember.getImg11()).into(vh.img1);
         }
-        if(myMember.img2==null){
+        if(myMember.img22==null){
             vh.img2.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg2()).into(vh.img2);
+            Glide.with(context).load(myMember.getImg22()).into(vh.img2);
         }
-        if(myMember.img3==null){
+        if(myMember.img33==null){
             vh.img3.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg3()).into(vh.img3);
+            Glide.with(context).load(myMember.getImg33()).into(vh.img3);
         }
         vh.fav.setText(medalCnt+"");
         if(medal==true){
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
-
+        SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
+        String checksetting=sp.getString("userNickname",null);
+        if(checksetting.equals(myMember.getNickName())){
+            vh.setting.setVisibility(View.VISIBLE);
+        }else {
+            vh.setting.setVisibility(View.GONE);
+        }
     }
 
 
@@ -90,8 +101,7 @@ public class AdapterMember extends RecyclerView.Adapter {
         ImageView img1,img2,img3;
         ImageButton setting,favBtn;
 
-
-        public VH(@NonNull View itemView) {
+        public VH(@NonNull final View itemView) {
             super(itemView);
             tvTitle=itemView.findViewById(R.id.item_tv_title);
             dates=itemView.findViewById(R.id.item_tv_date);
@@ -105,6 +115,8 @@ public class AdapterMember extends RecyclerView.Adapter {
             favBtn=itemView.findViewById(R.id.item_fav);
             setting=itemView.findViewById(R.id.item_setting);
 
+
+
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -117,6 +129,26 @@ public class AdapterMember extends RecyclerView.Adapter {
                         medalCnt-=1;
                         favBtn.setImageResource(R.drawable.medal32px);
                     }
+                }
+            });
+            setting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu=new android.widget.PopupMenu(context,setting);
+                    popupMenu.inflate(R.menu.popup);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.rebuild:
+                                    break;
+                                case R.id.delete:
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
         }

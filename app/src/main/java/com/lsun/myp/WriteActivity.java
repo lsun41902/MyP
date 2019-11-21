@@ -3,15 +3,19 @@ package com.lsun.myp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +23,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +45,9 @@ public class WriteActivity extends AppCompatActivity {
     public static final int REQ_WRITEIMAGE1=1004;
     public static final int REQ_WRITEIMAGE2=1005;
     public static final int REQ_WRITEIMAGE3=1006;
+    String img1;
+    String img2;
+    String img3;
     Date date=new Date(System.currentTimeMillis());
 
 
@@ -146,18 +159,24 @@ public class WriteActivity extends AppCompatActivity {
             case REQ_WRITEIMAGE1:
                 if(resultCode==RESULT_OK){
                     writeImage1=data.getData();
+                    img1=getRealPathFromUri(writeImage1);
+                    Log.i("moya",img1);
                     Glide.with(WriteActivity.this).load(writeImage1).into(iv1);
                 }
                 break;
             case REQ_WRITEIMAGE2:
                 if(resultCode==RESULT_OK){
                     writeImage2=data.getData();
+                    img2=getRealPathFromUri(writeImage2);
+                    Log.i("moya",img2);
                     Glide.with(WriteActivity.this).load(writeImage2).into(iv2);
                 }
                 break;
             case REQ_WRITEIMAGE3:
                 if(resultCode==RESULT_OK){
                     writeImage3=data.getData();
+                    img3=getRealPathFromUri(writeImage3);
+                    Log.i("moya",img3);
                     Glide.with(WriteActivity.this).load(writeImage3).into(iv3);
                 }
                 break;
@@ -198,10 +217,33 @@ public class WriteActivity extends AppCompatActivity {
                             String userId=SelectLoginActivity.startEmail;
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
+
+                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
+                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                   Log.i("moya",response);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
+                                    Log.i("moya",String.valueOf(error));
+                                }
+                            });
+                            simpleMultiPartRequest.addStringParam("title",title);
+                            simpleMultiPartRequest.addStringParam("date",formatDate);
+                            simpleMultiPartRequest.addStringParam("text",text);
+                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
+                            simpleMultiPartRequest.addStringParam("nickName",StartProfileActivity.userNickname);
+                            simpleMultiPartRequest.addFile("img1",img1);
+                            simpleMultiPartRequest.addFile("img2",img2);
+                            simpleMultiPartRequest.addFile("img3",img3);
+                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
+                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
+                            requestQueue.add(simpleMultiPartRequest);
                             dialogInterface.dismiss();
                             finish();
-
-
                         }
                     }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                         @Override
@@ -231,6 +273,16 @@ public class WriteActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+    String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return  result;
     }
 
 }

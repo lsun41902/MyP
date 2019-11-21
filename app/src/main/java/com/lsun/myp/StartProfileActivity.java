@@ -3,12 +3,15 @@ package com.lsun.myp;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +30,22 @@ public class StartProfileActivity extends AppCompatActivity {
     CircleImageView startProfileCircleImage;
     public static final int REQ_STARTPICIMAGE = 1001;
     public static Uri startProfileImage;
-    public static EditText userNickname = null;
+    EditText username;
+    public static String userNickname;
     TextView userEmail;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+    public static String profileImg;
+    String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return  result;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +63,7 @@ public class StartProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQ_STARTPICIMAGE);
             }
         });
-        userNickname = findViewById(R.id.profile_et_userenickname);
+        username = findViewById(R.id.profile_et_userenickname);
         userEmail = findViewById(R.id.profile_et_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
     }
@@ -61,6 +76,7 @@ public class StartProfileActivity extends AppCompatActivity {
             case REQ_STARTPICIMAGE:
                 if (resultCode == RESULT_OK) {
                     startProfileImage = data.getData();
+                    profileImg=getRealPathFromUri(startProfileImage);
                     Glide.with(this).load(startProfileImage).into(startProfileCircleImage);
                 }
                 break;
@@ -68,16 +84,16 @@ public class StartProfileActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        String checkUserName = sp.getString("userNickname", null);
-        if (checkUserName != null) {
-            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
-            finish();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+//        String checkUserName = sp.getString("userNickname", null);
+//        if (checkUserName != null) {
+//            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
+//            finish();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -105,11 +121,11 @@ public class StartProfileActivity extends AppCompatActivity {
                 new AlertDialog.Builder(this).setTitle("작성 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (userNickname.length() >= 2) {
+                        if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
-                            String userName = userNickname.getText().toString();
-                            editor.putString("userNickname", userName);
+                            userNickname = username.getText().toString();
+                            editor.putString("userNickname", userNickname);
                             editor.commit();
                             Intent intent = getIntent();
                             intent.putExtra("circleUri", startProfileImage);
