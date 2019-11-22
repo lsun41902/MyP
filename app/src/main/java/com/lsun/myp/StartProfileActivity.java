@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
-
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StartProfileActivity extends AppCompatActivity {
@@ -98,16 +94,16 @@ public class StartProfileActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-//        String checkUserName = sp.getString("userNickname", null);
-//        if (checkUserName != null) {
-//            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+        String checkUserName = sp.getString("userNickname", null);
+        if (checkUserName != null) {
+            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     public void onBackPressed() {

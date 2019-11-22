@@ -3,18 +3,15 @@ package com.lsun.myp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -31,7 +28,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class SelectLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
-    private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 100;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -73,14 +69,15 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
         mAuth = FirebaseAuth.getInstance();
     }
-    public void  updateUI(FirebaseUser account){
-        if(account != null){
-            Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
-            startEmail= account.getEmail();
-            startActivity(new Intent(this,StartProfileActivity.class));
+
+    public void updateUI(FirebaseUser account) {
+        if (account != null) {
+            Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show();
+            startEmail = account.getEmail();
+            startActivity(new Intent(this, StartProfileActivity.class));
             finish();
-        }else {
-            Toast.makeText(this,"로그인을 선택해주세요",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "로그인을 선택해주세요", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -109,28 +106,12 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 });
     }
 
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(SelectLoginActivity.this, "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(SelectLoginActivity.this, StartProfileActivity.class));
-//                            finish();
-//                        } else {
-//                            Toast.makeText(SelectLoginActivity.this, "에러가 발생 했습니다", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(SelectLoginActivity.this, "구글 인증 실패", Toast.LENGTH_SHORT).show();
 
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -139,24 +120,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         updateUI(currentUser);
     }
 
-    //    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == RC_SIGN_IN) {
-//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//            if (result.isSuccess()) {
-//                GoogleSignInAccount account = result.getSignInAccount();
-//                firebaseAuthWithGoogle(account);
-////                Log.d("TAG", "이름 =" + account.getDisplayName());
-//                startEmail= account.getEmail();
-////                Log.d("TAG", "getId()=" + account.getId());
-////                Log.d("TAG", "getAccount()=" + account.getAccount());
-////                Log.d("TAG", "getIdToken()=" + account.getIdToken());
-//            } else {
-//                Toast.makeText(SelectLoginActivity.this, "인증 실패", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -175,18 +139,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
             }
         }
     }
-//    public void onStart()
-//    { // 사용자가 현재 로그인되어 있는지 확인
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser!=null)
-//        { // 만약 로그인이 되어있으면 다음 액티비티 실행
-//            Intent intent = new Intent(SelectLoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
+
 
     public void Signout() {
         mAuth.getInstance().signOut();
@@ -211,17 +164,15 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
             }
         }).create().show();
     }
+
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
-        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
-        {
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
             super.onBackPressed();
-        }
-        else
-        {
+        } else {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
         }
