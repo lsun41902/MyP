@@ -43,21 +43,21 @@ public class Fragment_Map extends Fragment {
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        wv.setVisibility(View.VISIBLE);
-        if(wv!=null){
-            Toast.makeText(getActivity(), "onstart", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        wv.setVisibility(View.GONE);
-        Toast.makeText(getActivity(), "ondestroyview", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        wv.setVisibility(View.VISIBLE);
+//        if(wv!=null){
+//            Toast.makeText(getActivity(), "onstart", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        wv.setVisibility(View.GONE);
+//        Toast.makeText(getActivity(), "ondestroyview", Toast.LENGTH_SHORT).show();
+//    }
 
 }
 

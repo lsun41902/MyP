@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     public static final int REQ_PICCIRCLE=1002;
     TextView userName,userEmail;
-    public static Uri userImage=StartProfileActivity.startProfileImage;
+    public static Uri userImage;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
@@ -61,15 +62,20 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         tabLayout.getTabAt(0).setIcon(R.drawable.description);
-        tabLayout.getTabAt(1).setIcon(R.drawable.news2);
-        tabLayout.getTabAt(2).setIcon(R.drawable.map);
+        tabLayout.getTabAt(1).setIcon(R.drawable.keyborad);
+        tabLayout.getTabAt(2).setIcon(R.drawable.news2);
+        tabLayout.getTabAt(3).setIcon(R.drawable.map);
 
         heaerview=navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview=heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView=heaerview.findViewById(R.id.iv_header);
-        if(userImage==null){
+        if(StartProfileActivity.img==false){
+            StartProfileActivity.img=false;
+            userImage=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +"://" + getResources().getResourcePackageName(R.drawable.personmen));
             Glide.with(this).load(R.drawable.personmen).into(circleImageView);
         }else {
+            StartProfileActivity.img=true;
+            userImage=StartProfileActivity.startProfileImage;
             Glide.with(this).load(userImage).into(circleImageView);
         }
 
@@ -129,9 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     Glide.with(this).load(userImage).into(circleImageView);
                 }
                 break;
-            case AdapterMember.REQ_POST:
-                Log.i("moyang2","moyang2");
-                break;
+
         }
     }
     @Override

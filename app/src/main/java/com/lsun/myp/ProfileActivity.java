@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         profileiv=findViewById(R.id.profile_iv);
-        if(MainActivity.userImage==null){
+        if(StartProfileActivity.img==false){
             Glide.with(this).load(R.drawable.personmen).into(profileiv);
         }else {
             Glide.with(this).load(MainActivity.userImage).into(profileiv);

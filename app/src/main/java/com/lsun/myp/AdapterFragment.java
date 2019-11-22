@@ -7,13 +7,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class AdapterFragment extends FragmentPagerAdapter {
-    Fragment[] fragments=new Fragment[3];
-    String[] pageTitle=new String[]{"게시판","뉴스","지도"};
+    Fragment[] fragments=new Fragment[4];
+    String[] pageTitle=new String[]{"게시판","채팅","뉴스","지도"};
     public AdapterFragment(@NonNull FragmentManager fm) {
         super(fm);
         fragments[0]=new Fragment_Recyclerview();
-        fragments[1]=new Fragment_News();
-        fragments[2]=new Fragment_Map();
+        fragments[1]=new Fragment_Chat();
+        fragments[2]=new Fragment_News();
+        fragments[3]=new Fragment_Map();
     }
 
     @NonNull
