@@ -1,14 +1,17 @@
 package com.lsun.myp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,6 +20,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -40,23 +45,8 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selcet_login);
         getSupportActionBar().setTitle("로그인");
-        mAuth = FirebaseAuth.getInstance();
+
         signInButton = findViewById(R.id.signinbutton);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Googlelogin();
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
-        });
-
-    }
-
-    void Googlelogin() {
-        // 파이어베이스 인증 객체 선언
-        mAuth = FirebaseAuth.getInstance();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -68,7 +58,17 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mAuth = FirebaseAuth.getInstance();
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            }
+        });
+
     }
+
 
     public void updateUI(FirebaseUser account) {
         if (account != null) {
@@ -77,7 +77,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
             startActivity(new Intent(this, StartProfileActivity.class));
             finish();
         } else {
-            Toast.makeText(this, "로그인을 선택해주세요", Toast.LENGTH_LONG).show();
+            mAuth.getInstance().signOut();
         }
     }
 
@@ -98,6 +98,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(SelectLoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            mAuth.getInstance().signOut();
                             updateUI(null);
                         }
 
@@ -134,7 +135,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("TAG", "Google sign in failed", e);
+                Log.w("TAGoo", "Google sign in failed", e);
                 // ...
             }
         }
@@ -142,8 +143,36 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
 
 
     public void Signout() {
-        mAuth.getInstance().signOut();
+        mGoogleApiClient.connect();
+        mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                FirebaseAuth.getInstance().signOut();
+                mAuth.getInstance().signOut();
+                if (mGoogleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            if (status.isSuccess()) {
+                                Log.v("알림", "구글 로그아웃 성공");
+                                setResult(1);
+                            } else {
+                                setResult(0);
+                            }
+                        }
 
+                    });
+                }
+
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                Log.v("알림", "Google API Client Connection Suspended");
+                setResult(-1);
+                finish();
+            }
+        });
     }
 
 

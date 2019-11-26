@@ -29,7 +29,7 @@
         android:layout_margin="4dp"
         app:layout_anchor="@id/recyclerview_item"
         android:src="@drawable/keyborad"
-        app:backgroundTint="#E18060"
+        app:backgroundTint="@color/my_red_color"
         app:layout_anchorGravity="bottom|center_horizontal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

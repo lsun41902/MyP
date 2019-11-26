@@ -18,6 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +40,8 @@ public class Fragment_Recyclerview extends Fragment {
     SwipeRefreshLayout swiper;
     Uri Img1,img2,img3;
     String userid;
+    FirebaseDatabase firebaseDatabase;
+
 
     @Nullable
     @Override
@@ -69,6 +74,8 @@ public class Fragment_Recyclerview extends Fragment {
                 startActivityForResult(intent, REQ_WIRTE);
             }
         });
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference decboard = firebaseDatabase.getReference("decboard");
 
 
         return view;
@@ -100,10 +107,6 @@ public class Fragment_Recyclerview extends Fragment {
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }
-                break;
-            case AdapterMember.REQ_POST:
-                Toast.makeText(getActivity(), "우와 설마 성공?", Toast.LENGTH_SHORT).show();
-                Log.i("moyang1","hohohohoho");
                 break;
         }
     }

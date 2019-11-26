@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +38,6 @@ public class StartProfileActivity extends AppCompatActivity {
     public static final int REQ_STARTPICIMAGE = 1001;
     public static Uri startProfileImage;
     EditText username;
-    public static String userNickname;
     TextView userEmail;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -94,16 +94,16 @@ public class StartProfileActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        String checkUserName = sp.getString("userNickname", null);
-        if (checkUserName != null) {
-            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
-            finish();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+//        String checkUserName = sp.getString("userNickname", null);
+//        if (checkUserName != null) {
+//            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
+//            finish();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -133,12 +133,14 @@ public class StartProfileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(img==false){
                             startProfileImage=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +"://" + getResources().getResourcePackageName(R.drawable.personmen));
+                            Log.i("imgs",startProfileImage+"");
                         }
                         if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
-                            userNickname = username.getText().toString();
-                            editor.putString("userNickname", userNickname);
+                            ItemChat.nickName = username.getText().toString();
+                            Log.i("usernamewhat",ItemChat.nickName);
+                            editor.putString("userNickname", ItemChat.nickName);
                             editor.commit();
                             Intent intent = getIntent();
                             intent.putExtra("circleUri", startProfileImage);
@@ -147,7 +149,7 @@ public class StartProfileActivity extends AppCompatActivity {
                             java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
                             String fileName = sdf.format(new Date()) + ".png";
                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/" + fileName);
+                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/"+fileName);
                             imgRef.putFile(startProfileImage);
                             UploadTask uploadTask = imgRef.putFile(startProfileImage);
 
@@ -159,14 +161,14 @@ public class StartProfileActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
-                                            ItemChat.Url = uri.toString();
+                                            ItemChat.Urlstring = uri.toString();
                                             //1.Firebase Database에 nickName, profileUrl을 저장
                                             //firebase DB 관리자 객체 소환
                                             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                                             //profiles 라는 이름의 자식노드 참조객체 얻어오기
                                             DatabaseReference profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
                                             //닉네임을 key 식별자로 하고 프로필 이미지의 주소를 값으로 저장
-                                            profileRef.child(userNickname).setValue(ItemChat.Url);
+                                            profileRef.child(ItemChat.nickName).setValue(ItemChat.Urlstring);
                                         }
                                     });
                                 }

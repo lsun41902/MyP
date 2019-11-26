@@ -16,6 +16,7 @@
         android:layout_weight="1"
         android:divider="#FFFFFF"
         android:dividerHeight="0dp"
+        android:background="@color/MyBackground"
         android:clickable="false">
         <!--        구분선 없는 listview-->
     </ListView>

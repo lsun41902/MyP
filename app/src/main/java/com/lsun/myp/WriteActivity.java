@@ -30,6 +30,8 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -219,17 +221,39 @@ public class WriteActivity extends AppCompatActivity {
                                     Log.i("moya",String.valueOf(error));
                                 }
                             });
-                            simpleMultiPartRequest.addStringParam("title",title);
-                            simpleMultiPartRequest.addStringParam("date",formatDate);
-                            simpleMultiPartRequest.addStringParam("text",text);
-                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-                            simpleMultiPartRequest.addStringParam("nickName",StartProfileActivity.userNickname);
-                            simpleMultiPartRequest.addFile("img1",img1);
-                            simpleMultiPartRequest.addFile("img2",img2);
-                            simpleMultiPartRequest.addFile("img3",img3);
-                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
-                            requestQueue.add(simpleMultiPartRequest);
+//                            simpleMultiPartRequest.addStringParam("title",title);
+//                            simpleMultiPartRequest.addStringParam("date",formatDate);
+//                            simpleMultiPartRequest.addStringParam("text",text);
+//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
+//                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
+//                            simpleMultiPartRequest.addFile("img1",img1);
+//                            simpleMultiPartRequest.addFile("img2",img2);
+//                            simpleMultiPartRequest.addFile("img3",img3);
+//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
+//                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
+//                            requestQueue.add(simpleMultiPartRequest);
+
+
+
+
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference decboard = firebaseDatabase.getReference("decboard");
+                            DatabaseReference dectitle= decboard.child(ItemChat.nickName+"_"+formatDate);
+                            Log.i("decdec",decboard.toString());
+                            Log.i("decdec",dectitle.toString());
+                            MyMember myMember=new MyMember(null,ItemChat.Urlstring,title,ItemChat.nickName,formatDate,img1,img2,img3,null,null,null,text,SelectLoginActivity.startEmail);
+                            dectitle.push().setValue(myMember);
+
+
+
+
+
+
+
+
+
+
+
                             dialogInterface.dismiss();
                             finish();
                         }

@@ -26,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import org.json.JSONArray;
@@ -98,7 +99,12 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        loadDB();
+        //loadDB();
+        Bundle bundle=getIntent().getExtras();
+        String title=bundle.getString("title");
+        String text=bundle.getString("text");
+        etText.setText(text);
+        etTitle.setText(title);
 
     }
 
@@ -149,72 +155,67 @@ public class PostActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.check_write:
-//                if (etText.length()<=20){
-//
-//                    new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    }).setTitle("최소 20자 이상").create().show();
-//                }else {
-//                    new AlertDialog.Builder(this).setTitle("작성 하기").setPositiveButton("네", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            String title = etTitle.getText().toString();
-//                            String text= etText.getText().toString();
-//                            Intent intent = getIntent();
-//                            if (title.equals("")) {
-//                                title = "제목없음";
-//                            }
-//                            intent.putExtra("Title", title);
-//                            intent.putExtra("Text",text);
-//                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
-//                            // nowDate 변수에 값을 저장한다.
-//                            String formatDate = sdfNow.format(date);
-//                            intent.putExtra("Date",formatDate);
-//                            intent.putExtra("Image1",writeImage1);
-//                            intent.putExtra("Image2",writeImage2);
-//                            intent.putExtra("Image3",writeImage3);
-//                            String userId=SelectLoginActivity.startEmail;
-//                            intent.putExtra("userID",userId);
-//                            setResult(RESULT_OK, intent);
-//
-//                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-//                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-//                                @Override
-//                                public void onResponse(String response) {
-//                                    Log.i("moyang",response);
-//                                }
-//                            }, new Response.ErrorListener() {
-//                                @Override
-//                                public void onErrorResponse(VolleyError error) {
-//                                    Toast.makeText(PostActivity.this, "에러", Toast.LENGTH_SHORT).show();
-//                                    Log.i("moyang",String.valueOf(error));
-//                                }
-//                            });
-//                            simpleMultiPartRequest.addStringParam("title",title);
-//                            simpleMultiPartRequest.addStringParam("date",formatDate);
-//                            simpleMultiPartRequest.addStringParam("text",text);
-//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-//                            simpleMultiPartRequest.addStringParam("nickName",StartProfileActivity.userNickname);
-//                            simpleMultiPartRequest.addFile("img1",img1);
-//                            simpleMultiPartRequest.addFile("img2",img2);
-//                            simpleMultiPartRequest.addFile("img3",img3);
-//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-//                            RequestQueue requestQueue= Volley.newRequestQueue(PostActivity.this);
-//                            requestQueue.add(simpleMultiPartRequest);
-//                            dialogInterface.dismiss();
-//                            finish();
-//                        }
-//                    }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    }).create().show();
-//
-//                }
+                if (etText.length()<=20){
+
+                    new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setTitle("최소 20자 이상").create().show();
+                }else {
+                    new AlertDialog.Builder(this).setTitle("작성 하기").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String title = etTitle.getText().toString();
+                            String text= etText.getText().toString();
+                            Intent intent = getIntent();
+                            if (title.equals("")) {
+                                title = "제목없음";
+                            }
+                            intent.putExtra("Title", title);
+                            intent.putExtra("Text",text);
+                            intent.putExtra("Image1",writeImage1);
+                            intent.putExtra("Image2",writeImage2);
+                            intent.putExtra("Image3",writeImage3);
+                            String userId=SelectLoginActivity.startEmail;
+                            intent.putExtra("userID",userId);
+                            setResult(RESULT_OK, intent);
+
+                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
+                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.i("moyang",response);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(PostActivity.this, "에러", Toast.LENGTH_SHORT).show();
+                                    Log.i("moyang",String.valueOf(error));
+                                }
+                            });
+                            simpleMultiPartRequest.addStringParam("title",title);
+                            simpleMultiPartRequest.addStringParam("text",text);
+                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
+                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
+                            simpleMultiPartRequest.addFile("img1",img1);
+                            simpleMultiPartRequest.addFile("img2",img2);
+                            simpleMultiPartRequest.addFile("img3",img3);
+                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
+                            RequestQueue requestQueue= Volley.newRequestQueue(PostActivity.this);
+                            requestQueue.add(simpleMultiPartRequest);
+                            dialogInterface.dismiss();
+                            finish();
+                        }
+                    }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+
+                }
                 Intent intent = getIntent();
                 setResult(RESULT_OK, intent);
                 finish();

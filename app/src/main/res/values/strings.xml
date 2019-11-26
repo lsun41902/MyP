@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyP</string>
+    <string name="main_label">출근길</string>
 </resources>

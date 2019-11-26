@@ -28,11 +28,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="#ff5555"
+                app:tabIndicatorColor="@color/my_red_color"
                 app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="#ff5555"
-                app:tabTextColor="#DDFFAA"></com.google.android.material.tabs.TabLayout>
+                app:tabSelectedTextColor="@color/my_red_color"
+                app:tabTextColor="@color/my_red_color"></com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
 

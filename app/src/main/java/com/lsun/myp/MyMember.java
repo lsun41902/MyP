@@ -105,10 +105,9 @@ public class MyMember {
         return img11;
     }
 
-    public void setImg3(Uri img11) {
+    public void setImg11(Uri img11) {
         this.img11 = img11;
     }
-
 
     public Uri getImg22() {
         return img22;
@@ -118,7 +117,6 @@ public class MyMember {
         this.img22 = img22;
     }
 
-
     public Uri getImg33() {
         return img33;
     }
@@ -126,7 +124,6 @@ public class MyMember {
     public void setImg33(Uri img33) {
         this.img33 = img33;
     }
-
 
     public String getText() {
         return text;
@@ -143,7 +140,7 @@ public class MyMember {
     public void setUserID(String userID) {
         this.userID = userID;
     }
-//
+    //
 //    String title;
 //    String text;
 //    Uri img1;

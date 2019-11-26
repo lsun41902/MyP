@@ -51,6 +51,8 @@ public class AdapterMember extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
         MyMember myMember=members.get(position);
+        SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
+        String checksetting=sp.getString("userNickname",null);
         numbuer=myMember.no;
         vh.tvTitle.setText(myMember.title);
         if(MainActivity.userImage==null){
@@ -58,33 +60,46 @@ public class AdapterMember extends RecyclerView.Adapter {
         }else {
             Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
         }
-        vh.text.setText(myMember.text);
+        vh.tvText.setText(myMember.text);
 
         vh.nickname.setText(myMember.getNickName());
 
-
+        Log.i("usernamewhat",checksetting);
+        Log.i("usernamewhat",myMember.getNickName());
         vh.dates.setText(myMember.date);
+        if(checksetting.equals(myMember.getNickName())){
+            if(MainActivity.userImage==null){
+                Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
+                Log.i("imimim","여기?");
+            }else {
+                Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
+                Log.i("imimim","여기당");
+            }
+            Log.i("imimim","여기지롱");
+        }
         if(myMember.img11==null){
             vh.img1.setVisibility(View.GONE);
         }else {
             Glide.with(context).load(myMember.getImg11()).into(vh.img1);
         }
+
         if(myMember.img22==null){
             vh.img2.setVisibility(View.GONE);
         }else {
             Glide.with(context).load(myMember.getImg22()).into(vh.img2);
         }
+
         if(myMember.img33==null){
             vh.img3.setVisibility(View.GONE);
         }else {
             Glide.with(context).load(myMember.getImg33()).into(vh.img3);
         }
+
         vh.fav.setText(medalCnt+"");
         if(medal==true){
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
-        SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
-        String checksetting=sp.getString("userNickname",null);
+
         if(checksetting.equals(myMember.getNickName())){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
@@ -99,7 +114,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     }
     class VH extends RecyclerView.ViewHolder{
         CircleImageView circleImageView;
-        TextView dates,fav,text,tvTitle,nickname;
+        TextView dates,fav,tvText,tvTitle,nickname;
         ImageView img1,img2,img3;
         ImageButton setting,favBtn;
 
@@ -109,7 +124,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             dates=itemView.findViewById(R.id.item_tv_date);
             fav=itemView.findViewById(R.id.item_tv_fav);
             circleImageView=itemView.findViewById(R.id.item_iv);
-            text=itemView.findViewById(R.id.item_tv_text);
+            tvText=itemView.findViewById(R.id.item_tv_text);
             nickname=itemView.findViewById(R.id.item_tv_nickname);
             img1=itemView.findViewById(R.id.item_layout_img1);
             img2=itemView.findViewById(R.id.item_layout_img2);
@@ -144,7 +159,13 @@ public class AdapterMember extends RecyclerView.Adapter {
                             switch (item.getItemId()) {
                                 case R.id.rebuild:
                                     Intent intent= new Intent(context,PostActivity.class);
-                                    ((Activity)context).startActivityForResult(intent,REQ_POST);
+                                    String title=tvTitle.getText().toString();
+                                    String text=tvText.getText().toString();
+
+                                    intent.putExtra("title",title);
+                                    intent.putExtra("text",text);
+                                    context.startActivity(intent);
+                                    //((Activity)context).startActivityForResult(intent,REQ_POST);
                                     Log.i("moyang",numbuer+"");
                                     break;
                                 case R.id.delete:

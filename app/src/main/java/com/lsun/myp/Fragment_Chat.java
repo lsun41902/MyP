@@ -6,17 +6,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +37,7 @@ public class Fragment_Chat extends Fragment {
     DatabaseReference chatRef;
     Button chatBtn;
     String username;
-    Date time=new Date(System.currentTimeMillis());
+    Date time = new Date(System.currentTimeMillis());
 
     @Nullable
     @Override
@@ -40,11 +45,11 @@ public class Fragment_Chat extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         listView = view.findViewById(R.id.listview);
         et = view.findViewById(R.id.et);
-        chatBtn=view.findViewById(R.id.chatbtn);
+        chatBtn = view.findViewById(R.id.chatbtn);
         adapter = new AdapterChat(messageItems, getLayoutInflater());
         listView.setAdapter(adapter);
-        SharedPreferences sp=getActivity().getSharedPreferences("userName", Context.MODE_PRIVATE);
-        username=sp.getString("userNickname",null);
+        SharedPreferences sp = getActivity().getSharedPreferences("userName", Context.MODE_PRIVATE);
+        username = sp.getString("userNickname", null);
         //FirebaseDB 관리객체와 chat 노드 참조객체
         firebaseDatabase = FirebaseDatabase.getInstance();
         chatRef = firebaseDatabase.getReference("chat");
@@ -93,7 +98,7 @@ public class Fragment_Chat extends Fragment {
             public void onClick(View v) {
                 String nickName = username;
                 String message = et.getText().toString();
-                String profileUrl = ItemChat.Url;
+                String profileUrl = ItemChat.Urlstring;
                 SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.KOREA);
                 // nowDate 변수에 값을 저장한다.
                 String formatDate = sdfNow.format(time);
@@ -117,14 +122,20 @@ public class Fragment_Chat extends Fragment {
                 //즉 edittext를 감싼 layout에게 포커스를 가지도록 속성을 추가
             }
         });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
+
+            }
+        });
+
 
         return view;
 
     }
 
+
 }
-
-
-
-
-
