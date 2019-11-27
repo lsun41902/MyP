@@ -1,5 +1,6 @@
 package com.lsun.myp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -53,7 +54,6 @@ public class Fragment_Chat extends Fragment {
         //FirebaseDB 관리객체와 chat 노드 참조객체
         firebaseDatabase = FirebaseDatabase.getInstance();
         chatRef = firebaseDatabase.getReference("chat");
-
         //firebaseDB 에서 채팅 메세지들 실시간 읽어오기.
         //닉네임, 메세지, 프로필 이미지 저장 URL, 작성시간
 
@@ -122,6 +122,8 @@ public class Fragment_Chat extends Fragment {
                 //즉 edittext를 감싼 layout에게 포커스를 가지도록 속성을 추가
             }
         });
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -136,6 +138,8 @@ public class Fragment_Chat extends Fragment {
         return view;
 
     }
+
+
 
 
 }

@@ -19,17 +19,19 @@
     </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
-        app:layout_anchor="@id/recyclerview_item"
         android:src="@drawable/keyborad"
         app:backgroundTint="@color/my_red_color"
         app:layout_anchorGravity="bottom|center_horizontal" />
+</RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
