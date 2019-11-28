@@ -98,7 +98,7 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(SelectLoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
-                            mAuth.getInstance().signOut();
+                            Signout();
                             updateUI(null);
                         }
 
@@ -154,7 +154,6 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
                         @Override
                         public void onResult(@NonNull Status status) {
                             if (status.isSuccess()) {
-                                Log.v("알림", "구글 로그아웃 성공");
                                 setResult(1);
                             } else {
                                 setResult(0);
@@ -168,7 +167,6 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
 
             @Override
             public void onConnectionSuspended(int i) {
-                Log.v("알림", "Google API Client Connection Suspended");
                 setResult(-1);
                 finish();
             }

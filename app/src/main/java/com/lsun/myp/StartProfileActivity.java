@@ -94,16 +94,16 @@ public class StartProfileActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-//        String checkUserName = sp.getString("userNickname", null);
-//        if (checkUserName != null) {
-//            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+        String checkUserName = sp.getString("userNickname", null);
+        if (checkUserName != null) {
+            startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -138,9 +138,9 @@ public class StartProfileActivity extends AppCompatActivity {
                         if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
-                            ItemChat.nickName = username.getText().toString();
-                            Log.i("usernamewhat",ItemChat.nickName);
-                            editor.putString("userNickname", ItemChat.nickName);
+                            ItemChat.setNickName(username.getText().toString());
+                            ItemChat.Urlstring=profileImg;
+                            editor.putString("userNickname", username.getText().toString());
                             editor.commit();
                             Intent intent = getIntent();
                             intent.putExtra("circleUri", startProfileImage);
@@ -173,6 +173,7 @@ public class StartProfileActivity extends AppCompatActivity {
                                     });
                                 }
                             });
+
                             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
                             finish();
                         } else {

@@ -43,11 +43,8 @@ public class AdapterChat extends BaseAdapter {
         View itemView=null;//view 를 재활용 하면 안되니깐 새로운 뷰를 생성. 재활용하면 꼬임
         if(item.getName().equals(ItemChat.nickName)){
             itemView=layoutInflater.inflate(R.layout.box_msg_my,parent,false);
-            Log.i("username",item.getName());
-            Log.i("username1",ItemChat.nickName);
         }else {
             itemView=layoutInflater.inflate(R.layout.box_msg_other,parent,false);
-            Log.i("username",item.getName());
         }
 
         //만들어진 itemView에 값들 설정

@@ -14,8 +14,15 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,6 +33,8 @@ public class AdapterMember extends RecyclerView.Adapter {
     boolean medal=false;
     public static Object numbuer;
     public static final int REQ_POST=1011;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference board ;
 
 
 
@@ -51,48 +60,48 @@ public class AdapterMember extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
         MyMember myMember=members.get(position);
+
+
+
+
+
+
         SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
         String checksetting=sp.getString("userNickname",null);
-        numbuer=myMember.no;
+//        numbuer=myMember.no;
         vh.tvTitle.setText(myMember.title);
-        if(MainActivity.userImage==null){
-            Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
-        }else {
-            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
-        }
+//        if(MainActivity.userImage==null){
+//            Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
+//        }else {
+//            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
+//        }
         vh.tvText.setText(myMember.text);
 
-        vh.nickname.setText(myMember.getNickName());
-
-        Log.i("usernamewhat",checksetting);
-        Log.i("usernamewhat",myMember.getNickName());
+        vh.nickname.setText(ItemChat.getNickName());
         vh.dates.setText(myMember.date);
-        if(checksetting.equals(myMember.getNickName())){
+        if(checksetting.equals(ItemChat.getNickName())){
             if(MainActivity.userImage==null){
                 Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
-                Log.i("imimim","여기?");
             }else {
                 Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
-                Log.i("imimim","여기당");
             }
-            Log.i("imimim","여기지롱");
         }
-        if(myMember.img11==null){
+        if(myMember.img1==null){
             vh.img1.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg11()).into(vh.img1);
+            Glide.with(context).load(myMember.getImg1()).into(vh.img1);
         }
 
-        if(myMember.img22==null){
+        if(myMember.img2==null){
             vh.img2.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg22()).into(vh.img2);
+            Glide.with(context).load(myMember.getImg2()).into(vh.img2);
         }
 
-        if(myMember.img33==null){
+        if(myMember.img3==null){
             vh.img3.setVisibility(View.GONE);
         }else {
-            Glide.with(context).load(myMember.getImg33()).into(vh.img3);
+            Glide.with(context).load(myMember.getImg3()).into(vh.img3);
         }
 
         vh.fav.setText(medalCnt+"");
@@ -100,7 +109,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
 
-        if(checksetting.equals(myMember.getNickName())){
+        if(checksetting.equals(ItemChat.getNickName())){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
             vh.setting.setVisibility(View.GONE);
@@ -180,4 +189,26 @@ public class AdapterMember extends RecyclerView.Adapter {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

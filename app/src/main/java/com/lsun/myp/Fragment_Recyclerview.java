@@ -17,9 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Fragment_Recyclerview extends Fragment {
@@ -41,6 +49,7 @@ public class Fragment_Recyclerview extends Fragment {
     Uri Img1,img2,img3;
     String userid;
     FirebaseDatabase firebaseDatabase;
+    DatabaseReference board;
 
 
     @Nullable
@@ -48,18 +57,20 @@ public class Fragment_Recyclerview extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         fab = view.findViewById(R.id.fab);
-        loadDB();
+        //loadDB();
+        loadfirebase();
         recyclerView = view.findViewById(R.id.recyclerview_item);
         adapter=new AdapterMember(getActivity(),members);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setAdapter(adapter);
+
         swiper = view.findViewById(R.id.swiper);
         swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Toast.makeText(getActivity(), "게시판 새로고침", Toast.LENGTH_SHORT).show();
                 //adapter.notifyItemRangeChanged(0,10);
-                loadDB();
+                //loadDB();
+                loadfirebase();
                 adapter.notifyDataSetChanged();
                 recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
@@ -74,8 +85,6 @@ public class Fragment_Recyclerview extends Fragment {
                 startActivityForResult(intent, REQ_WIRTE);
             }
         });
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference decboard = firebaseDatabase.getReference("decboard");
 
 
         return view;
@@ -99,11 +108,15 @@ public class Fragment_Recyclerview extends Fragment {
                     String date=data.getStringExtra("Date");
                     SharedPreferences sp=getActivity().getSharedPreferences("userName",Context.MODE_PRIVATE);
                     String nickname=sp.getString("userNickname",null);
-                    Uri img1=data.getParcelableExtra("Image1");
-                    Uri img2=data.getParcelableExtra("Image2");
-                    Uri img3=data.getParcelableExtra("Image3");
+//                    Uri img1=data.getParcelableExtra("Image1");
+//                    Uri img2=data.getParcelableExtra("Image2");
+//                    Uri img3=data.getParcelableExtra("Image3");
+                    String img1=data.getStringExtra("Image1");
+                    String img2=data.getStringExtra("Image2");
+                    String img3=data.getStringExtra("Image3");
                     userid=data.getStringExtra("userID");
-                    members.add(0,new MyMember(null,null,title,nickname,date,null,null,null,img1,img2,img3,text,null));
+                    //members.add(0,new MyMember(null,null,title,nickname,date,null,null,null,img1,img2,img3,text,null));
+                    members.add(0,new MyMember(ItemChat.Urlstring,nickname,title,text,img1,img2,img3,date));
                     adapter=new AdapterMember(getActivity(),members);
                     recyclerView.setAdapter(adapter);
                 }
@@ -122,6 +135,42 @@ public class Fragment_Recyclerview extends Fragment {
             recyclerView.setAdapter(adapter);
         }
     }
+
+    void loadfirebase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        board= firebaseDatabase.getReference("board");
+        board.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                MyMember myMembers=dataSnapshot.getValue(MyMember.class);
+                members.add(0,myMembers);
+                adapter.notifyItemChanged(0);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     void loadDB(){
         new Thread(){
             @Override
@@ -176,7 +225,7 @@ public class Fragment_Recyclerview extends Fragment {
                         String img3="http://lsun41902.dothome.co.kr/html/GotoWork/Board/"+datas[7];
                         String text=datas[8];
                         String user=datas[9];
-                        members.add(new MyMember(no,null,title,nickname,date,null,null,null,null,null,null,text,user));
+                        //members.add(new MyMember(no,null,title,nickname,date,null,null,null,null,null,null,text,user));
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -196,5 +245,7 @@ public class Fragment_Recyclerview extends Fragment {
             }
         }.start();
     }
+
+
 
 }

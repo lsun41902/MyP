@@ -51,6 +51,9 @@ public class WriteActivity extends AppCompatActivity {
     String img2;
     String img3;
     Date date=new Date(System.currentTimeMillis());
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference board;
+    DatabaseReference boardtitle;
 
 
     @Override
@@ -59,6 +62,11 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        board=firebaseDatabase.getReference("board");
+
+
         getSupportActionBar().setTitle("글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
@@ -201,26 +209,29 @@ public class WriteActivity extends AppCompatActivity {
                             // nowDate 변수에 값을 저장한다.
                             String formatDate = sdfNow.format(date);
                             intent.putExtra("Date",formatDate);
-                            intent.putExtra("Image1",writeImage1);
-                            intent.putExtra("Image2",writeImage2);
-                            intent.putExtra("Image3",writeImage3);
+                            intent.putExtra("Image1",img1);
+                            intent.putExtra("Image1",img2);
+                            intent.putExtra("Image1",img3);
+//                            intent.putExtra("Image1",writeImage1);
+//                            intent.putExtra("Image2",writeImage2);
+//                            intent.putExtra("Image3",writeImage3);
                             String userId=SelectLoginActivity.startEmail;
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
 
-                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                   Log.i("moya",response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
-                                    Log.i("moya",String.valueOf(error));
-                                }
-                            });
+//                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
+//                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
+//                                @Override
+//                                public void onResponse(String response) {
+//                                   Log.i("moya",response);
+//                                }
+//                            }, new Response.ErrorListener() {
+//                                @Override
+//                                public void onErrorResponse(VolleyError error) {
+//                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
+//                                    Log.i("moya",String.valueOf(error));
+//                                }
+//                            });
 //                            simpleMultiPartRequest.addStringParam("title",title);
 //                            simpleMultiPartRequest.addStringParam("date",formatDate);
 //                            simpleMultiPartRequest.addStringParam("text",text);
@@ -236,13 +247,9 @@ public class WriteActivity extends AppCompatActivity {
 
 
 
-                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                            DatabaseReference decboard = firebaseDatabase.getReference("decboard");
-                            DatabaseReference dectitle= decboard.child(ItemChat.nickName+"_"+formatDate);
-                            Log.i("decdec",decboard.toString());
-                            Log.i("decdec",dectitle.toString());
-                            MyMember myMember=new MyMember(null,ItemChat.Urlstring,title,ItemChat.nickName,formatDate,img1,img2,img3,null,null,null,text,SelectLoginActivity.startEmail);
-                            dectitle.push().setValue(myMember);
+                            MyMember myMember=new MyMember(ItemChat.Urlstring,ItemChat.getNickName(),title,text,img1,img2,img3,formatDate);
+                            board.child(title).setValue(myMember);
+
 
 
 
