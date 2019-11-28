@@ -39,6 +39,7 @@ public class StartProfileActivity extends AppCompatActivity {
     public static Uri startProfileImage;
     EditText username;
     TextView userEmail;
+    public static String startusernickname;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     public static String profileImg;
@@ -138,9 +139,11 @@ public class StartProfileActivity extends AppCompatActivity {
                         if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
+                            startusernickname=username.getText().toString();
                             ItemChat.setNickName(username.getText().toString());
+                            Log.i("dodece",ItemChat.nickName);
                             ItemChat.Urlstring=profileImg;
-                            editor.putString("userNickname", username.getText().toString());
+                            editor.putString("userNickname", ItemChat.getNickName());
                             editor.commit();
                             Intent intent = getIntent();
                             intent.putExtra("circleUri", startProfileImage);

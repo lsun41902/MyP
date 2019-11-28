@@ -77,9 +77,9 @@ public class AdapterMember extends RecyclerView.Adapter {
 //        }
         vh.tvText.setText(myMember.text);
 
-        vh.nickname.setText(ItemChat.getNickName());
+        vh.nickname.setText(myMember.getNickName());
         vh.dates.setText(myMember.date);
-        if(checksetting.equals(ItemChat.getNickName())){
+        if(vh.nickname.equals(checksetting)){
             if(MainActivity.userImage==null){
                 Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }else {
@@ -109,7 +109,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
 
-        if(checksetting.equals(ItemChat.getNickName())){
+        if(vh.nickname.equals(checksetting)){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
             vh.setting.setVisibility(View.GONE);
@@ -150,10 +150,12 @@ public class AdapterMember extends RecyclerView.Adapter {
                         medal=true;
                         medalCnt+=1;
                         favBtn.setImageResource(R.drawable.medalyellow);
+                        notifyDataSetChanged();
                     }else {
                         medal=false;
                         medalCnt-=1;
                         favBtn.setImageResource(R.drawable.medal32px);
+                        notifyDataSetChanged();
                     }
                 }
             });

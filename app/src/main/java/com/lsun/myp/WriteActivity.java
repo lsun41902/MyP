@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -54,6 +55,7 @@ public class WriteActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference board;
     DatabaseReference boardtitle;
+    String username;
 
 
     @Override
@@ -62,10 +64,10 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         board=firebaseDatabase.getReference("board");
-
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        username=sp.getString("userNickname",null);
 
         getSupportActionBar().setTitle("글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -247,7 +249,7 @@ public class WriteActivity extends AppCompatActivity {
 
 
 
-                            MyMember myMember=new MyMember(ItemChat.Urlstring,ItemChat.getNickName(),title,text,img1,img2,img3,formatDate);
+                            MyMember myMember=new MyMember(ItemChat.Urlstring,username,title,text,img1,img2,img3,formatDate);
                             board.child(title).setValue(myMember);
 
 

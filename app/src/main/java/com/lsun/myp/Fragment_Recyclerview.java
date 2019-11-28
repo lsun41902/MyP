@@ -143,7 +143,7 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 MyMember myMembers=dataSnapshot.getValue(MyMember.class);
-                members.add(0,myMembers);
+                members.add(myMembers);
                 adapter.notifyItemChanged(0);
             }
 
