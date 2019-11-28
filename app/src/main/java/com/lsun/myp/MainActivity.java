@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static Uri userImage;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+    ItemChat item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

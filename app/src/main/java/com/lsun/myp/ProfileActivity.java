@@ -32,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView userEmail,userNickname;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+    ItemChat item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

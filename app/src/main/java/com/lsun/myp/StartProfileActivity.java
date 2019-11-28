@@ -101,6 +101,7 @@ public class StartProfileActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
         String checkUserName = sp.getString("userNickname", null);
         if (checkUserName != null) {
+            startusernickname=checkUserName;
             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
             finish();
         }
