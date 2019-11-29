@@ -1,9 +1,5 @@
 package com.lsun.myp;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,16 +15,28 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StartProfileActivity extends AppCompatActivity {
@@ -39,11 +47,14 @@ public class StartProfileActivity extends AppCompatActivity {
     public static Uri startProfileImage;
     EditText username;
     TextView userEmail;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference profileRef;
     public static String startusernickname;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
     public static String profileImg;
-    public static boolean img=false;
+    boolean ok =false;
+    public static boolean img = false;
 
     String getRealPathFromUri(Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -76,6 +87,11 @@ public class StartProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.profile_et_userenickname);
         userEmail = findViewById(R.id.profile_et_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        profileRef = firebaseDatabase.getReference("profiles");
+
+
     }
 
 
@@ -85,7 +101,7 @@ public class StartProfileActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQ_STARTPICIMAGE:
                 if (resultCode == RESULT_OK) {
-                    img=true;
+                    img = true;
                     startProfileImage = data.getData();
                     profileImg = getRealPathFromUri(startProfileImage);
                     Glide.with(this).load(startProfileImage).into(startProfileCircleImage);
@@ -128,22 +144,23 @@ public class StartProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(ok ==true){
         switch (item.getItemId()) {
             case R.id.check_write:
                 new AlertDialog.Builder(this).setTitle("작성 완료").setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(img==false){
-                            startProfileImage=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +"://" + getResources().getResourcePackageName(R.drawable.personmen));
-                            Log.i("imgs",startProfileImage+"");
+                        if (img == false) {
+                            startProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
+                            Log.i("imgs", startProfileImage + "");
                         }
                         if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
-                            startusernickname=username.getText().toString();
+                            startusernickname = username.getText().toString();
                             ItemChat.setNickName(username.getText().toString());
-                            Log.i("dodece",ItemChat.nickName);
-                            ItemChat.Urlstring=profileImg;
+                            Log.i("dodece", ItemChat.nickName);
+                            ItemChat.Urlstring = profileImg;
                             editor.putString("userNickname", ItemChat.getNickName());
                             editor.commit();
                             Intent intent = getIntent();
@@ -153,7 +170,7 @@ public class StartProfileActivity extends AppCompatActivity {
                             java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
                             String fileName = sdf.format(new Date()) + ".png";
                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/"+fileName);
+                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/" + fileName);
                             imgRef.putFile(startProfileImage);
                             UploadTask uploadTask = imgRef.putFile(startProfileImage);
 
@@ -168,9 +185,9 @@ public class StartProfileActivity extends AppCompatActivity {
                                             ItemChat.Urlstring = uri.toString();
                                             //1.Firebase Database에 nickName, profileUrl을 저장
                                             //firebase DB 관리자 객체 소환
-                                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//                                            firebaseDatabase = FirebaseDatabase.getInstance();
                                             //profiles 라는 이름의 자식노드 참조객체 얻어오기
-                                            DatabaseReference profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
+//                                            profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
                                             //닉네임을 key 식별자로 하고 프로필 이미지의 주소를 값으로 저장
                                             profileRef.child(ItemChat.nickName).setValue(ItemChat.Urlstring);
                                         }
@@ -210,6 +227,36 @@ public class StartProfileActivity extends AppCompatActivity {
                 return true;
             }
         }
+        }else {
+            Toast.makeText(this, "중복 확인이 필요합니다.", Toast.LENGTH_SHORT).show();
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    public void clickCheck(View view) {
+        profileRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot t: dataSnapshot.getChildren()){
+                    String n=t.getKey();
+                    if(n.equals(username.getText().toString())){
+                        Toast.makeText(StartProfileActivity.this, "닉네임 중복", Toast.LENGTH_SHORT).show();
+                        ok=false;
+                        return;
+                    }
+                    ok=true;
+                }
+                if(ok==true){
+                    Toast.makeText(StartProfileActivity.this, "닉네임 사용가능", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        }
+
 }
