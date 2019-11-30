@@ -176,9 +176,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/item_fav"
         android:scrollbars="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
         <TextView
             android:id="@+id/item_tv_text"
@@ -187,7 +185,7 @@
             android:background="@color/white"
             android:hint="text"
             android:padding="4dp"/>
-        </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>

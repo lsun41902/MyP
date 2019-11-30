@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -71,8 +72,8 @@ public class Fragment_Recyclerview extends Fragment {
                 //adapter.notifyItemRangeChanged(0,10);
                 //loadDB();
                 loadfirebase();
-                adapter.notifyDataSetChanged();
-                recyclerView.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+//                recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
             }
         });
@@ -139,28 +140,17 @@ public class Fragment_Recyclerview extends Fragment {
     void loadfirebase(){
         firebaseDatabase = FirebaseDatabase.getInstance();
         board= firebaseDatabase.getReference("board");
-        board.addChildEventListener(new ChildEventListener() {
+        board.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                MyMember myMembers=dataSnapshot.getValue(MyMember.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 members.clear();
-                members.add(myMembers);
-                adapter.notifyItemChanged(0);
-            }
+                adapter.notifyDataSetChanged();
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                for(DataSnapshot t: dataSnapshot.getChildren()){
+                    MyMember myMembers=t.getValue(MyMember.class);
+                    members.add(myMembers);
+                }
 
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
 
@@ -169,6 +159,36 @@ public class Fragment_Recyclerview extends Fragment {
 
             }
         });
+//        board.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                MyMember myMembers=dataSnapshot.getValue(MyMember.class);
+//                members.clear();
+//                members.add(myMembers);
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 

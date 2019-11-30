@@ -57,7 +57,12 @@ public class AdapterChat extends BaseAdapter {
         tvName.setText(item.getName());
         tvMsg.setText(item.getMessage());
         tvTime.setText(item.getTime());
-        Glide.with(itemView).load(item.getProfileUrl()).into(iv);
+        if(item.getProfileUrl()!=null){
+            Glide.with(itemView).load(item.getProfileUrl()).into(iv);
+        }else {
+            Glide.with(itemView).load(R.drawable.personmen).into(iv);
+        }
+
 
         return itemView;
     }

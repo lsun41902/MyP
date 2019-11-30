@@ -109,7 +109,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
 
-        if(vh.nickname.equals(StartProfileActivity.startusernickname)){
+        if(vh.nickname.equals(checksetting)){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
             vh.setting.setVisibility(View.GONE);
