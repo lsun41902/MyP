@@ -144,13 +144,13 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 members.clear();
-                adapter.notifyDataSetChanged();
+
 
                 for(DataSnapshot t: dataSnapshot.getChildren()){
                     MyMember myMembers=t.getValue(MyMember.class);
-                    members.add(myMembers);
+                    members.add(members.size(),myMembers);
                 }
-
+                adapter.notifyDataSetChanged();
 
             }
 

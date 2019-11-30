@@ -79,29 +79,29 @@ public class AdapterMember extends RecyclerView.Adapter {
 
         vh.nickname.setText(myMember.getNickName());
         vh.dates.setText(myMember.date);
-        if(vh.nickname.equals(checksetting)){
-            if(MainActivity.userImage==null){
-                Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
+        if(vh.nickname.getText().toString().equals(checksetting)){
+            if(myMember.getProfileimg()!=null){
+                Glide.with(context).load(myMember.getProfileimg()).into(vh.circleImageView);
             }else {
-                Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
+                Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }
         }
-        if(myMember.img1==null){
-            vh.img1.setVisibility(View.GONE);
-        }else {
+        if(myMember.getImg1()!=null){
             Glide.with(context).load(myMember.getImg1()).into(vh.img1);
+        }else {
+            vh.img1.setVisibility(View.GONE);
         }
 
-        if(myMember.img2==null){
-            vh.img2.setVisibility(View.GONE);
-        }else {
+        if(myMember.getImg2()!=null){
             Glide.with(context).load(myMember.getImg2()).into(vh.img2);
+        }else {
+            vh.img2.setVisibility(View.GONE);
         }
 
-        if(myMember.img3==null){
-            vh.img3.setVisibility(View.GONE);
-        }else {
+        if(myMember.getImg3()!=null){
             Glide.with(context).load(myMember.getImg3()).into(vh.img3);
+        }else {
+            vh.img3.setVisibility(View.GONE);
         }
 
         vh.fav.setText(medalCnt+"");
@@ -109,7 +109,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
 
-        if(vh.nickname.equals(checksetting)){
+        if(vh.nickname.getText().toString().equals(checksetting)){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
             vh.setting.setVisibility(View.GONE);
