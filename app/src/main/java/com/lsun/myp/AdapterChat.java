@@ -62,8 +62,6 @@ public class AdapterChat extends BaseAdapter {
         }else {
             Glide.with(itemView).load(R.drawable.personmen).into(iv);
         }
-
-
         return itemView;
     }
 
