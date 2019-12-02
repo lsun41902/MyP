@@ -22,6 +22,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -32,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView userEmail,userNickname;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    ItemChat item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +178,4 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    public void clickLogout(View view) {
-        new SelectLoginActivity().Signout();
-    }
 }
