@@ -241,7 +241,7 @@ public class StartProfileActivity extends AppCompatActivity {
                 for(DataSnapshot t: dataSnapshot.getChildren()){
                     String n=t.getKey();
                     if(n.equals(username.getText().toString())){
-                        Toast.makeText(StartProfileActivity.this, "닉네임 중복", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartProfileActivity.this, "닉네임 중복, 사용 불가", Toast.LENGTH_SHORT).show();
                         ok=false;
                         return;
                     }

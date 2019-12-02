@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         navi.setItemIconTintList(null);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
+        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
+        circleImageView = heaerview.findViewById(R.id.iv_header);
         drawerLayout = findViewById(R.id.layout_drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -122,14 +125,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.map);
 
 
-        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
-        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
-        circleImageView = heaerview.findViewById(R.id.iv_header);
-        if (proimgs==false) {
-            userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
+
+        if (ItemChat.getUrlstring()==null) {
             Glide.with(this).load(R.drawable.personmen).into(circleImageView);
+//            userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
+//            Glide.with(this).load(R.drawable.personmen).into(circleImageView);
         } else {
-            userImage = Uri.parse(ItemChat.getUrlstring());
+//            userImage = Uri.parse(ItemChat.getUrlstring());
             Glide.with(this).load(ItemChat.getUrlstring()).into(circleImageView);
         }
 

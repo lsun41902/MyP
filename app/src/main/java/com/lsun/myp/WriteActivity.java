@@ -189,7 +189,7 @@ public class WriteActivity extends AppCompatActivity {
             case R.id.check_write:
                 if (etText.length()<=20){
 
-                    new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();

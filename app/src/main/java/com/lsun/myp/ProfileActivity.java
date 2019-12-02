@@ -139,6 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
                         setResult(RESULT_OK,intent);
                         ItemChat.setUrlstring(profileciv.toString());
                         ItemChat.Urlstring =getRealPathFromUri(profileciv);
+
                         finish();
                     }
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
