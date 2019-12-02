@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -51,6 +52,10 @@ public class WriteActivity extends AppCompatActivity {
     String img2;
     String img3;
     Date date=new Date(System.currentTimeMillis());
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference board;
+    DatabaseReference boardtitle;
+    String username;
 
 
     @Override
@@ -59,6 +64,11 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        board=firebaseDatabase.getReference("board");
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        username=sp.getString("userNickname",null);
+
         getSupportActionBar().setTitle("글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
@@ -201,49 +211,23 @@ public class WriteActivity extends AppCompatActivity {
                             // nowDate 변수에 값을 저장한다.
                             String formatDate = sdfNow.format(date);
                             intent.putExtra("Date",formatDate);
-                            intent.putExtra("Image1",writeImage1);
-                            intent.putExtra("Image2",writeImage2);
-                            intent.putExtra("Image3",writeImage3);
+                            intent.putExtra("Image1",img1);
+                            intent.putExtra("Image1",img2);
+                            intent.putExtra("Image1",img3);
+//                            intent.putExtra("Image1",writeImage1);
+//                            intent.putExtra("Image2",writeImage2);
+//                            intent.putExtra("Image3",writeImage3);
                             String userId=SelectLoginActivity.startEmail;
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
 
-                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                   Log.i("moya",response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
-                                    Log.i("moya",String.valueOf(error));
-                                }
-                            });
-//                            simpleMultiPartRequest.addStringParam("title",title);
-//                            simpleMultiPartRequest.addStringParam("date",formatDate);
-//                            simpleMultiPartRequest.addStringParam("text",text);
-//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-//                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
-//                            simpleMultiPartRequest.addFile("img1",img1);
-//                            simpleMultiPartRequest.addFile("img2",img2);
-//                            simpleMultiPartRequest.addFile("img3",img3);
-//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-//                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
-//                            requestQueue.add(simpleMultiPartRequest);
 
 
 
+                            MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,img1,img2,img3,formatDate);
+                            board.child(title).setValue(myMember);
 
-//                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//                            DatabaseReference decboard = firebaseDatabase.getReference("decboard");
-//                            DatabaseReference dectitle= decboard.child(ItemChat.nickName+"_"+formatDate);
-//                            Log.i("decdec",decboard.toString());
-//                            Log.i("decdec",dectitle.toString());
-//                            MyMember myMember=new MyMember(null,ItemChat.Urlstring,title,ItemChat.nickName,formatDate,img1,img2,img3,null,null,null,text,SelectLoginActivity.startEmail);
-//                            dectitle.push().setValue(myMember);
-//
+
 
 
 
