@@ -220,22 +220,8 @@ public class WriteActivity extends AppCompatActivity {
                             String userId=SelectLoginActivity.startEmail;
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
-
-
-
-
                             MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,img1,img2,img3,formatDate);
                             board.child(title).setValue(myMember);
-
-
-
-
-
-
-
-
-
-
 
 
                             dialogInterface.dismiss();

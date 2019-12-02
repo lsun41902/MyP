@@ -137,9 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent=getIntent();
                         intent.putExtra("circleUri",profileciv);
                         setResult(RESULT_OK,intent);
-                        ItemChat.setUrlstring(profileciv.toString());
                         ItemChat.Urlstring =getRealPathFromUri(profileciv);
-
                         finish();
                     }
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -177,6 +175,9 @@ public class ProfileActivity extends AppCompatActivity {
         cursor.close();
         return result;
     }
+
+
+
 
 
 }

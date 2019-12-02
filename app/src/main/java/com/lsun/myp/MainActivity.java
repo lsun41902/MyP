@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new PicImage(MainActivity.this).PicSetting();
                 startActivityForResult(new Intent(MainActivity.this, ProfileActivity.class), REQ_PICCIRCLE);
                 drawerLayout.closeDrawer(navi);
             }
