@@ -119,8 +119,6 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        startActivity(new Intent(this,StartProfileActivity.class));
-        finish();
     }
 
 

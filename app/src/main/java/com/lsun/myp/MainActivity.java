@@ -93,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
         heaerview = navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView = heaerview.findViewById(R.id.iv_header);
-        if (StartProfileActivity.img == false) {
-            StartProfileActivity.img = false;
+        if (ItemChat.getUrlstring()== null) {
             userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
             Glide.with(this).load(R.drawable.personmen).into(circleImageView);
         } else {
-            StartProfileActivity.img = true;
-            userImage = StartProfileActivity.startProfileImage;
-            Glide.with(this).load(userImage).into(circleImageView);
+            userImage = Uri.parse(ItemChat.getUrlstring());
+            Glide.with(this).load(ItemChat.getUrlstring()).into(circleImageView);
         }
 
         userName = heaerview.findViewById(R.id.tv_name_header);

@@ -40,10 +40,10 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         profileiv=findViewById(R.id.profile_iv);
-        if(StartProfileActivity.img==false){
+        if(ItemChat.getUrlstring()==null){
             Glide.with(this).load(R.drawable.personmen).into(profileiv);
         }else {
-            Glide.with(this).load(MainActivity.userImage).into(profileiv);
+            Glide.with(this).load(ItemChat.getUrlstring()).into(profileiv);
         }
         profileiv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent=getIntent();
                         intent.putExtra("circleUri",profileciv);
                         setResult(RESULT_OK,intent);
-                        MainActivity.userImage=profileciv;
+                        ItemChat.setUrlstring(profileciv.toString());
                         ItemChat.Urlstring =getRealPathFromUri(profileciv);
                         finish();
                     }

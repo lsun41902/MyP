@@ -37,6 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -51,6 +53,7 @@ public class Fragment_Recyclerview extends Fragment {
     String userid;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference board;
+    MyMember myMember;
 
 
     @Nullable
@@ -83,7 +86,7 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), WriteActivity.class);
-                startActivityForResult(intent, REQ_WIRTE);
+                startActivity(intent);
             }
         });
 
@@ -144,13 +147,13 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 members.clear();
-
+                adapter.notifyDataSetChanged();
 
                 for(DataSnapshot t: dataSnapshot.getChildren()){
                     MyMember myMembers=t.getValue(MyMember.class);
-                    members.add(members.size(),myMembers);
+                    members.add(myMembers);
                 }
-                adapter.notifyDataSetChanged();
+
 
             }
 
@@ -159,114 +162,6 @@ public class Fragment_Recyclerview extends Fragment {
 
             }
         });
-//        board.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                MyMember myMembers=dataSnapshot.getValue(MyMember.class);
-//                members.clear();
-//                members.add(myMembers);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
-
-
-    void loadDB(){
-        new Thread(){
-            @Override
-            public void run() {
-                String serverUrl="http://lsun41902.dothome.co.kr/GotoWork/Board/boardloadDB.php";
-                try {
-                    URL url=new URL(serverUrl);
-                    HttpURLConnection connection=(HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setDoInput(true);
-                    //connection.setDoOutput(true);//outputStream 필요하면 사용
-                    connection.setUseCaches(false);//트래픽 잠식요소 있음
-                    InputStream is=connection.getInputStream();
-                    InputStreamReader isr=new InputStreamReader(is);
-                    BufferedReader reader=new BufferedReader(isr);
-                    final StringBuffer buffer=new StringBuffer();
-                    String line=reader.readLine();
-                    while (line!=null){
-                        buffer.append(line+"\n");
-                        line=reader.readLine();
-                    }
-                    //읽어오는게 작업이 성공했는지 확인 작업
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            new AlertDialog.Builder(getActivity()).setMessage(buffer.toString()).create().show();
-//                        }
-//                    });
-
-                    //대량의 데이터 초기화
-                    members.clear();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-
-                    //읽어온 데이터 문자열에서 row별로 분리하기
-                    String[] rows=buffer.toString().split(";");
-                    for(String row: rows){
-                        //한줄 데이터 에서 한 칸씩 분리 시키기
-                        String[] datas=row.split("&");
-                        if(datas.length!=10) continue;
-                        Object no=Integer.parseInt(datas[0]);
-                        String profileimg="http://lsun41902.dothome.co.kr/html/GotoWork/Board/"+datas[1];
-                        String title=datas[2];
-                        String nickname=datas[3];
-                        String date=datas[4];
-                        String img1="http://lsun41902.dothome.co.kr/html/GotoWork/Board/"+datas[5];
-                        String img2="http://lsun41902.dothome.co.kr/html/GotoWork/Board/"+datas[6];
-                        String img3="http://lsun41902.dothome.co.kr/html/GotoWork/Board/"+datas[7];
-                        String text=datas[8];
-                        String user=datas[9];
-                        //members.add(new MyMember(no,null,title,nickname,date,null,null,null,null,null,null,text,user));
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-
-                    }
-
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-
 
 }

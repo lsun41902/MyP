@@ -221,35 +221,10 @@ public class WriteActivity extends AppCompatActivity {
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
 
-//                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-//                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-//                                @Override
-//                                public void onResponse(String response) {
-//                                   Log.i("moya",response);
-//                                }
-//                            }, new Response.ErrorListener() {
-//                                @Override
-//                                public void onErrorResponse(VolleyError error) {
-//                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
-//                                    Log.i("moya",String.valueOf(error));
-//                                }
-//                            });
-//                            simpleMultiPartRequest.addStringParam("title",title);
-//                            simpleMultiPartRequest.addStringParam("date",formatDate);
-//                            simpleMultiPartRequest.addStringParam("text",text);
-//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-//                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
-//                            simpleMultiPartRequest.addFile("img1",img1);
-//                            simpleMultiPartRequest.addFile("img2",img2);
-//                            simpleMultiPartRequest.addFile("img3",img3);
-//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-//                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
-//                            requestQueue.add(simpleMultiPartRequest);
 
 
 
-
-                            MyMember myMember=new MyMember(ItemChat.Urlstring,username,title,text,img1,img2,img3,formatDate);
+                            MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,img1,img2,img3,formatDate);
                             board.child(title).setValue(myMember);
 
 

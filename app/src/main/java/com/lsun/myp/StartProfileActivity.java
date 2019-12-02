@@ -160,7 +160,7 @@ public class StartProfileActivity extends AppCompatActivity {
                             startusernickname = username.getText().toString();
                             ItemChat.setNickName(username.getText().toString());
                             Log.i("dodece", ItemChat.nickName);
-                            ItemChat.Urlstring = profileImg;
+                            ItemChat.setUrlstring(profileImg);
                             editor.putString("userNickname", ItemChat.getNickName());
                             editor.commit();
                             Intent intent = getIntent();
@@ -189,7 +189,7 @@ public class StartProfileActivity extends AppCompatActivity {
                                             //profiles 라는 이름의 자식노드 참조객체 얻어오기
 //                                            profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
                                             //닉네임을 key 식별자로 하고 프로필 이미지의 주소를 값으로 저장
-                                            profileRef.child(ItemChat.nickName).setValue(ItemChat.Urlstring);
+                                            profileRef.child(ItemChat.getNickName()).setValue(ItemChat.getUrlstring());
                                         }
                                     });
                                 }
@@ -247,7 +247,12 @@ public class StartProfileActivity extends AppCompatActivity {
                     ok=true;
                 }
                 if(ok==true){
-                    Toast.makeText(StartProfileActivity.this, "닉네임 사용가능", Toast.LENGTH_SHORT).show();
+                    if(username.length()>=2){
+                        Toast.makeText(StartProfileActivity.this, "닉네임 사용가능", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(StartProfileActivity.this, "닉네임을 2자 이상 작성해 주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
