@@ -80,6 +80,13 @@
             android:layout_alignBaseline="@id/profile_tv_email"
             />
     </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/profile_layout_email"
+        android:text="중복확인"
+        android:onClick="clickCheck"/>
 
 
 

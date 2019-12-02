@@ -221,17 +221,17 @@ public class WriteActivity extends AppCompatActivity {
                                     Log.i("moya",String.valueOf(error));
                                 }
                             });
-                            simpleMultiPartRequest.addStringParam("title",title);
-                            simpleMultiPartRequest.addStringParam("date",formatDate);
-                            simpleMultiPartRequest.addStringParam("text",text);
-                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
-                            simpleMultiPartRequest.addFile("img1",img1);
-                            simpleMultiPartRequest.addFile("img2",img2);
-                            simpleMultiPartRequest.addFile("img3",img3);
-                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
-                            requestQueue.add(simpleMultiPartRequest);
+//                            simpleMultiPartRequest.addStringParam("title",title);
+//                            simpleMultiPartRequest.addStringParam("date",formatDate);
+//                            simpleMultiPartRequest.addStringParam("text",text);
+//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
+//                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
+//                            simpleMultiPartRequest.addFile("img1",img1);
+//                            simpleMultiPartRequest.addFile("img2",img2);
+//                            simpleMultiPartRequest.addFile("img3",img3);
+//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
+//                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
+//                            requestQueue.add(simpleMultiPartRequest);
 
 
 
@@ -243,7 +243,7 @@ public class WriteActivity extends AppCompatActivity {
 //                            Log.i("decdec",dectitle.toString());
 //                            MyMember myMember=new MyMember(null,ItemChat.Urlstring,title,ItemChat.nickName,formatDate,img1,img2,img3,null,null,null,text,SelectLoginActivity.startEmail);
 //                            dectitle.push().setValue(myMember);
-
+//
 
 
 

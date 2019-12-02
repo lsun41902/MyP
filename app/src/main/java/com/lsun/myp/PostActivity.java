@@ -56,9 +56,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        number=Integer.parseInt(AdapterMember.numbuer.toString());
-        Log.i("moyangmoyang", AdapterMember.numbuer + "");
-        Log.i("moyangmoyang1", number + "");
+        //number=Integer.parseInt(AdapterMember.numbuer.toString());
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
         getSupportActionBar().setTitle("수정");

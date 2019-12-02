@@ -138,8 +138,4 @@ public class Fragment_Chat extends Fragment {
         return view;
 
     }
-
-
-
-
 }
