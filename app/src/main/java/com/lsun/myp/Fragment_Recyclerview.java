@@ -49,11 +49,9 @@ public class Fragment_Recyclerview extends Fragment {
     public static final int REQ_WIRTE = 1010;
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
-    Uri Img1,img2,img3;
     String userid;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference board;
-    MyMember myMember;
 
 
     @Nullable
@@ -72,11 +70,7 @@ public class Fragment_Recyclerview extends Fragment {
             @Override
             public void onRefresh() {
                 Toast.makeText(getActivity(), "게시판 새로고침", Toast.LENGTH_SHORT).show();
-                //adapter.notifyItemRangeChanged(0,10);
-                //loadDB();
                 loadfirebase();
-//                adapter.notifyDataSetChanged();
-//                recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
             }
         });

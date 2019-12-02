@@ -171,5 +171,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
+    public void clickLogout(View view) {
+        new SelectLoginActivity().Signout();
+    }
 }

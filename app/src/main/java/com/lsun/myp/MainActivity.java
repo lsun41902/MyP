@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -27,6 +28,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
     public static Uri userImage;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    ItemChat item;
+    boolean proimgs=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+        final String userNickname = sp.getString("userNickname", "이름없음");
         navi = findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar = findViewById(R.id.toolbar);
@@ -61,6 +69,30 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference proimg=firebaseDatabase.getReference("profiles");
+        proimg.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot t: dataSnapshot.getChildren()){
+                    String na=t.getKey();
+                    String n=t.getValue().toString();
+                    if(userNickname.equals(na)){
+                        ItemChat.setUrlstring(n);
+                        proimgs=true;
+                        Log.i("tatata",n);
+                        return;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         getSupportActionBar().setTitle("Main");
         tabLayout = findViewById(R.id.layout_tab);
         pager = findViewById(R.id.pager);
@@ -93,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         heaerview = navi.inflateHeaderView(R.layout.drawer_header);
         heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
         circleImageView = heaerview.findViewById(R.id.iv_header);
-        if (ItemChat.getUrlstring()== null) {
+        if (proimgs==false) {
             userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
             Glide.with(this).load(R.drawable.personmen).into(circleImageView);
         } else {
@@ -104,8 +136,6 @@ public class MainActivity extends AppCompatActivity {
         userName = heaerview.findViewById(R.id.tv_name_header);
         userEmail = heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
-        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        String userNickname = sp.getString("userNickname", "이름없음");
         userName.setText(userNickname);
 
 

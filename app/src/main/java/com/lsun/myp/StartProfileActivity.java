@@ -92,6 +92,7 @@ public class StartProfileActivity extends AppCompatActivity {
         profileRef = firebaseDatabase.getReference("profiles");
 
 
+
     }
 
 

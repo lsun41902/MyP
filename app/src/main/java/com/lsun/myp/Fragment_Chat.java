@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +58,7 @@ public class Fragment_Chat extends Fragment {
         chatRef = firebaseDatabase.getReference("chat");
         //firebaseDB 에서 채팅 메세지들 실시간 읽어오기.
         //닉네임, 메세지, 프로필 이미지 저장 URL, 작성시간
-
+        Log.i("tatata","????");
         //'chat' 노드에 저장되어 있는 데이터들을 읽어오기
         //chatRef 에 데이터가 변경되는 것을 듣는 리스너 추가
         //새로 추가된 child 만 얻어오기 value 하면 전체를 다 읽어옴
@@ -70,6 +72,7 @@ public class Fragment_Chat extends Fragment {
                 //리스트뷰 갱신
                 adapter.notifyDataSetChanged();
                 listView.setSelection(messageItems.size() - 1);//화면 포커스 이동
+                Toast.makeText(getActivity(), "1234", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -138,4 +141,5 @@ public class Fragment_Chat extends Fragment {
         return view;
 
     }
+
 }
