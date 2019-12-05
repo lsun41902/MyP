@@ -207,21 +207,18 @@ public class WriteActivity extends AppCompatActivity {
                             }
                             intent.putExtra("Title", title);
                             intent.putExtra("Text",text);
-                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
+                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd HH:mm", Locale.KOREA);
                             // nowDate 변수에 값을 저장한다.
                             String formatDate = sdfNow.format(date);
                             intent.putExtra("Date",formatDate);
                             intent.putExtra("Image1",img1);
                             intent.putExtra("Image1",img2);
                             intent.putExtra("Image1",img3);
-//                            intent.putExtra("Image1",writeImage1);
-//                            intent.putExtra("Image2",writeImage2);
-//                            intent.putExtra("Image3",writeImage3);
                             String userId=SelectLoginActivity.startEmail;
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
                             MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,img1,img2,img3,formatDate);
-                            board.child(title).setValue(myMember);
+                            board.child(formatDate).setValue(myMember);
 
 
                             dialogInterface.dismiss();

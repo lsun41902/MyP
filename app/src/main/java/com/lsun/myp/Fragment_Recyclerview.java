@@ -37,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -64,7 +65,6 @@ public class Fragment_Recyclerview extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview_item);
         adapter=new AdapterMember(getActivity(),members);
         recyclerView.setAdapter(adapter);
-
         swiper = view.findViewById(R.id.swiper);
         swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,9 +106,6 @@ public class Fragment_Recyclerview extends Fragment {
                     String date=data.getStringExtra("Date");
                     SharedPreferences sp=getActivity().getSharedPreferences("userName",Context.MODE_PRIVATE);
                     String nickname=sp.getString("userNickname",null);
-//                    Uri img1=data.getParcelableExtra("Image1");
-//                    Uri img2=data.getParcelableExtra("Image2");
-//                    Uri img3=data.getParcelableExtra("Image3");
                     String img1=data.getStringExtra("Image1");
                     String img2=data.getStringExtra("Image2");
                     String img3=data.getStringExtra("Image3");
@@ -128,7 +125,6 @@ public class Fragment_Recyclerview extends Fragment {
     public void onResume() {
         super.onResume();
         if(members.size()!=0) {
-            //adapter.notifyItemRangeChanged(0,10);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
         }
@@ -147,8 +143,7 @@ public class Fragment_Recyclerview extends Fragment {
                     MyMember myMembers=t.getValue(MyMember.class);
                     members.add(myMembers);
                 }
-
-
+                Collections.reverse(members);
             }
 
             @Override
@@ -157,5 +152,8 @@ public class Fragment_Recyclerview extends Fragment {
             }
         });
     }
+
+
+
 
 }

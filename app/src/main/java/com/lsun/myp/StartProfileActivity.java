@@ -168,7 +168,7 @@ public class StartProfileActivity extends AppCompatActivity {
                             intent.putExtra("circleUri", startProfileImage);
                             setResult(RESULT_OK, intent);
                             //일단 firebase storage 에 이미지 저장
-                            java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+                            java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
                             String fileName = sdf.format(new Date()) + ".png";
                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                             final StorageReference imgRef = firebaseStorage.getReference("profileImages/" + fileName);
