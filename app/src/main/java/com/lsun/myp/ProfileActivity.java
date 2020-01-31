@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -31,8 +33,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
+    private FirebaseAuth mAuth;
+    private GoogleApiClient mGoogleApiClient;
     public static final int REQ_PICIMAGE=1003;
     CircleImageView profileiv;
     Uri profileciv;
@@ -64,7 +68,8 @@ public class ProfileActivity extends AppCompatActivity {
         String username=sp.getString("userNickname",null);
         userNickname.setText(username);
         userEmail=findViewById(R.id.profile_tv_useremail);
-        userEmail.setText(SelectLoginActivity.startEmail);if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+        userEmail.setText(SelectLoginActivity.startEmail);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             int checkedPrmission= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
             if(checkedPrmission== PackageManager.PERMISSION_DENIED){//퍼미션이 허가되어 있지 않다면
                 //사용자에게 퍼미션 허용 여부를 물어보는 다이얼로그 보여주기!
@@ -177,7 +182,57 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(ProfileActivity.this, "구글 인증 실패", Toast.LENGTH_SHORT).show();
+    }
 
+    public void Signout() {
+        mGoogleApiClient.connect();
+        mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                FirebaseAuth.getInstance().signOut();
+                mAuth.getInstance().signOut();
+                if (mGoogleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            if (status.isSuccess()) {
+                                setResult(1);
+                                Toast.makeText(ProfileActivity.this, "로그아웃성공", Toast.LENGTH_SHORT).show();
+                            } else {
+                                setResult(0);
+                                Toast.makeText(ProfileActivity.this, "로그아웃실패", Toast.LENGTH_SHORT).show();
+                            }
 
+                        }
 
+                    });
+                }
+            }
+            @Override
+            public void onConnectionSuspended(int i) {
+                setResult(-1);
+                finish();
+            }
+        });
+    }
+    public void clickOut(View view) {
+
+        //new GoogleLogout(mGoogleApiClient,this).logout();
+        new AlertDialog.Builder(view.getContext()).setMessage("로그아웃 하시겠습니까?").setCancelable(false)
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Signout();
+                        Toast.makeText(ProfileActivity.this, "로그아웃", Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // 아니오 클릭. dialog 닫기.
+                dialog.cancel();
+            }
+        }).create().show();
+
+    }
 }

@@ -1,11 +1,14 @@
 package com.lsun.myp;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -55,6 +58,7 @@ public class StartProfileActivity extends AppCompatActivity {
     public static String profileImg;
     boolean ok =false;
     public static boolean img = false;
+    ItemChat itemChat;
 
     String getRealPathFromUri(Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -80,8 +84,21 @@ public class StartProfileActivity extends AppCompatActivity {
         startProfileCircleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
-                startActivityForResult(intent, REQ_STARTPICIMAGE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    int checkedPrmission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
+                    if (checkedPrmission == PackageManager.PERMISSION_DENIED) {//퍼미션이 허가되어 있지 않다면
+                        //사용자에게 퍼미션 허용 여부를 물어보는 다이얼로그 보여주기!
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
+                    }else{
+                        Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
+                        startActivityForResult(intent, REQ_STARTPICIMAGE);
+                    }
+
+                }
+
+
+
+
             }
         });
         username = findViewById(R.id.profile_et_userenickname);
@@ -93,6 +110,24 @@ public class StartProfileActivity extends AppCompatActivity {
 
 
 
+    }
+    //requestPermissions()메소드로 인해 보여지는 다이얼로그에서 [허가/거부]선택 후 결과콜백 메소드
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 10:
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(this, "외부메모리 기능 사용 제한", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "외부메모리 사용 가능", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
+                    startActivityForResult(intent, REQ_STARTPICIMAGE);
+
+                }
+                break;
+        }
     }
 
 
@@ -122,6 +157,7 @@ public class StartProfileActivity extends AppCompatActivity {
             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
             finish();
         }
+
     }
 
     @Override
@@ -144,7 +180,7 @@ public class StartProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if(ok ==true){
         switch (item.getItemId()) {
             case R.id.check_write:
@@ -153,25 +189,23 @@ public class StartProfileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (img == false) {
                             startProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
-                            Log.i("imgs", startProfileImage + "");
+
                         }
                         if (username.length() >= 2) {
                             SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             startusernickname = username.getText().toString();
-                            ItemChat.setNickName(username.getText().toString());
-                            Log.i("dodece", ItemChat.nickName);
-                            ItemChat.setUrlstring(profileImg);
-                            editor.putString("userNickname", ItemChat.getNickName());
+                            itemChat.setNickName(username.getText().toString());
+                            itemChat.setUrlstring(profileImg);
+                            editor.putString("userNickname", itemChat.getNickName());
                             editor.commit();
                             Intent intent = getIntent();
                             intent.putExtra("circleUri", startProfileImage);
                             setResult(RESULT_OK, intent);
                             //일단 firebase storage 에 이미지 저장
-                            java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                            String fileName = sdf.format(new Date()) + ".png";
                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/" + fileName);
+                            Log.i("mojing",itemChat.getNickName());
+                            final StorageReference imgRef = firebaseStorage.getReference("profileImages/"+itemChat.getNickName()+"/" + "first.png");
                             imgRef.putFile(startProfileImage);
                             UploadTask uploadTask = imgRef.putFile(startProfileImage);
 
@@ -183,19 +217,20 @@ public class StartProfileActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
-                                            ItemChat.Urlstring = uri.toString();
+
+                                            ItemChat.Urlstring=uri.toString();
                                             //1.Firebase Database에 nickName, profileUrl을 저장
                                             //firebase DB 관리자 객체 소환
 //                                            firebaseDatabase = FirebaseDatabase.getInstance();
                                             //profiles 라는 이름의 자식노드 참조객체 얻어오기
 //                                            profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
                                             //닉네임을 key 식별자로 하고 프로필 이미지의 주소를 값으로 저장
-                                            profileRef.child(ItemChat.getNickName()).setValue(ItemChat.getUrlstring());
+
                                         }
                                     });
                                 }
                             });
-
+                            profileRef.child(itemChat.getNickName()).setValue(itemChat.Urlstring);
                             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
                             finish();
                         } else {

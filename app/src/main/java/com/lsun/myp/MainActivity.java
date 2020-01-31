@@ -26,6 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     AdapterFragment adapter;
     View heaerview;
+    String userNickname;
     LinearLayout heaersettingview;
     public static Toolbar toolbar;
     CircleImageView circleImageView;
@@ -53,14 +63,13 @@ public class MainActivity extends AppCompatActivity {
     public static Uri userImage;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    boolean proimgs=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        final String userNickname = sp.getString("userNickname", "이름없음");
+        userNickname = sp.getString("userNickname", "이름없음");
         navi = findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar = findViewById(R.id.toolbar);
@@ -72,29 +81,21 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference proimg=firebaseDatabase.getReference("profiles");
-        proimg.addValueEventListener(new ValueEventListener() {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference imgRef = firebaseStorage.getReference().child("profileImages/"+userNickname+"/" + "first.png");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot t: dataSnapshot.getChildren()){
-                    String na=t.getKey();
-                    String n=t.getValue().toString();
-                    if(userNickname.equals(na)){
-                        ItemChat.setUrlstring(n);
-                        proimgs=true;
-                        Log.i("tatata",n);
-                        return;
-                    }
-                }
-
+            public void onSuccess(Uri uri) {
+                Log.i("mojing","uri:"+uri);
+                Glide.with(MainActivity.this).load(uri).into(circleImageView);
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onFailure(@NonNull Exception e) {
+                Log.i("mojing",e+"");
             }
         });
+
 
         getSupportActionBar().setTitle("Main");
         tabLayout = findViewById(R.id.layout_tab);
@@ -126,14 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if (ItemChat.getUrlstring()==null) {
-            Glide.with(this).load(R.drawable.personmen).into(circleImageView);
-//            userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
-//            Glide.with(this).load(R.drawable.personmen).into(circleImageView);
-        } else {
-//            userImage = Uri.parse(ItemChat.getUrlstring());
-            Glide.with(this).load(ItemChat.getUrlstring()).into(circleImageView);
-        }
 
         userName = heaerview.findViewById(R.id.tv_name_header);
         userEmail = heaerview.findViewById(R.id.tv_email_header);

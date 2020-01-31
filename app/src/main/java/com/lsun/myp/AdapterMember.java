@@ -33,8 +33,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     boolean medal=false;
     public static Object numbuer;
     public static final int REQ_POST=1011;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference board ;
+    MyMember myMember;
 
 
 
@@ -59,13 +58,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
-        MyMember myMember=members.get(position);
-
-
-
-
-
-
+        myMember=members.get(position);
         SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
         String checksetting=sp.getString("userNickname",null);
 //        numbuer=myMember.no;
@@ -86,20 +79,23 @@ public class AdapterMember extends RecyclerView.Adapter {
                 Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }
         }
-        if(myMember.getImg1()!=null){
+        if(myMember.img1!=null){
             Glide.with(context).load(myMember.getImg1()).into(vh.img1);
+            Log.i("iiii",myMember.getImg1());
         }else {
             vh.img1.setVisibility(View.GONE);
         }
 
-        if(myMember.getImg2()!=null){
+        if(myMember.img2!=null){
             Glide.with(context).load(myMember.getImg2()).into(vh.img2);
+            Log.i("iiii",myMember.getImg2());
         }else {
             vh.img2.setVisibility(View.GONE);
         }
 
-        if(myMember.getImg3()!=null){
+        if(myMember.img3!=null){
             Glide.with(context).load(myMember.getImg3()).into(vh.img3);
+            Log.i("iiii",myMember.getImg3());
         }else {
             vh.img3.setVisibility(View.GONE);
         }
@@ -175,9 +171,11 @@ public class AdapterMember extends RecyclerView.Adapter {
 
                                     intent.putExtra("title",title);
                                     intent.putExtra("text",text);
+                                    intent.putExtra("img1",myMember.getImg1());
+                                    intent.putExtra("img2",myMember.getImg2());
+                                    intent.putExtra("img3",myMember.getImg3());
                                     context.startActivity(intent);
                                     //((Activity)context).startActivityForResult(intent,REQ_POST);
-                                    Log.i("moyang",numbuer+"");
                                     break;
                                 case R.id.delete:
                                     break;
