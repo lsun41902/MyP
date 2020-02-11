@@ -56,9 +56,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        number=Integer.parseInt(AdapterMember.numbuer.toString());
-        Log.i("moyangmoyang", AdapterMember.numbuer + "");
-        Log.i("moyangmoyang1", number + "");
+        //number=Integer.parseInt(AdapterMember.numbuer.toString());
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
         getSupportActionBar().setTitle("수정");
@@ -74,7 +72,6 @@ public class PostActivity extends AppCompatActivity {
         }
 
         iv1 = findViewById(R.id.write_iv_1);
-        //Glide.with(this).load().into(iv1);
         iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,8 +100,15 @@ public class PostActivity extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
         String title=bundle.getString("title");
         String text=bundle.getString("text");
+        String img1=bundle.getString("img1");
+        String img2=bundle.getString("img2");
+        String img3=bundle.getString("img3");
         etText.setText(text);
         etTitle.setText(title);
+        Glide.with(this).load(img1).into(iv1);
+        Glide.with(this).load(img2).into(iv2);
+        Glide.with(this).load(img3).into(iv3);
+        Log.i("moya",img1+img2+img3);
 
     }
 
@@ -182,31 +186,6 @@ public class PostActivity extends AppCompatActivity {
                             intent.putExtra("userID",userId);
                             setResult(RESULT_OK, intent);
 
-                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.i("moyang",response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(PostActivity.this, "에러", Toast.LENGTH_SHORT).show();
-                                    Log.i("moyang",String.valueOf(error));
-                                }
-                            });
-                            simpleMultiPartRequest.addStringParam("title",title);
-                            simpleMultiPartRequest.addStringParam("text",text);
-                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
-                            simpleMultiPartRequest.addFile("img1",img1);
-                            simpleMultiPartRequest.addFile("img2",img2);
-                            simpleMultiPartRequest.addFile("img3",img3);
-                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-                            RequestQueue requestQueue= Volley.newRequestQueue(PostActivity.this);
-                            requestQueue.add(simpleMultiPartRequest);
-                            dialogInterface.dismiss();
-                            finish();
                         }
                     }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                         @Override

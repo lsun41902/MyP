@@ -25,7 +25,7 @@ public class LogoActivity extends AppCompatActivity {
         };
 
         mHandler = new Handler();
-        mHandler.postDelayed(mRunnable, 1000);
+        mHandler.postDelayed(mRunnable, 2000);
 
     }
 

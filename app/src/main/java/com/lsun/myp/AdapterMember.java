@@ -13,9 +13,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -24,11 +36,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     ArrayList<MyMember> members;
     int medalCnt=0;
     boolean medal=false;
-    public static Object numbuer;
-    public static final int REQ_POST=1011;
-
-
-
+    MyMember myMember;
 
 
 
@@ -50,49 +58,52 @@ public class AdapterMember extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
-        MyMember myMember=members.get(position);
+        myMember=members.get(position);
         SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
         String checksetting=sp.getString("userNickname",null);
-        numbuer=myMember.no;
+//        numbuer=myMember.no;
         vh.tvTitle.setText(myMember.title);
-        if(MainActivity.userImage==null){
-            Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
-        }else {
-            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
-        }
+//        if(MainActivity.userImage==null){
+//            Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
+//        }else {
+//            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
+//        }
         vh.tvText.setText(myMember.text);
-
         vh.nickname.setText(myMember.getNickName());
-
-        Log.i("usernamewhat",checksetting);
-        Log.i("usernamewhat",myMember.getNickName());
         vh.dates.setText(myMember.date);
-        if(checksetting.equals(myMember.getNickName())){
-            if(MainActivity.userImage==null){
-                Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
-                Log.i("imimim","여기?");
+
+
+        if(vh.nickname.getText().toString().equals(checksetting)){
+            if(myMember.getProfileimg()!=null){
+                Glide.with(context).load(myMember.getProfileimg()).into(vh.circleImageView);
+
             }else {
-                Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
-                Log.i("imimim","여기당");
+                Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }
-            Log.i("imimim","여기지롱");
         }
-        if(myMember.img11==null){
+
+        if(myMember.img1!=null){
+            Glide.with(context).load(myMember.getImg1()).into(vh.img1);
+            Log.i("iiii",myMember.getImg1()+"");
+            vh.img1.setVisibility(View.VISIBLE);
+        }else {
             vh.img1.setVisibility(View.GONE);
-        }else {
-            Glide.with(context).load(myMember.getImg11()).into(vh.img1);
         }
 
-        if(myMember.img22==null){
+        if(myMember.img2!=null){
+            Glide.with(context).load(myMember.getImg2()).into(vh.img2);
+            Log.i("iiii",myMember.getImg2()+"");
+            vh.img2.setVisibility(View.VISIBLE);
+        }else {
             vh.img2.setVisibility(View.GONE);
-        }else {
-            Glide.with(context).load(myMember.getImg22()).into(vh.img2);
         }
 
-        if(myMember.img33==null){
-            vh.img3.setVisibility(View.GONE);
+        if(myMember.img3!=null){
+            Glide.with(context).load(myMember.getImg3()).into(vh.img3);
+            Log.i("iiii",myMember.getImg3()+"");
+            vh.img3.setVisibility(View.VISIBLE);
         }else {
-            Glide.with(context).load(myMember.getImg33()).into(vh.img3);
+            vh.img3.setVisibility(View.GONE);
         }
 
         vh.fav.setText(medalCnt+"");
@@ -100,7 +111,7 @@ public class AdapterMember extends RecyclerView.Adapter {
             vh.favBtn.setImageResource(R.drawable.medalyellow);
         }
 
-        if(checksetting.equals(myMember.getNickName())){
+        if(vh.nickname.getText().toString().equals(checksetting)){
             vh.setting.setVisibility(View.VISIBLE);
         }else {
             vh.setting.setVisibility(View.GONE);
@@ -132,8 +143,6 @@ public class AdapterMember extends RecyclerView.Adapter {
             favBtn=itemView.findViewById(R.id.item_fav);
             setting=itemView.findViewById(R.id.item_setting);
 
-
-
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -141,10 +150,12 @@ public class AdapterMember extends RecyclerView.Adapter {
                         medal=true;
                         medalCnt+=1;
                         favBtn.setImageResource(R.drawable.medalyellow);
+                        notifyDataSetChanged();
                     }else {
                         medal=false;
                         medalCnt-=1;
                         favBtn.setImageResource(R.drawable.medal32px);
+                        notifyDataSetChanged();
                     }
                 }
             });
@@ -164,9 +175,11 @@ public class AdapterMember extends RecyclerView.Adapter {
 
                                     intent.putExtra("title",title);
                                     intent.putExtra("text",text);
+                                    intent.putExtra("img1",myMember.getImg1());
+                                    intent.putExtra("img2",myMember.getImg2());
+                                    intent.putExtra("img3",myMember.getImg3());
                                     context.startActivity(intent);
                                     //((Activity)context).startActivityForResult(intent,REQ_POST);
-                                    Log.i("moyang",numbuer+"");
                                     break;
                                 case R.id.delete:
                                     break;
@@ -180,4 +193,26 @@ public class AdapterMember extends RecyclerView.Adapter {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

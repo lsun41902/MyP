@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -25,8 +26,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     AdapterFragment adapter;
     View heaerview;
+    String userNickname;
     LinearLayout heaersettingview;
     public static Toolbar toolbar;
     CircleImageView circleImageView;
@@ -52,14 +68,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+        userNickname = sp.getString("userNickname", "이름없음");
         navi = findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
+        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
+        circleImageView = heaerview.findViewById(R.id.iv_header);
         drawerLayout = findViewById(R.id.layout_drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference imgRef = firebaseStorage.getReference().child("profileImages/"+userNickname+"/" + "first.png");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.i("mojing","uri:"+uri);
+                Glide.with(MainActivity.this).load(uri).into(circleImageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("mojing",e+"");
+            }
+        });
+
+
         getSupportActionBar().setTitle("Main");
         tabLayout = findViewById(R.id.layout_tab);
         pager = findViewById(R.id.pager);
@@ -89,31 +126,17 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.map);
 
 
-        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
-        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
-        circleImageView = heaerview.findViewById(R.id.iv_header);
-        if (StartProfileActivity.img == false) {
-            StartProfileActivity.img = false;
-            userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
-            Glide.with(this).load(R.drawable.personmen).into(circleImageView);
-        } else {
-            StartProfileActivity.img = true;
-            userImage = StartProfileActivity.startProfileImage;
-            Glide.with(this).load(userImage).into(circleImageView);
-        }
+
 
         userName = heaerview.findViewById(R.id.tv_name_header);
         userEmail = heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
-        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        String userNickname = sp.getString("userNickname", "이름없음");
         userName.setText(userNickname);
 
 
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new PicImage(MainActivity.this).PicSetting();
                 startActivityForResult(new Intent(MainActivity.this, ProfileActivity.class), REQ_PICCIRCLE);
                 drawerLayout.closeDrawer(navi);
             }
