@@ -81,20 +81,14 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference imgRef = firebaseStorage.getReference().child("profileImages/"+userNickname+"/" + "first.png");
-        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.i("mojing","uri:"+uri);
-                Glide.with(MainActivity.this).load(uri).into(circleImageView);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("mojing",e+"");
-            }
-        });
+
+        if(ItemChat.Urlstring!=null){
+            Glide.with(MainActivity.this).load(ItemChat.Urlstring).into(circleImageView);
+        }else {
+            Glide.with(MainActivity.this).load(R.drawable.personmen).into(circleImageView);
+        }
+
+
 
 
         getSupportActionBar().setTitle("Main");
@@ -137,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, ProfileActivity.class), REQ_PICCIRCLE);
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 drawerLayout.closeDrawer(navi);
             }
         });

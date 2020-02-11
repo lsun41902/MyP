@@ -80,25 +80,11 @@ public class StartProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         startProfileCircleImage = findViewById(R.id.start_profile_iv);
         startProfileCircleImage.setImageResource(R.drawable.personmen);
-
         startProfileCircleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int checkedPrmission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
-                    if (checkedPrmission == PackageManager.PERMISSION_DENIED) {//퍼미션이 허가되어 있지 않다면
-                        //사용자에게 퍼미션 허용 여부를 물어보는 다이얼로그 보여주기!
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
-                    }else{
-                        Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
-                        startActivityForResult(intent, REQ_STARTPICIMAGE);
-                    }
-
-                }
-
-
-
-
+                Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
+                startActivityForResult(intent, REQ_STARTPICIMAGE);
             }
         });
         username = findViewById(R.id.profile_et_userenickname);
@@ -124,7 +110,6 @@ public class StartProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, "외부메모리 사용 가능", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
                     startActivityForResult(intent, REQ_STARTPICIMAGE);
-
                 }
                 break;
         }
@@ -152,6 +137,14 @@ public class StartProfileActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
         String checkUserName = sp.getString("userNickname", null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int checkedPrmission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);//READ는 WRITE를 주면 같이 권한이 주어짐
+            if (checkedPrmission == PackageManager.PERMISSION_DENIED) {//퍼미션이 허가되어 있지 않다면
+                //사용자에게 퍼미션 허용 여부를 물어보는 다이얼로그 보여주기!
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
+            }
+
+        }
         if (checkUserName != null) {
             startusernickname=checkUserName;
             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
@@ -208,7 +201,6 @@ public class StartProfileActivity extends AppCompatActivity {
                             final StorageReference imgRef = firebaseStorage.getReference("profileImages/"+itemChat.getNickName()+"/" + "first.png");
                             imgRef.putFile(startProfileImage);
                             UploadTask uploadTask = imgRef.putFile(startProfileImage);
-
                             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
