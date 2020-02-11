@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -30,8 +31,15 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.lsun.myp.ItemChat;
+import com.lsun.myp.MyMember;
+import com.lsun.myp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,7 +59,13 @@ public class WriteActivity extends AppCompatActivity {
     String img2;
     String img3;
     Date date=new Date(System.currentTimeMillis());
-
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference board;
+    String username;
+    DatabaseReference imgs;
+    String down1;
+    String down2;
+    String down3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,11 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
         etTitle = findViewById(R.id.write_et_title);
         etText = findViewById(R.id.write_et_text);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        board=firebaseDatabase.getReference("board");
+        SharedPreferences sp=getSharedPreferences("userName",MODE_PRIVATE);
+        username=sp.getString("userNickname",null);
+
         getSupportActionBar().setTitle("글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
@@ -95,6 +114,8 @@ public class WriteActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQ_WRITEIMAGE3);
             }
         });
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        imgs = firebaseDatabase.getReference("Image");
 
 
 
@@ -150,7 +171,6 @@ public class WriteActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK){
                     writeImage1=data.getData();
                     img1=getRealPathFromUri(writeImage1);
-                    Log.i("moya",img1);
                     Glide.with(WriteActivity.this).load(writeImage1).into(iv1);
                 }
                 break;
@@ -158,7 +178,6 @@ public class WriteActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK){
                     writeImage2=data.getData();
                     img2=getRealPathFromUri(writeImage2);
-                    Log.i("moya",img2);
                     Glide.with(WriteActivity.this).load(writeImage2).into(iv2);
                 }
                 break;
@@ -166,7 +185,6 @@ public class WriteActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK){
                     writeImage3=data.getData();
                     img3=getRealPathFromUri(writeImage3);
-                    Log.i("moya",img3);
                     Glide.with(WriteActivity.this).load(writeImage3).into(iv3);
                 }
                 break;
@@ -179,7 +197,7 @@ public class WriteActivity extends AppCompatActivity {
             case R.id.check_write:
                 if (etText.length()<=20){
 
-                    new AlertDialog.Builder(this).setPositiveButton("나가기", new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
@@ -191,67 +209,83 @@ public class WriteActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String title = etTitle.getText().toString();
                             String text= etText.getText().toString();
-                            Intent intent = getIntent();
+//                            Intent intent = getIntent();
                             if (title.equals("")) {
                                 title = "제목없음";
                             }
-                            intent.putExtra("Title", title);
-                            intent.putExtra("Text",text);
-                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.KOREA);
+//                            intent.putExtra("Title", title);
+//                            intent.putExtra("Text",text);
+                            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd HH:mm", Locale.KOREA);
                             // nowDate 변수에 값을 저장한다.
-                            String formatDate = sdfNow.format(date);
-                            intent.putExtra("Date",formatDate);
-                            intent.putExtra("Image1",writeImage1);
-                            intent.putExtra("Image2",writeImage2);
-                            intent.putExtra("Image3",writeImage3);
-                            String userId=SelectLoginActivity.startEmail;
-                            intent.putExtra("userID",userId);
-                            setResult(RESULT_OK, intent);
+                            final String formatDate = sdfNow.format(date);
 
-                            String serverUri="http://lsun41902.dothome.co.kr/GotoWork/Board/gotoworkDB.php";
-                            SimpleMultiPartRequest simpleMultiPartRequest=new SimpleMultiPartRequest(Request.Method.POST, serverUri, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                   Log.i("moya",response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(WriteActivity.this, "에러", Toast.LENGTH_SHORT).show();
-                                    Log.i("moya",String.valueOf(error));
-                                }
-                            });
-//                            simpleMultiPartRequest.addStringParam("title",title);
-//                            simpleMultiPartRequest.addStringParam("date",formatDate);
-//                            simpleMultiPartRequest.addStringParam("text",text);
-//                            simpleMultiPartRequest.addStringParam("userID",SelectLoginActivity.startEmail);
-//                            simpleMultiPartRequest.addStringParam("nickName",ItemChat.nickName);
-//                            simpleMultiPartRequest.addFile("img1",img1);
-//                            simpleMultiPartRequest.addFile("img2",img2);
-//                            simpleMultiPartRequest.addFile("img3",img3);
-//                            simpleMultiPartRequest.addFile("profileImg",StartProfileActivity.profileImg);
-//                            RequestQueue requestQueue= Volley.newRequestQueue(WriteActivity.this);
-//                            requestQueue.add(simpleMultiPartRequest);
-
-
-
-
-                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                            DatabaseReference decboard = firebaseDatabase.getReference("decboard");
-                            DatabaseReference dectitle= decboard.child(ItemChat.nickName+"_"+formatDate);
-                            Log.i("decdec",decboard.toString());
-                            Log.i("decdec",dectitle.toString());
-                          
-
-
-
-
-
-
-
-
-
-
+                            String fileName = sdfNow.format(new Date()) + ".png";
+                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                            final StorageReference imgRef1 = firebaseStorage.getReference("board/"+title+"/" + "a"+fileName);
+                            final StorageReference imgRef2 = firebaseStorage.getReference("board/"+title+"/" + "b"+fileName);
+                            final StorageReference imgRef3 = firebaseStorage.getReference("board/"+title+"/" + "c"+fileName);
+                            final MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,down1,down2,down3,formatDate);
+                            if(img1!=null){
+                                imgRef1.putFile(writeImage1);
+                                UploadTask uploadTask = imgRef1.putFile(writeImage1);
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                                down1=uri.toString();
+                                                myMember.setImg1(down1);
+                                                Log.i("imagedownuri",down1);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if(img2!=null){
+                                imgRef2.putFile(writeImage2);
+                                UploadTask uploadTask2 = imgRef2.putFile(writeImage2);
+                                uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                                down2=uri.toString();
+                                                myMember.setImg2(down2);
+                                                Log.i("imagedownuri",down2);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if(img3!=null){
+                                imgRef3.putFile(writeImage3);
+                                UploadTask uploadTask3 = imgRef3.putFile(writeImage3);
+                                uploadTask3.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef3.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                                down3=uri.toString();
+                                                Log.i("imagedownuri",down3);
+                                                myMember.setImg3(down3);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            board.child(formatDate).setValue(myMember);
                             dialogInterface.dismiss();
                             finish();
                         }
