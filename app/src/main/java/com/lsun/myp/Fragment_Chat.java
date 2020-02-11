@@ -61,6 +61,7 @@ public class Fragment_Chat extends Fragment {
         //'chat' 노드에 저장되어 있는 데이터들을 읽어오기
         //chatRef 에 데이터가 변경되는 것을 듣는 리스너 추가
         //새로 추가된 child 만 얻어오기 value 하면 전체를 다 읽어옴
+
         chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

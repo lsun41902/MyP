@@ -60,7 +60,9 @@ public class WriteActivity extends AppCompatActivity {
     DatabaseReference board;
     String username;
     DatabaseReference imgs;
-    MyMember myMember=new MyMember();
+    String down1;
+    String down2;
+    String down3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,71 +214,75 @@ public class WriteActivity extends AppCompatActivity {
 //                            intent.putExtra("Text",text);
                             SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd HH:mm", Locale.KOREA);
                             // nowDate 변수에 값을 저장한다.
-                            String formatDate = sdfNow.format(date);
+                            final String formatDate = sdfNow.format(date);
 
                             String fileName = sdfNow.format(new Date()) + ".png";
                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                            final StorageReference imgRef1 = firebaseStorage.getReference("board/"+title+"/" + fileName+"1");
-                            final StorageReference imgRef2 = firebaseStorage.getReference("board/"+title+"/" + fileName+"2");
-                            final StorageReference imgRef3 = firebaseStorage.getReference("board/"+title+"/" + fileName+"3");
-                            imgRef1.putFile(writeImage1);
-                            imgRef2.putFile(writeImage2);
-                            imgRef3.putFile(writeImage3);
-                            UploadTask uploadTask = imgRef1.putFile(writeImage1);
-
-                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
-                                    imgRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
-
-                                            myMember.setImg1( uri.toString());
-
-                                        }
-                                    });
-                                }
-                            });
-                            UploadTask uploadTask2 = imgRef2.putFile(writeImage2);
-
-                            uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
-                                    imgRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
-
-                                            myMember.setImg2( uri.toString());
-
-                                        }
-                                    });
-                                }
-                            });
-                            UploadTask uploadTask3 = imgRef3.putFile(writeImage3);
-
-                            uploadTask3.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
-                                    imgRef3.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
-
-
-                                            myMember.setImg3( uri.toString());
-                                        }
-                                    });
-                                }
-                            });
-                            MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,img1,img2,img3,formatDate);
+                            final StorageReference imgRef1 = firebaseStorage.getReference("board/"+title+"/" + "a"+fileName);
+                            final StorageReference imgRef2 = firebaseStorage.getReference("board/"+title+"/" + "b"+fileName);
+                            final StorageReference imgRef3 = firebaseStorage.getReference("board/"+title+"/" + "c"+fileName);
+                            final MyMember myMember=new MyMember(ItemChat.getUrlstring(),username,title,text,down1,down2,down3,formatDate);
+                            if(img1!=null){
+                                imgRef1.putFile(writeImage1);
+                                UploadTask uploadTask = imgRef1.putFile(writeImage1);
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                                down1=uri.toString();
+                                                myMember.setImg1(down1);
+                                                Log.i("imagedownuri",down1);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if(img2!=null){
+                                imgRef2.putFile(writeImage2);
+                                UploadTask uploadTask2 = imgRef2.putFile(writeImage2);
+                                uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                                down2=uri.toString();
+                                                myMember.setImg2(down2);
+                                                Log.i("imagedownuri",down2);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            if(img3!=null){
+                                imgRef3.putFile(writeImage3);
+                                UploadTask uploadTask3 = imgRef3.putFile(writeImage3);
+                                uploadTask3.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //이미지 업로드가 성공되었으므로...곧바로 Firebase storage 에 이미지 파일 다운로드 URL을 얻어오겠습니다.
+                                        imgRef3.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
+                                               down3=uri.toString();
+                                                Log.i("imagedownuri",down3);
+                                                myMember.setImg3(down3);
+                                                board.child(formatDate).setValue(myMember);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                             board.child(formatDate).setValue(myMember);
-
-
                             dialogInterface.dismiss();
                             finish();
                         }

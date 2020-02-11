@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_gotowork_round"
         android:label="@string/main_label"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_gotowork_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -50,7 +50,9 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
     </application>
+
 
 
 </manifest>

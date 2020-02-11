@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,12 +36,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     ArrayList<MyMember> members;
     int medalCnt=0;
     boolean medal=false;
-    public static Object numbuer;
-    public static final int REQ_POST=1011;
     MyMember myMember;
-
-
-
 
 
 
@@ -69,33 +69,39 @@ public class AdapterMember extends RecyclerView.Adapter {
 //            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
 //        }
         vh.tvText.setText(myMember.text);
-
         vh.nickname.setText(myMember.getNickName());
         vh.dates.setText(myMember.date);
+
+
         if(vh.nickname.getText().toString().equals(checksetting)){
             if(myMember.getProfileimg()!=null){
                 Glide.with(context).load(myMember.getProfileimg()).into(vh.circleImageView);
+
             }else {
                 Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }
         }
+
         if(myMember.img1!=null){
             Glide.with(context).load(myMember.getImg1()).into(vh.img1);
-            Log.i("iiii",myMember.getImg1());
+            Log.i("iiii",myMember.getImg1()+"");
+            vh.img1.setVisibility(View.VISIBLE);
         }else {
             vh.img1.setVisibility(View.GONE);
         }
 
         if(myMember.img2!=null){
             Glide.with(context).load(myMember.getImg2()).into(vh.img2);
-            Log.i("iiii",myMember.getImg2());
+            Log.i("iiii",myMember.getImg2()+"");
+            vh.img2.setVisibility(View.VISIBLE);
         }else {
             vh.img2.setVisibility(View.GONE);
         }
 
         if(myMember.img3!=null){
             Glide.with(context).load(myMember.getImg3()).into(vh.img3);
-            Log.i("iiii",myMember.getImg3());
+            Log.i("iiii",myMember.getImg3()+"");
+            vh.img3.setVisibility(View.VISIBLE);
         }else {
             vh.img3.setVisibility(View.GONE);
         }
@@ -136,8 +142,6 @@ public class AdapterMember extends RecyclerView.Adapter {
             img3=itemView.findViewById(R.id.item_layout_img3);
             favBtn=itemView.findViewById(R.id.item_fav);
             setting=itemView.findViewById(R.id.item_setting);
-
-
 
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
