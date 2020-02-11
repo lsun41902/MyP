@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements GoogleApiClien
         if(ItemChat.getUrlstring()==null){
             Glide.with(this).load(R.drawable.personmen).into(profileiv);
         }else {
-            Glide.with(this).load(ItemChat.getUrlstring()).into(profileiv);
+            Glide.with(this).load(ItemChat.Urlstring).into(profileiv);
         }
         profileiv.setOnClickListener(new View.OnClickListener() {
             @Override
