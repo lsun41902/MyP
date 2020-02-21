@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -88,10 +89,6 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Glide.with(MainActivity.this).load(R.drawable.personmen).into(circleImageView);
         }
-
-
-
-
         getSupportActionBar().setTitle("Main");
         tabLayout = findViewById(R.id.layout_tab);
         pager = findViewById(R.id.pager);
@@ -119,16 +116,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.keyborad);
         tabLayout.getTabAt(2).setIcon(R.drawable.news2);
         tabLayout.getTabAt(3).setIcon(R.drawable.map);
-
-
-
-
         userName = heaerview.findViewById(R.id.tv_name_header);
         userEmail = heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
         userName.setText(userNickname);
-
-
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +127,20 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(navi);
             }
         });
+
+        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navi_chat:
+                        startActivity(new Intent(MainActivity.this,ChatList.class));
+                        break;
+                }
+                return false;
+            }
+        });
+
+
 
 //업로드 하려면 외부저장소 권한이 필요함
         //동적퍼미션이 필요

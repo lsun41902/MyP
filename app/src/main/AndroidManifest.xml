@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Chat_User"></activity>
+        <activity android:name=".ChatList" />
         <activity android:name=".PostActivity" />
         <activity android:name=".StartProfileActivity" />
         <activity android:name=".ProfileActivity" />

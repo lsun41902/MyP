@@ -127,7 +127,7 @@ public class AdapterMember extends RecyclerView.Adapter {
         CircleImageView circleImageView;
         TextView dates,fav,tvText,tvTitle,nickname;
         ImageView img1,img2,img3;
-        ImageButton setting,favBtn;
+        ImageButton setting,favBtn,coment;
 
         public VH(@NonNull final View itemView) {
             super(itemView);
@@ -142,6 +142,13 @@ public class AdapterMember extends RecyclerView.Adapter {
             img3=itemView.findViewById(R.id.item_layout_img3);
             favBtn=itemView.findViewById(R.id.item_fav);
             setting=itemView.findViewById(R.id.item_setting);
+            coment=itemView.findViewById(R.id.item_coment);
+            coment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context,Chat_User.class));
+                }
+            });
 
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
