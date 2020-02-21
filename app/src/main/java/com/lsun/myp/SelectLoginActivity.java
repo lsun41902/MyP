@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class SelectLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mAuth;
@@ -35,7 +38,6 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
     private static final int RC_SIGN_IN = 100;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-
     SignInButton signInButton;
     public static String startEmail;
 
@@ -65,6 +67,25 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
 
             }
         });
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("getTokken", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log and toast
+                        Log.d("tokenemail", token);
+                        SharedPreferences sp=getSharedPreferences("token",MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sp.edit();
+                        editor.putString("Token",token);
+                        editor.commit();
+
+                    }
+                });
 
     }
 
@@ -73,6 +94,10 @@ public class SelectLoginActivity extends AppCompatActivity implements GoogleApiC
         if (account != null) {
             Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show();
             startEmail = account.getEmail();
+            SharedPreferences sp=getSharedPreferences("email",MODE_PRIVATE);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("Email",startEmail);
+            editor.commit();
             startActivity(new Intent(this, StartProfileActivity.class));
             finish();
         } else {

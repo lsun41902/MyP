@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,6 +60,9 @@ public class StartProfileActivity extends AppCompatActivity {
     boolean ok =false;
     public static boolean img = false;
     ItemChat itemChat;
+    ItemProfile itemProfile;
+    static ArrayList<String> arrayIndex =  new ArrayList<String>();
+    static ArrayList<String> arrayData = new ArrayList<String>();
 
     String getRealPathFromUri(Uri uri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -90,9 +94,9 @@ public class StartProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.profile_et_userenickname);
         userEmail = findViewById(R.id.profile_et_useremail);
         userEmail.setText(SelectLoginActivity.startEmail);
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         profileRef = firebaseDatabase.getReference("profiles");
+        itemProfile=new ItemProfile();
 
 
 
@@ -211,18 +215,24 @@ public class StartProfileActivity extends AppCompatActivity {
                                             //파라미터로 firebase 저장소에 저장되어 있는 다운로드주소 (URL)을 문자열로 얻어오기
 
                                             ItemChat.Urlstring=uri.toString();
-                                            //1.Firebase Database에 nickName, profileUrl을 저장
-                                            //firebase DB 관리자 객체 소환
-//                                            firebaseDatabase = FirebaseDatabase.getInstance();
-                                            //profiles 라는 이름의 자식노드 참조객체 얻어오기
-//                                            profileRef = firebaseDatabase.getReference("profiles");//여기까지만 하면 루트 레퍼런스가 옴
-                                            //닉네임을 key 식별자로 하고 프로필 이미지의 주소를 값으로 저장
+                                            itemProfile.setImguri(uri.toString());
+                                            profileRef.child(itemChat.getNickName()).setValue(itemProfile);
 
                                         }
                                     });
                                 }
                             });
-                            profileRef.child(itemChat.getNickName()).setValue(itemChat.Urlstring);
+                            itemProfile.setName(username.getText().toString());
+                            sp=getSharedPreferences("token",MODE_PRIVATE);
+                            String token=sp.getString("token",null);
+                            Log.i("tokenemail","Token: "+token);
+                            itemProfile.setUuid(token);
+                            sp=getSharedPreferences("email",MODE_PRIVATE);
+                            String email=sp.getString("Email",null);
+                            Log.i("tokenemail","Email: "+email);
+
+                            itemProfile.setEmail(email);
+                            profileRef.child(itemChat.getNickName()).setValue(itemProfile);
                             startActivity(new Intent(StartProfileActivity.this, MainActivity.class));
                             finish();
                         } else {
@@ -260,6 +270,15 @@ public class StartProfileActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public String setTextLength(String text, int length){
+        if(text.length()<length){
+            int gap = length - text.length();
+            for (int i=0; i<gap; i++){
+                text = text + " ";
+            }
+        }
+        return text;
+    }
 
     public void clickCheck(View view) {
         profileRef.addValueEventListener(new ValueEventListener() {
@@ -267,6 +286,15 @@ public class StartProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot t: dataSnapshot.getChildren()){
                     String n=t.getKey();
+
+//                    ItemProfile get=t.getValue(ItemProfile.class);
+//                    String[] info={get.name,get.email,get.uuid,get.imguri};
+//                    String Result=setTextLength(info[0],10)+setTextLength(info[1],30)+setTextLength(info[1],200)+setTextLength(info[1],100);
+//                    arrayData.add(Result);
+//                    arrayIndex.add(n);
+//                    Log.d("getFirebaseDatabase", "key: " + n);
+//                    Log.d("getFirebaseDatabase", "info: " + info[0] + info[1] + info[2] + info[3]);
+//
                     if(n.equals(username.getText().toString())){
                         Toast.makeText(StartProfileActivity.this, "닉네임 중복, 사용 불가", Toast.LENGTH_SHORT).show();
                         ok=false;
