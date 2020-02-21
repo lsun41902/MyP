@@ -54,6 +54,7 @@ public class Fragment_News extends Fragment {
         });
 
 
+
         return view;
     }
 }

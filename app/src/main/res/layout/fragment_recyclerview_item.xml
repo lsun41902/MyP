@@ -116,7 +116,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="50dp"
+            android:paddingLeft="25dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -163,6 +163,7 @@
         android:src="@drawable/medal32px" />
 
     <ImageButton
+        android:id="@+id/item_coment"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_below="@+id/item_img_sv_under"

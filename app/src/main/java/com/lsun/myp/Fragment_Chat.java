@@ -1,9 +1,16 @@
 package com.lsun.myp;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +19,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.ChildEventListener;
@@ -22,11 +31,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class Fragment_Chat extends Fragment {
 
@@ -56,10 +68,10 @@ public class Fragment_Chat extends Fragment {
         chatRef = firebaseDatabase.getReference("chat");
         //firebaseDB 에서 채팅 메세지들 실시간 읽어오기.
         //닉네임, 메세지, 프로필 이미지 저장 URL, 작성시간
-
         //'chat' 노드에 저장되어 있는 데이터들을 읽어오기
         //chatRef 에 데이터가 변경되는 것을 듣는 리스너 추가
         //새로 추가된 child 만 얻어오기 value 하면 전체를 다 읽어옴
+
         chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -135,7 +147,9 @@ public class Fragment_Chat extends Fragment {
         });
 
 
+
         return view;
 
     }
+
 }

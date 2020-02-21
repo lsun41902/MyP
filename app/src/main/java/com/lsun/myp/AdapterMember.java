@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,13 +36,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     ArrayList<MyMember> members;
     int medalCnt=0;
     boolean medal=false;
-    public static Object numbuer;
-    public static final int REQ_POST=1011;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference board ;
-
-
-
+    MyMember myMember;
 
 
 
@@ -59,13 +58,7 @@ public class AdapterMember extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VH vh=(VH) holder;
-        MyMember myMember=members.get(position);
-
-
-
-
-
-
+        myMember=members.get(position);
         SharedPreferences sp=context.getSharedPreferences("userName",Context.MODE_PRIVATE);
         String checksetting=sp.getString("userNickname",null);
 //        numbuer=myMember.no;
@@ -76,30 +69,39 @@ public class AdapterMember extends RecyclerView.Adapter {
 //            Glide.with(context).load(MainActivity.userImage).into(vh.circleImageView);
 //        }
         vh.tvText.setText(myMember.text);
-
         vh.nickname.setText(myMember.getNickName());
         vh.dates.setText(myMember.date);
+
+
         if(vh.nickname.getText().toString().equals(checksetting)){
             if(myMember.getProfileimg()!=null){
                 Glide.with(context).load(myMember.getProfileimg()).into(vh.circleImageView);
+
             }else {
                 Glide.with(context).load(R.drawable.personmen).into(vh.circleImageView);
             }
         }
-        if(myMember.getImg1()!=null){
+
+        if(myMember.img1!=null){
             Glide.with(context).load(myMember.getImg1()).into(vh.img1);
+            Log.i("iiii",myMember.getImg1()+"");
+            vh.img1.setVisibility(View.VISIBLE);
         }else {
             vh.img1.setVisibility(View.GONE);
         }
 
-        if(myMember.getImg2()!=null){
+        if(myMember.img2!=null){
             Glide.with(context).load(myMember.getImg2()).into(vh.img2);
+            Log.i("iiii",myMember.getImg2()+"");
+            vh.img2.setVisibility(View.VISIBLE);
         }else {
             vh.img2.setVisibility(View.GONE);
         }
 
-        if(myMember.getImg3()!=null){
+        if(myMember.img3!=null){
             Glide.with(context).load(myMember.getImg3()).into(vh.img3);
+            Log.i("iiii",myMember.getImg3()+"");
+            vh.img3.setVisibility(View.VISIBLE);
         }else {
             vh.img3.setVisibility(View.GONE);
         }
@@ -125,7 +127,7 @@ public class AdapterMember extends RecyclerView.Adapter {
         CircleImageView circleImageView;
         TextView dates,fav,tvText,tvTitle,nickname;
         ImageView img1,img2,img3;
-        ImageButton setting,favBtn;
+        ImageButton setting,favBtn,coment;
 
         public VH(@NonNull final View itemView) {
             super(itemView);
@@ -140,8 +142,13 @@ public class AdapterMember extends RecyclerView.Adapter {
             img3=itemView.findViewById(R.id.item_layout_img3);
             favBtn=itemView.findViewById(R.id.item_fav);
             setting=itemView.findViewById(R.id.item_setting);
-
-
+            coment=itemView.findViewById(R.id.item_coment);
+            coment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context,Chat_User.class));
+                }
+            });
 
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,9 +182,11 @@ public class AdapterMember extends RecyclerView.Adapter {
 
                                     intent.putExtra("title",title);
                                     intent.putExtra("text",text);
+                                    intent.putExtra("img1",myMember.getImg1());
+                                    intent.putExtra("img2",myMember.getImg2());
+                                    intent.putExtra("img3",myMember.getImg3());
                                     context.startActivity(intent);
                                     //((Activity)context).startActivityForResult(intent,REQ_POST);
-                                    Log.i("moyang",numbuer+"");
                                     break;
                                 case R.id.delete:
                                     break;

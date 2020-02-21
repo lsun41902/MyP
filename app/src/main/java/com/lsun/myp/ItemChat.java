@@ -5,6 +5,7 @@ public class ItemChat {
     String message;
     String time;
     String profileUrl;
+    public static String Urlstring; //url,uri 가 아님
     public static String nickName;
 
     public static String getNickName() {
@@ -23,7 +24,7 @@ public class ItemChat {
         Urlstring = urlstring;
     }
 
-    public static String Urlstring; //url,uri 가 아님
+
 
     //firebase DB에 객체로 값을 읽어올 때... 파라미터가 없는 생성자도 필요함
     public ItemChat() {

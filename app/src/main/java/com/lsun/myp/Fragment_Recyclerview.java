@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -37,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,11 +51,9 @@ public class Fragment_Recyclerview extends Fragment {
     public static final int REQ_WIRTE = 1010;
     ArrayList<MyMember> members = new ArrayList<>();
     SwipeRefreshLayout swiper;
-    Uri Img1,img2,img3;
     String userid;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference board;
-    MyMember myMember;
 
 
     @Nullable
@@ -61,22 +61,16 @@ public class Fragment_Recyclerview extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         fab = view.findViewById(R.id.fab);
-        //loadDB();
         loadfirebase();
         recyclerView = view.findViewById(R.id.recyclerview_item);
         adapter=new AdapterMember(getActivity(),members);
         recyclerView.setAdapter(adapter);
-
         swiper = view.findViewById(R.id.swiper);
         swiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Toast.makeText(getActivity(), "게시판 새로고침", Toast.LENGTH_SHORT).show();
-                //adapter.notifyItemRangeChanged(0,10);
-                //loadDB();
                 loadfirebase();
-//                adapter.notifyDataSetChanged();
-//                recyclerView.setAdapter(adapter);
                 swiper.setRefreshing(false);
             }
         });
@@ -100,61 +94,33 @@ public class Fragment_Recyclerview extends Fragment {
 
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQ_WIRTE:
-                if(resultCode== MainActivity.RESULT_OK){
-                    String title=data.getStringExtra("Title");
-                    String text=data.getStringExtra("Text");
-                    String date=data.getStringExtra("Date");
-                    SharedPreferences sp=getActivity().getSharedPreferences("userName",Context.MODE_PRIVATE);
-                    String nickname=sp.getString("userNickname",null);
-//                    Uri img1=data.getParcelableExtra("Image1");
-//                    Uri img2=data.getParcelableExtra("Image2");
-//                    Uri img3=data.getParcelableExtra("Image3");
-                    String img1=data.getStringExtra("Image1");
-                    String img2=data.getStringExtra("Image2");
-                    String img3=data.getStringExtra("Image3");
-                    userid=data.getStringExtra("userID");
-                    //members.add(0,new MyMember(null,null,title,nickname,date,null,null,null,img1,img2,img3,text,null));
-                    members.add(0,new MyMember(ItemChat.Urlstring,nickname,title,text,img1,img2,img3,date));
-                    adapter=new AdapterMember(getActivity(),members);
-                    recyclerView.setAdapter(adapter);
-                }
-                break;
-        }
-    }
-
-
-
+    
     @Override
     public void onResume() {
         super.onResume();
         if(members.size()!=0) {
-            //adapter.notifyItemRangeChanged(0,10);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
         }
     }
 
     void loadfirebase(){
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         board= firebaseDatabase.getReference("board");
         board.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i("imagedown","123123");
                 members.clear();
                 adapter.notifyDataSetChanged();
-
                 for(DataSnapshot t: dataSnapshot.getChildren()){
                     MyMember myMembers=t.getValue(MyMember.class);
                     members.add(myMembers);
                 }
-
-
+                Collections.reverse(members);
+//                adapter.notifyItemChanged(members.size()-1);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -163,5 +129,8 @@ public class Fragment_Recyclerview extends Fragment {
             }
         });
     }
+
+
+
 
 }

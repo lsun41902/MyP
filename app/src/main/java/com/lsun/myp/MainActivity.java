@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -25,8 +28,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     AdapterFragment adapter;
     View heaerview;
+    String userNickname;
     LinearLayout heaersettingview;
     public static Toolbar toolbar;
     CircleImageView circleImageView;
@@ -47,20 +65,30 @@ public class MainActivity extends AppCompatActivity {
     public static Uri userImage;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-    ItemChat item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
+        userNickname = sp.getString("userNickname", "이름없음");
         navi = findViewById(R.id.navi);
         navi.setItemIconTintList(null);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
+        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
+        circleImageView = heaerview.findViewById(R.id.iv_header);
         drawerLayout = findViewById(R.id.layout_drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        if(ItemChat.Urlstring!=null){
+            Glide.with(MainActivity.this).load(ItemChat.Urlstring).into(circleImageView);
+        }else {
+            Glide.with(MainActivity.this).load(R.drawable.personmen).into(circleImageView);
+        }
         getSupportActionBar().setTitle("Main");
         tabLayout = findViewById(R.id.layout_tab);
         pager = findViewById(R.id.pager);
@@ -88,35 +116,31 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.keyborad);
         tabLayout.getTabAt(2).setIcon(R.drawable.news2);
         tabLayout.getTabAt(3).setIcon(R.drawable.map);
-
-
-        heaerview = navi.inflateHeaderView(R.layout.drawer_header);
-        heaersettingview = heaerview.findViewById(R.id.header_view_settinglayout);
-        circleImageView = heaerview.findViewById(R.id.iv_header);
-        if (ItemChat.getUrlstring()== null) {
-            userImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.personmen));
-            Glide.with(this).load(R.drawable.personmen).into(circleImageView);
-        } else {
-            userImage = Uri.parse(ItemChat.getUrlstring());
-            Glide.with(this).load(ItemChat.getUrlstring()).into(circleImageView);
-        }
-
         userName = heaerview.findViewById(R.id.tv_name_header);
         userEmail = heaerview.findViewById(R.id.tv_email_header);
         userEmail.setText(SelectLoginActivity.startEmail);
-        SharedPreferences sp = getSharedPreferences("userName", MODE_PRIVATE);
-        String userNickname = sp.getString("userNickname", "이름없음");
         userName.setText(userNickname);
-
-
         heaersettingview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new PicImage(MainActivity.this).PicSetting();
-                startActivityForResult(new Intent(MainActivity.this, ProfileActivity.class), REQ_PICCIRCLE);
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 drawerLayout.closeDrawer(navi);
             }
         });
+
+        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navi_chat:
+                        startActivity(new Intent(MainActivity.this,ChatList.class));
+                        break;
+                }
+                return false;
+            }
+        });
+
+
 
 //업로드 하려면 외부저장소 권한이 필요함
         //동적퍼미션이 필요
@@ -166,13 +190,19 @@ public class MainActivity extends AppCompatActivity {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
-        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
-            super.onBackPressed();
-        } else {
-            drawerLayout.closeDrawer(navi);
-            backPressedTime = tempTime;
-            Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+
+        }else {
+            if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+                super.onBackPressed();
+            } else {
+                drawerLayout.closeDrawer(navi);
+                backPressedTime = tempTime;
+                Toast.makeText(getApplicationContext(), "종료하려면 한번더 눌러주세요.", Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
 

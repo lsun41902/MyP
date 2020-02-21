@@ -45,8 +45,10 @@ public class AdapterChat extends BaseAdapter {
         View itemView=null;//view 를 재활용 하면 안되니깐 새로운 뷰를 생성. 재활용하면 꼬임
         if(item.getName().equals(StartProfileActivity.startusernickname)) {
             itemView=layoutInflater.inflate(R.layout.box_msg_my,parent,false);
+
         }else {
             itemView=layoutInflater.inflate(R.layout.box_msg_other,parent,false);
+
         }
 
         //만들어진 itemView에 값들 설정
@@ -59,6 +61,7 @@ public class AdapterChat extends BaseAdapter {
         tvTime.setText(item.getTime());
         if(item.getProfileUrl()!=null){
             Glide.with(itemView).load(item.getProfileUrl()).into(iv);
+
         }else {
             Glide.with(itemView).load(R.drawable.personmen).into(iv);
         }
